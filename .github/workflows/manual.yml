@@ -18,7 +18,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}  # Only IP, no '-p 22'
           username: ${{ secrets.SERVER_USER }}  # Store separately in GitHub Secrets
-          key: ${{ secrets.SERVER_SSH_KEY }}  # Store private key in GitHub Secrets
+          password: ${{ secrets.SERVER_PASSWORD }}  # Use password for authentication
           port: 22  # Specify port separately
           source: "."  # Files to upload
           target: "/var/www/personal-portfolio"  # Destination on the server
