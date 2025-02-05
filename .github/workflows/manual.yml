@@ -11,13 +11,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2  # Ensure the repository is checked out before proceeding
 
-      - name: Deploy via SSH
+      - name: Deploy to Server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "index.html"
-          target: "/var/www/personal-portfolio"
+          host: ${{ secrets.SERVER_HOST }}  # Only IP, no '-p 22'
+          username: ${{ secrets.SERVER_USER }}  # Store separately in GitHub Secrets
+          key: ${{ secrets.SERVER_SSH_KEY }}  # Store private key in GitHub Secrets
+          port: 22  # Specify port separately
+          source: "."  # Files to upload
+          target: "/var/www/personal-portfolio"  # Destination on the server
