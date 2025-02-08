@@ -1710,3 +1710,104 @@ p {
         animation: marquee 10s linear infinite alternate-reverse;
     }
 }
+
+
+
+
+/* Experience Section Styles */
+.experience-section {
+    color: #2d3748;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    min-height: 60vh;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgb(138, 129, 202);
+    border-radius: 20px;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #9f7aea;
+  }
+  
+  .experience-description {
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #4a5568;
+  }
+  
+  .timeline {
+    position: relative;
+    margin: 0 auto;
+    max-width: 800px;
+    list-style: none;
+  }
+  
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 3.5rem;
+  }
+  
+  .timeline-item:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1.2rem;
+    width: 6px;
+    height: 100%;
+    background-color: #e2e8f0;
+  }
+  
+  .timeline-year {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #48bb78;
+    margin-bottom: 1rem;
+  }
+  
+  .timeline-year i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+  }
+  
+  .timeline-content {
+    background-color: #edf2f7;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .timeline-content h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .timeline-content p {
+    font-size: 0.9rem;
+    color: #718096;
+  }
+  
+  .industry-details h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+  
+  .industry-details p {
+    font-size: 0.9rem;
+    color: #718096;
+  }
+  
