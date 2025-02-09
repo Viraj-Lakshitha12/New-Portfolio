@@ -273,3 +273,21 @@ document.addEventListener("DOMContentLoaded", function () {
   // Restart auto-hover when touch ends
   document.addEventListener("touchend", startAutoHover);
 });
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const elements = document.querySelectorAll(".animate-on-scroll");
+
+  const handleScroll = () => {
+    elements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        el.classList.add("visible");
+      }
+    });
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  handleScroll(); // Initial check
+});
