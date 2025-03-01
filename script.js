@@ -1,8 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const styleSwitcherToggle = document.querySelector(".style-switcher-toggler");
-  styleSwitcherToggle.addEventListener("click", () => {
-    document.querySelector(".style-switcher").classList.toggle("open");
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  const element = document.querySelector('#your-element-id');
+  if (element) {
+    element.addEventListener('click', function() {
+      console.log('Element clicked');
+    });
+  }
+});
 
   window.addEventListener("scroll", () => {
     if (document.querySelector(".style-switcher").classList.contains("open")) {
