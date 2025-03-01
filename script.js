@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Element clicked');
     });
   }
-});
 
   window.addEventListener("scroll", () => {
-    if (document.querySelector(".style-switcher").classList.contains("open")) {
-      document.querySelector(".style-switcher").classList.remove("open");
+    const styleSwitcher = document.querySelector(".style-switcher");
+    if (styleSwitcher && styleSwitcher.classList.contains("open")) {
+      styleSwitcher.classList.remove("open");
     }
   });
 
@@ -26,22 +26,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* Dark/Light Mode */
   const dayNight = document.querySelector(".day-night");
-  dayNight.addEventListener("click", () => {
-    dayNight.querySelector("i").classList.toggle("fa-sun");
-    dayNight.querySelector("i").classList.toggle("fa-moon");
-    document.body.classList.toggle("dark");
-  });
+  if (dayNight) {
+    dayNight.addEventListener("click", () => {
+      const icon = dayNight.querySelector("i");
+      if (icon) {
+        icon.classList.toggle("fa-sun");
+        icon.classList.toggle("fa-moon");
+      }
+      document.body.classList.toggle("dark");
+    });
 
-  window.addEventListener("load", () => {
-    if (document.body.classList.contains("dark")) {
-      dayNight.querySelector("i").classList.add("fa-sun");
-    } else {
-      dayNight.querySelector("i").classList.add("fa-moon");
-    }
-  });
+    window.addEventListener("load", () => {
+      const icon = dayNight.querySelector("i");
+      if (icon) {
+        if (document.body.classList.contains("dark")) {
+          icon.classList.add("fa-sun");
+        } else {
+          icon.classList.add("fa-moon");
+        }
+      }
+    });
+  }
 
   /* Typing Animation */
-  var typed = new Typed(".typing", {
+  const typedElement = new Typed(".typing", {
     strings: [
       "",
       "Designing and developing full-stack web applications.",
@@ -51,92 +59,101 @@ document.addEventListener('DOMContentLoaded', function() {
       "Turning ideas into impactful, user-friendly software.",
     ],
     typeSpeed: 100,
-    Backspeed: 150,
+    backSpeed: 150,
     loop: true,
   });
 
   /* Changing Aside Active Link */
   const nav = document.querySelector(".nav");
-  const navList = nav.querySelectorAll("li");
-  const totalNavList = navList.length;
-  const allSection = document.querySelectorAll(".section");
-  const totalSection = allSection.length;
+  if (nav) {
+    const navList = nav.querySelectorAll("li");
+    const totalNavList = navList.length;
+    const allSection = document.querySelectorAll(".section");
+    const totalSection = allSection.length;
 
-  for (let i = 0; i < totalNavList; i++) {
-    const a = navList[i].querySelector("a");
-    a.addEventListener("click", function () {
-      removeBackSection();
-      for (let j = 0; j < totalNavList; j++) {
-        if (navList[j].querySelector("a").classList.contains("active")) {
-          addBackSection(j);
+    navList.forEach((item, i) => {
+      const a = item.querySelector("a");
+      a.addEventListener("click", function () {
+        removeBackSection();
+        navList.forEach((listItem, j) => {
+          const navAnchor = listItem.querySelector("a");
+          if (navAnchor.classList.contains("active")) {
+            addBackSection(j);
+          }
+          navAnchor.classList.remove("active");
+        });
+        this.classList.add("active");
+        showSection(this);
+
+        if (window.innerWidth < 1200) {
+          asideSectionTogglerBtn();
         }
-        navList[j].querySelector("a").classList.remove("active");
-      }
-      this.classList.add("active");
-      showSection(this);
-
-      if (window.innerWidth < 1200) {
-        asideSectionTogglerBtn();
-      }
+      });
     });
-  }
 
-  function addBackSection(num) {
-    allSection[num].classList.add("back-section");
-  }
-
-  function removeBackSection() {
-    for (let i = 0; i < totalSection; i++) {
-      allSection[i].classList.remove("back-section");
-    }
-  }
-
-  function showSection(element) {
-    for (let i = 0; i < totalSection; i++) {
-      allSection[i].classList.remove("active");
+    function addBackSection(num) {
+      if (allSection[num]) {
+        allSection[num].classList.add("back-section");
+      }
     }
 
-    const target = element.getAttribute("href").split("#")[1];
-    document.querySelector("#" + target).classList.add("active");
-  }
+    function removeBackSection() {
+      allSection.forEach((section) => {
+        section.classList.remove("back-section");
+      });
+    }
 
-  function updateNav(element) {
-    for (let i = 0; i < totalNavList; i++) {
-      navList[i].querySelector("a").classList.remove("active");
+    function showSection(element) {
+      allSection.forEach((section) => {
+        section.classList.remove("active");
+      });
+
       const target = element.getAttribute("href").split("#")[1];
-      if (
-        target ===
-        navList[i].querySelector("a").getAttribute("href").split("#")[1]
-      ) {
-        navList[i].querySelector("a").classList.add("active");
+      const targetSection = document.querySelector("#" + target);
+      if (targetSection) {
+        targetSection.classList.add("active");
       }
     }
-  }
 
-  // Make sure the hire-me button is available
-  const hireMeButton = document.querySelector(".hire-me");
-  if (hireMeButton) {
-    hireMeButton.addEventListener("click", function () {
-      const sectionIndex = this.getAttribute("data-section-index");
-      showSection(this);
-      updateNav(this);
-      removeBackSection();
-      addBackSection(sectionIndex);
-    });
+    function updateNav(element) {
+      navList.forEach((listItem) => {
+        const navAnchor = listItem.querySelector("a");
+        navAnchor.classList.remove("active");
+        const target = element.getAttribute("href").split("#")[1];
+        if (target === navAnchor.getAttribute("href").split("#")[1]) {
+          navAnchor.classList.add("active");
+        }
+      });
+    }
+
+    // Make sure the hire-me button is available
+    const hireMeButton = document.querySelector(".hire-me");
+    if (hireMeButton) {
+      hireMeButton.addEventListener("click", function () {
+        const sectionIndex = this.getAttribute("data-section-index");
+        showSection(this);
+        updateNav(this);
+        removeBackSection();
+        addBackSection(sectionIndex);
+      });
+    }
   }
 
   /* Activating Mobile Menu */
   const navTogglerBtn = document.querySelector(".nav-toggler");
   const aside = document.querySelector(".aside");
 
-  navTogglerBtn.addEventListener("click", () => {
-    asideSectionTogglerBtn();
-  });
+  if (navTogglerBtn && aside) {
+    navTogglerBtn.addEventListener("click", () => {
+      asideSectionTogglerBtn();
+    });
 
-  function asideSectionTogglerBtn() {
-    aside.classList.toggle("open");
-    navTogglerBtn.classList.toggle("open");
-    for (let i = 0; i < totalSection; i++) {
-      allSection[i].classList.toggle("open");
+    function asideSectionTogglerBtn() {
+      aside.classList.toggle("open");
+      navTogglerBtn.classList.toggle("open");
+      allSection.forEach((section) => {
+        section.classList.toggle("open");
+      });
     }
   }
+});
