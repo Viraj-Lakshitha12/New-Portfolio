@@ -140,4 +140,3 @@ document.addEventListener('DOMContentLoaded', function() {
       allSection[i].classList.toggle("open");
     }
   }
-});
