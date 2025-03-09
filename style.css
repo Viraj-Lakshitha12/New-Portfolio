@@ -235,6 +235,16 @@ body { line-height: 1.5; font-size: 16px; font-family: 'Poppins', sans-serif; }
                 .about .about-content .timeline .timeline-title { font-weight: 700; font-size: 18px; margin-bottom: 15px; text-transform: capitalize; color: var(--text-black900); }
                 .about .about-content .timeline .timeline-text { line-height: 25px; font-size: 16px; text-align: justify; color: var(--text-black700); }
 
+                .timeline-institute {
+                    color: #ff0000; 
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                  }
+
+                  
+
+                  
 /* SERVICE */
 
 .service .container { padding-bottom: 40px; }
