@@ -1,88 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Viraj Lakshitha</title>
     <link rel="icon" type="image/x-icon" href="assests/Icon_Username.png" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #000;
-        }
-        canvas {
-            width: 100%;
-            height: 100vh;
-            display: block;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .loader-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.9s ease-out;
-        }
-        .fade-out {
-            opacity: 0;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #000;
+      }
+      canvas {
+        width: 100%;
+        height: 100vh;
+        display: block;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .loader-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.9s ease-out;
+      }
+      .fade-out {
+        opacity: 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Loader Container -->
     <div class="loader-container">
-        <!-- Your animation will render here -->
+      <!-- Your animation will render here -->
     </div>
 
     <!-- Import Map for Three.js -->
     <script type="importmap">
-    {
+      {
         "imports": {
-            "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
-            "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.162.0/examples/jsm/controls/OrbitControls.js",
-            "three/addons/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.162.0/examples/jsm/postprocessing/EffectComposer.js",
-            "three/addons/postprocessing/RenderPass.js": "https://unpkg.com/three@0.162.0/examples/jsm/postprocessing/RenderPass.js",
-            "three/addons/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.162.0/examples/jsm/postprocessing/UnrealBloomPass.js"
+          "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+          "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.162.0/examples/jsm/controls/OrbitControls.js",
+          "three/addons/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.162.0/examples/jsm/postprocessing/EffectComposer.js",
+          "three/addons/postprocessing/RenderPass.js": "https://unpkg.com/three@0.162.0/examples/jsm/postprocessing/RenderPass.js",
+          "three/addons/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.162.0/examples/jsm/postprocessing/UnrealBloomPass.js"
         }
-    }
+      }
     </script>
 
     <!-- Three.js Animation Script -->
     <script type="module">
-    import * as THREE from 'three';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+      import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+      import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    document.querySelector(".loader-container").appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      document
+        .querySelector(".loader-container")
+        .appendChild(renderer.domElement);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    camera.position.set(0, 5, 20);
-    controls.update();
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      camera.position.set(0, 5, 20);
+      controls.update();
 
-    const nebulaGeometry = new THREE.SphereGeometry(100, 64, 64);
-    const nebulaMaterial = new THREE.ShaderMaterial({
+      const nebulaGeometry = new THREE.SphereGeometry(100, 64, 64);
+      const nebulaMaterial = new THREE.ShaderMaterial({
         uniforms: {
-            time: { value: 0 }
+          time: { value: 0 },
         },
         vertexShader: `
             varying vec3 vPosition;
@@ -107,15 +117,15 @@
         `,
         side: THREE.BackSide,
         transparent: true,
-        blending: THREE.AdditiveBlending
-    });
-    const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
-    scene.add(nebula);
+        blending: THREE.AdditiveBlending,
+      });
+      const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+      scene.add(nebula);
 
-    const torusGeometry = new THREE.TorusGeometry(6, 1.5, 32, 100);
-    const torusMaterial = new THREE.ShaderMaterial({
+      const torusGeometry = new THREE.TorusGeometry(6, 1.5, 32, 100);
+      const torusMaterial = new THREE.ShaderMaterial({
         uniforms: {
-            time: { value: 0 }
+          time: { value: 0 },
         },
         vertexShader: `
             varying vec3 vNormal;
@@ -142,15 +152,15 @@
                 gl_FragColor = vec4(color * edge, 1.0);
             }
         `,
-        side: THREE.DoubleSide
-    });
-    const torusCore = new THREE.Mesh(torusGeometry, torusMaterial);
-    scene.add(torusCore);
+        side: THREE.DoubleSide,
+      });
+      const torusCore = new THREE.Mesh(torusGeometry, torusMaterial);
+      scene.add(torusCore);
 
-    const innerSphereGeometry = new THREE.SphereGeometry(2, 32, 32);
-    const innerSphereMaterial = new THREE.ShaderMaterial({
+      const innerSphereGeometry = new THREE.SphereGeometry(2, 32, 32);
+      const innerSphereMaterial = new THREE.ShaderMaterial({
         uniforms: {
-            time: { value: 0 }
+          time: { value: 0 },
         },
         vertexShader: `
             varying vec3 vNormal;
@@ -184,18 +194,21 @@
             }
         `,
         transparent: true,
-        blending: THREE.AdditiveBlending
-    });
-    const innerSphere = new THREE.Mesh(innerSphereGeometry, innerSphereMaterial);
-    scene.add(innerSphere);
+        blending: THREE.AdditiveBlending,
+      });
+      const innerSphere = new THREE.Mesh(
+        innerSphereGeometry,
+        innerSphereMaterial
+      );
+      scene.add(innerSphere);
 
-    const sphereCount = 12;
-    const spheres = [];
-    const trails = [];
-    const sphereGeometry = new THREE.SphereGeometry(0.8, 32, 32);
-    const sphereMaterial = new THREE.ShaderMaterial({
+      const sphereCount = 12;
+      const spheres = [];
+      const trails = [];
+      const sphereGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+      const sphereMaterial = new THREE.ShaderMaterial({
         uniforms: {
-            time: { value: 0 }
+          time: { value: 0 },
         },
         vertexShader: `
             varying vec3 vPosition;
@@ -215,42 +228,42 @@
             }
         `,
         transparent: true,
-        blending: THREE.AdditiveBlending
-    });
+        blending: THREE.AdditiveBlending,
+      });
 
-    for (let i = 0; i < sphereCount; i++) {
+      for (let i = 0; i < sphereCount; i++) {
         const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
         const trailGeometry = new THREE.BufferGeometry();
         const trailPositions = new Float32Array(100 * 3);
-        const trailMaterial = new THREE.LineBasicMaterial({ 
-            color: 0x33ff66, 
-            transparent: true, 
-            opacity: 0.3,
-            blending: THREE.AdditiveBlending 
+        const trailMaterial = new THREE.LineBasicMaterial({
+          color: 0x33ff66,
+          transparent: true,
+          opacity: 0.3,
+          blending: THREE.AdditiveBlending,
         });
         const trail = new THREE.Line(trailGeometry, trailMaterial);
-        
+
         sphere.userData = {
-            orbitAngle: Math.random() * Math.PI * 2,
-            orbitSpeed: 0.05 + Math.random() * 0.03,
-            orbitRadiusX: 10 + Math.random() * 4,
-            orbitRadiusZ: 8 + Math.random() * 3,
-            trailPositions: trailPositions,
-            trailIndex: 0
+          orbitAngle: Math.random() * Math.PI * 2,
+          orbitSpeed: 0.05 + Math.random() * 0.03,
+          orbitRadiusX: 10 + Math.random() * 4,
+          orbitRadiusZ: 8 + Math.random() * 3,
+          trailPositions: trailPositions,
+          trailIndex: 0,
         };
         spheres.push(sphere);
         trails.push(trail);
         scene.add(sphere);
         scene.add(trail);
-    }
+      }
 
-    const vortexCount = 600;
-    const vortices = new THREE.Group();
-    const vortexGeometry = new THREE.BufferGeometry();
-    const vortexPositions = new Float32Array(vortexCount * 3);
-    const vortexColors = new Float32Array(vortexCount * 3);
-    const vortexSizes = new Float32Array(vortexCount);
-    for (let i = 0; i < vortexCount; i++) {
+      const vortexCount = 600;
+      const vortices = new THREE.Group();
+      const vortexGeometry = new THREE.BufferGeometry();
+      const vortexPositions = new Float32Array(vortexCount * 3);
+      const vortexColors = new Float32Array(vortexCount * 3);
+      const vortexSizes = new Float32Array(vortexCount);
+      for (let i = 0; i < vortexCount; i++) {
         vortexPositions[i * 3] = 0;
         vortexPositions[i * 3 + 1] = 0;
         vortexPositions[i * 3 + 2] = 0;
@@ -259,13 +272,22 @@
         vortexColors[i * 3 + 1] = color.g;
         vortexColors[i * 3 + 2] = color.b;
         vortexSizes[i] = 0.3 + Math.random() * 0.2;
-    }
-    vortexGeometry.setAttribute('position', new THREE.BufferAttribute(vortexPositions, 3));
-    vortexGeometry.setAttribute('customColor', new THREE.BufferAttribute(vortexColors, 3));
-    vortexGeometry.setAttribute('size', new THREE.BufferAttribute(vortexSizes, 1));
-    const vortexMaterial = new THREE.ShaderMaterial({
+      }
+      vortexGeometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(vortexPositions, 3)
+      );
+      vortexGeometry.setAttribute(
+        "customColor",
+        new THREE.BufferAttribute(vortexColors, 3)
+      );
+      vortexGeometry.setAttribute(
+        "size",
+        new THREE.BufferAttribute(vortexSizes, 1)
+      );
+      const vortexMaterial = new THREE.ShaderMaterial({
         uniforms: {
-            time: { value: 0 }
+          time: { value: 0 },
         },
         vertexShader: `
             attribute vec3 customColor;
@@ -293,43 +315,50 @@
             }
         `,
         transparent: true,
-        blending: THREE.AdditiveBlending
-    });
-    const vortexSystem = new THREE.Points(vortexGeometry, vortexMaterial);
-    vortices.add(vortexSystem);
-    scene.add(vortices);
+        blending: THREE.AdditiveBlending,
+      });
+      const vortexSystem = new THREE.Points(vortexGeometry, vortexMaterial);
+      vortices.add(vortexSystem);
+      scene.add(vortices);
 
-    const vortexData = Array(vortexCount).fill().map(() => ({
-        angle: Math.random() * Math.PI * 2,
-        speed: 0.06 + Math.random() * 0.04,
-        distance: 0,
-        maxDistance: 15 + Math.random() * 5,
-        twist: 0.4 + Math.random() * 0.3
-    }));
+      const vortexData = Array(vortexCount)
+        .fill()
+        .map(() => ({
+          angle: Math.random() * Math.PI * 2,
+          speed: 0.06 + Math.random() * 0.04,
+          distance: 0,
+          maxDistance: 15 + Math.random() * 5,
+          twist: 0.4 + Math.random() * 0.3,
+        }));
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-    const pointLight1 = new THREE.PointLight(0xffe6ff, 2.0, 100);
-    pointLight1.position.set(15, 15, 15);
-    scene.add(pointLight1);
-    const pointLight2 = new THREE.PointLight(0xe6ffec, 1.6, 100);
-    pointLight2.position.set(-15, -15, -15);
-    scene.add(pointLight2);
-    const pointLight3 = new THREE.PointLight(0xe6f0ff, 1.2, 100);
-    pointLight3.position.set(0, 20, -10);
-    scene.add(pointLight3);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
+      const pointLight1 = new THREE.PointLight(0xffe6ff, 2.0, 100);
+      pointLight1.position.set(15, 15, 15);
+      scene.add(pointLight1);
+      const pointLight2 = new THREE.PointLight(0xe6ffec, 1.6, 100);
+      pointLight2.position.set(-15, -15, -15);
+      scene.add(pointLight2);
+      const pointLight3 = new THREE.PointLight(0xe6f0ff, 1.2, 100);
+      pointLight3.position.set(0, 20, -10);
+      scene.add(pointLight3);
 
-    const composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera);
-    composer.addPass(renderPass);
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.4, 0.6, 0.85);
-    bloomPass.threshold = 0.2;
-    bloomPass.strength = 1.6;
-    bloomPass.radius = 0.6;
-    composer.addPass(bloomPass);
+      const composer = new EffectComposer(renderer);
+      const renderPass = new RenderPass(scene, camera);
+      composer.addPass(renderPass);
+      const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.4,
+        0.6,
+        0.85
+      );
+      bloomPass.threshold = 0.2;
+      bloomPass.strength = 1.6;
+      bloomPass.radius = 0.6;
+      composer.addPass(bloomPass);
 
-    let time = 0;
-    function animate() {
+      let time = 0;
+      function animate() {
         requestAnimationFrame(animate);
         time += 0.01;
 
@@ -342,59 +371,64 @@
         innerSphereMaterial.uniforms.time.value = time;
 
         spheres.forEach((sphere, i) => {
-            const data = sphere.userData;
-            data.orbitAngle += data.orbitSpeed;
-            sphere.position.x = Math.cos(data.orbitAngle) * data.orbitRadiusX;
-            sphere.position.z = Math.sin(data.orbitAngle) * data.orbitRadiusZ;
-            sphere.position.y = Math.sin(data.orbitAngle * 1.5 + time) * 3;
-            sphere.material.uniforms.time.value = time;
+          const data = sphere.userData;
+          data.orbitAngle += data.orbitSpeed;
+          sphere.position.x = Math.cos(data.orbitAngle) * data.orbitRadiusX;
+          sphere.position.z = Math.sin(data.orbitAngle) * data.orbitRadiusZ;
+          sphere.position.y = Math.sin(data.orbitAngle * 1.5 + time) * 3;
+          sphere.material.uniforms.time.value = time;
 
-            const trail = trails[i];
-            const pos = data.trailPositions;
-            const idx = data.trailIndex * 3;
-            pos[idx] = sphere.position.x;
-            pos[idx + 1] = sphere.position.y;
-            pos[idx + 2] = sphere.position.z;
-            data.trailIndex = (data.trailIndex + 1) % 100;
-            trail.geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-            trail.geometry.attributes.position.needsUpdate = true;
+          const trail = trails[i];
+          const pos = data.trailPositions;
+          const idx = data.trailIndex * 3;
+          pos[idx] = sphere.position.x;
+          pos[idx + 1] = sphere.position.y;
+          pos[idx + 2] = sphere.position.z;
+          data.trailIndex = (data.trailIndex + 1) % 100;
+          trail.geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(pos, 3)
+          );
+          trail.geometry.attributes.position.needsUpdate = true;
         });
 
         const vortexPosArray = vortexSystem.geometry.attributes.position.array;
         for (let i = 0; i < vortexCount; i++) {
-            const data = vortexData[i];
-            data.distance += data.speed;
-            const angle = data.angle + time * data.twist;
-            vortexPosArray[i * 3] = Math.cos(angle) * data.distance * (1.0 + data.twist);
-            vortexPosArray[i * 3 + 1] = Math.sin(angle) * data.distance * 0.6;
-            vortexPosArray[i * 3 + 2] = Math.sin(angle + data.twist) * data.distance;
-            if (data.distance > data.maxDistance) {
-                data.distance = 0;
-            }
+          const data = vortexData[i];
+          data.distance += data.speed;
+          const angle = data.angle + time * data.twist;
+          vortexPosArray[i * 3] =
+            Math.cos(angle) * data.distance * (1.0 + data.twist);
+          vortexPosArray[i * 3 + 1] = Math.sin(angle) * data.distance * 0.6;
+          vortexPosArray[i * 3 + 2] =
+            Math.sin(angle + data.twist) * data.distance;
+          if (data.distance > data.maxDistance) {
+            data.distance = 0;
+          }
         }
         vortexSystem.geometry.attributes.position.needsUpdate = true;
         vortexMaterial.uniforms.time.value = time;
 
         controls.update();
         composer.render();
-    }
+      }
 
-    animate();
+      animate();
 
-    window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
         composer.setSize(window.innerWidth, window.innerHeight);
-    });
+      });
 
-    // Navigation timeout
-    setTimeout(() => {
+      // Navigation timeout
+      setTimeout(() => {
         document.querySelector(".loader-container").classList.add("fade-out");
         setTimeout(() => {
-            window.location.href = "portfolio.html";
-        }, 900); // Wait for the fade-out animation to complete
-    }, 3000); // Initial delay before starting the fade-out
+          window.location.href = "portfolio.html";
+        }, 900);
+      }, 3000);
     </script>
-</body>
+  </body>
 </html>

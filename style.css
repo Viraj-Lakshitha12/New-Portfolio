@@ -258,6 +258,75 @@ body { line-height: 1.5; font-size: 16px; font-family: 'Poppins', sans-serif; }
         .service .service-item .service-item-inner h4 { font-size: 18px; margin-bottom: 15px; color: var(--text-black900); font-weight: 700; text-transform: capitalize; }
         .service .service-item .service-item-inner p { font-size: 16px; color: var(--text-black700); line-height: 25px; }
 
+/* Skills section styles */
+.skills-section {
+    padding: 85vh 0;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.skills-description {
+    
+    max-width: 800px;
+    margin: 0 auto 50px;
+    text-align: center;
+    color: var(--text-color);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.marquee-container {
+    width: 100%;
+    height: 10vh;
+    overflow: hidden;
+    background-color: transparent;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 10px 10px 10px 10px rgba(31, 38, 135, 0.37);
+}
+
+.marquee-track {
+    display: flex;
+    margin-top: 3vh;
+    animation: marquee 30s linear infinite alternate;
+}
+
+.marquee-track1 {
+    display: flex;
+    animation: marquee 30s linear infinite alternate-reverse;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+
+.skill-item {
+    flex: 0 0 auto;
+    margin: 0 50px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.skill-item:hover {
+    transform: scale(1.1);
+}
+
+.skill-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.skill-name {
+    font-size: 14px;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
 /* PORTFOLIO */
 
 .portfolio .container { padding-bottom: 40px; }
