@@ -1,1036 +1,1972 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Viraj Lakshitha Adhikari | Full Stack Engineer</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #13131a;
-            --bg-card: rgba(20, 20, 30, 0.8);
-            --accent: #00f5ff;
-            --accent-secondary: #ff00ff;
-            --accent-tertiary: #00ff88;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --border: rgba(0, 245, 255, 0.2);
-        }
+      :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #13131a;
+        --bg-card: rgba(20, 20, 30, 0.8);
+        --accent: #00f5ff;
+        --accent-secondary: #ff00ff;
+        --accent-tertiary: #00ff88;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0b0;
+        --border: rgba(0, 245, 255, 0.2);
+      }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-        }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        overflow-x: hidden;
+      }
 
-        body::before {
-            content: '';
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 245, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
+      body::before {
+        content: "";
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(
+            circle at 20% 30%,
+            rgba(0, 245, 255, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(255, 0, 255, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 255, 136, 0.1) 0%,
+            transparent 60%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
 
-        #root {
-            position: relative;
-            z-index: 1;
-        }
+      #root {
+        position: relative;
+        z-index: 1;
+      }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Space Grotesk', sans-serif;
-        }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Space Grotesk", sans-serif;
+      }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+      }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 4px;
-        }
+      ::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 4px;
+      }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
+      }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
         }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
         }
+      }
 
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out forwards;
+      @keyframes floatSlow {
+        0%,
+        100% {
+          transform: translateY(0px) translateX(0px);
         }
-
-        .github-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--accent);
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
+        50% {
+          transform: translateY(-30px) translateX(10px);
         }
+      }
 
-        .github-link:hover {
-            background: var(--accent);
-            color: var(--bg-primary);
-            transform: translateY(-2px);
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
         }
-
-        .tech-badge {
-            display: inline-block;
-            padding: 0.4rem 0.8rem;
-            background: rgba(0, 245, 255, 0.1);
-            border: 1px solid rgba(0, 245, 255, 0.3);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--accent);
-            margin: 0.25rem;
+        50% {
+          transform: scale(1.05);
+          opacity: 1;
         }
+      }
 
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(0, 245, 255, 0.6);
+        }
+      }
+
+      .fade-in {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .github-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--accent);
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+      }
+
+      .github-link:hover {
+        background: var(--accent);
+        color: var(--bg-primary);
+        transform: translateY(-2px);
+      }
+
+      .tech-badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        background: rgba(0, 245, 255, 0.1);
+        border: 1px solid rgba(0, 245, 255, 0.3);
+        border-radius: 6px;
+        font-size: 0.85rem;
+        color: var(--accent);
+        margin: 0.25rem;
+      }
+
+      .map-container {
+        width: 100%;
+        height: 400px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+
+      /* Mobile Menu */
+      .mobile-menu {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .desktop-menu {
+          display: none;
+        }
+        .mobile-menu {
+          display: block;
+        }
         .map-container {
-            width: 100%;
-            height: 400px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+          height: 300px;
         }
+      }
 
-        @media (max-width: 768px) {
-            .map-container {
-                height: 300px;
-            }
-        }
+      /* Tech Stack Floating Cards */
+      .tech-card {
+        position: absolute;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        animation: float 6s ease-in-out infinite;
+        transition: all 0.3s ease;
+      }
+
+      .tech-card:hover {
+        transform: scale(1.1) !important;
+        border-color: var(--accent);
+        box-shadow: 0 0 30px rgba(0, 245, 255, 0.4);
+      }
+
+      .tech-card:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .tech-card:nth-child(2) {
+        animation-delay: 1s;
+        animation-name: floatSlow;
+      }
+      .tech-card:nth-child(3) {
+        animation-delay: 2s;
+      }
+      .tech-card:nth-child(4) {
+        animation-delay: 3s;
+        animation-name: floatSlow;
+      }
+      .tech-card:nth-child(5) {
+        animation-delay: 4s;
+      }
+      .tech-card:nth-child(6) {
+        animation-delay: 5s;
+        animation-name: floatSlow;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+      const { useState, useEffect, useRef } = React;
 
-        // Navigation Component
-        const Navigation = () => {
-            const [activeSection, setActiveSection] = useState('home');
-            const [scrolled, setScrolled] = useState(false);
-            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      // Navigation Component - Improved for 2026
+      const Navigation = () => {
+        const [activeSection, setActiveSection] = useState("home");
+        const [scrolled, setScrolled] = useState(false);
+        const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-            useEffect(() => {
-                const handleScroll = () => {
-                    setScrolled(window.scrollY > 50);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
+        useEffect(() => {
+          const handleScroll = () => {
+            setScrolled(window.scrollY > 50);
 
-            const scrollToSection = (id) => {
-                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-                setActiveSection(id);
-                setMobileMenuOpen(false);
-            };
+            // Update active section based on scroll position
+            const sections = [
+              "home",
+              "about",
+              "experience",
+              "projects",
+              "skills",
+              "contact",
+            ];
+            for (const section of sections) {
+              const element = document.getElementById(section);
+              if (element) {
+                const rect = element.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                  setActiveSection(section);
+                  break;
+                }
+              }
+            }
+          };
+          window.addEventListener("scroll", handleScroll);
+          return () => window.removeEventListener("scroll", handleScroll);
+        }, []);
 
-            const navStyle = {
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-                background: scrolled ? 'rgba(10, 10, 15, 0.95)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(20px)' : 'none',
-                borderBottom: scrolled ? '1px solid var(--border)' : 'none',
-                transition: 'all 0.3s ease',
-                padding: '1.5rem 0',
-            };
+        const scrollToSection = (id) => {
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+          setActiveSection(id);
+          setMobileMenuOpen(false);
+        };
 
-            const containerStyle = {
-                maxWidth: '1400px',
-                margin: '0 auto',
-                padding: '0 2rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            };
+        const navStyle = {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          background: scrolled
+            ? "rgba(10, 10, 15, 0.95)"
+            : "rgba(10, 10, 15, 0.5)",
+          backdropFilter: "blur(20px)",
+          borderBottom: scrolled
+            ? "1px solid var(--border)"
+            : "1px solid rgba(0, 245, 255, 0.1)",
+          transition: "all 0.3s ease",
+          padding: "1rem 0",
+        };
 
-            const logoStyle = {
-                fontSize: '1.5rem',
-                fontWeight: '700',
-                background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontFamily: 'Space Grotesk',
-            };
+        const containerStyle = {
+          maxWidth: "1400px",
+          margin: "0 auto",
+          padding: "0 2rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        };
 
-            const navLinksStyle = {
-                display: 'flex',
-                gap: '2rem',
-                listStyle: 'none',
-            };
+        const logoStyle = {
+          fontSize: "1.3rem",
+          fontWeight: "800",
+          background:
+            "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontFamily: "Space Grotesk",
+          letterSpacing: "1px",
+        };
 
-            const linkStyle = (isActive) => ({
-                color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                fontWeight: '500',
-                transition: 'color 0.3s ease',
+        const navLinksStyle = {
+          display: "flex",
+          gap: "2.5rem",
+          listStyle: "none",
+          alignItems: "center",
+        };
+
+        const linkStyle = (isActive) => ({
+          color: isActive ? "var(--accent)" : "var(--text-secondary)",
+          cursor: "pointer",
+          fontSize: "0.9rem",
+          fontWeight: "600",
+          transition: "all 0.3s ease",
+          position: "relative",
+          padding: "0.5rem 0",
+        });
+
+        const hamburgerStyle = {
+          display: "none",
+          flexDirection: "column",
+          gap: "4px",
+          cursor: "pointer",
+          padding: "0.5rem",
+        };
+
+        const mobileMenuStyle = {
+          position: "fixed",
+          top: "70px",
+          left: 0,
+          right: 0,
+          background: "rgba(10, 10, 15, 0.98)",
+          backdropFilter: "blur(20px)",
+          padding: "2rem",
+          borderBottom: "1px solid var(--border)",
+          transform: mobileMenuOpen ? "translateY(0)" : "translateY(-100%)",
+          opacity: mobileMenuOpen ? 1 : 0,
+          transition: "all 0.3s ease",
+          zIndex: 999,
+        };
+
+        return (
+          <nav style={navStyle}>
+            <div style={containerStyle}>
+              <div style={logoStyle}>VIRAJ LAKSHITHA</div>
+
+              {/* Desktop Menu */}
+              <ul className="desktop-menu" style={navLinksStyle}>
+                {[
+                  "Home",
+                  "About",
+                  "Experience",
+                  "Projects",
+                  "Skills",
+                  "Contact",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    style={linkStyle(activeSection === item.toLowerCase())}
+                    onClick={() => scrollToSection(item.toLowerCase())}
+                    onMouseEnter={(e) => {
+                      e.target.style.color = "var(--accent)";
+                      e.target.style.transform = "translateY(-2px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.color =
+                        activeSection === item.toLowerCase()
+                          ? "var(--accent)"
+                          : "var(--text-secondary)";
+                      e.target.style.transform = "translateY(0)";
+                    }}
+                  >
+                    {item}
+                    {activeSection === item.toLowerCase() && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          height: "2px",
+                          background:
+                            "linear-gradient(90deg, var(--accent), var(--accent-secondary))",
+                          borderRadius: "2px",
+                        }}
+                      ></div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Mobile Hamburger */}
+              <div
+                className="mobile-menu"
+                style={{
+                  ...hamburgerStyle,
+                  display: window.innerWidth <= 768 ? "flex" : "none",
+                }}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <div
+                  style={{
+                    width: "25px",
+                    height: "3px",
+                    background: "var(--accent)",
+                    borderRadius: "2px",
+                    transition: "all 0.3s",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    width: "25px",
+                    height: "3px",
+                    background: "var(--accent)",
+                    borderRadius: "2px",
+                    transition: "all 0.3s",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    width: "25px",
+                    height: "3px",
+                    background: "var(--accent)",
+                    borderRadius: "2px",
+                    transition: "all 0.3s",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Mobile Menu */}
+            <div style={mobileMenuStyle}>
+              <ul
+                style={{
+                  listStyle: "none",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
+                }}
+              >
+                {[
+                  "Home",
+                  "About",
+                  "Experience",
+                  "Projects",
+                  "Skills",
+                  "Contact",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "600",
+                      color:
+                        activeSection === item.toLowerCase()
+                          ? "var(--accent)"
+                          : "var(--text-secondary)",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                    }}
+                    onClick={() => scrollToSection(item.toLowerCase())}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </nav>
+        );
+      };
+
+      // Hero Section - Redesigned with animated tech stack
+      const Hero = () => {
+        const techStack = [
+          {
+            name: "Java",
+            icon: "☕",
+            color: "#b07219",
+            top: "10%",
+            left: "10%",
+          },
+          {
+            name: "Spring Boot",
+            icon: "🍃",
+            color: "#6db33f",
+            top: "60%",
+            left: "5%",
+          },
+          {
+            name: "React",
+            icon: "⚛️",
+            color: "#61dafb",
+            top: "15%",
+            right: "15%",
+          },
+          {
+            name: "Node.js",
+            icon: "🟢",
+            color: "#339933",
+            top: "50%",
+            right: "10%",
+          },
+          {
+            name: "Docker",
+            icon: "🐳",
+            color: "#2496ed",
+            top: "75%",
+            right: "20%",
+          },
+          {
+            name: "AWS",
+            icon: "☁️",
+            color: "#ff9900",
+            top: "35%",
+            left: "15%",
+          },
+        ];
+
+        const heroStyle = {
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          position: "relative",
+          padding: "8rem 2rem 4rem",
+        };
+
+        const containerStyle = {
+          maxWidth: "1400px",
+          margin: "0 auto",
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+          gap: "4rem",
+          alignItems: "center",
+        };
+
+        const leftContentStyle = {
+          zIndex: 10,
+        };
+
+        const titleStyle = {
+          fontSize: "clamp(2rem, 6vw, 4rem)",
+          fontWeight: "800",
+          lineHeight: "1.1",
+          marginBottom: "1rem",
+          background:
+            "linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent-secondary) 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontFamily: "Space Grotesk",
+        };
+
+        const roleStyle = {
+          fontSize: "clamp(1.3rem, 3vw, 2rem)",
+          color: "var(--accent-tertiary)",
+          marginBottom: "1.5rem",
+          fontWeight: "700",
+        };
+
+        const descriptionStyle = {
+          fontSize: "1.1rem",
+          color: "var(--text-secondary)",
+          lineHeight: "1.8",
+          marginBottom: "2.5rem",
+        };
+
+        const buttonContainerStyle = {
+          display: "flex",
+          gap: "1rem",
+          flexWrap: "wrap",
+          marginBottom: "2rem",
+        };
+
+        const buttonStyle = (isPrimary) => ({
+          padding: "1rem 2rem",
+          fontSize: "1rem",
+          fontWeight: "600",
+          border: isPrimary ? "none" : "2px solid var(--accent)",
+          background: isPrimary
+            ? "linear-gradient(135deg, var(--accent), var(--accent-secondary))"
+            : "transparent",
+          color: "#fff",
+          cursor: "pointer",
+          borderRadius: "8px",
+          transition: "all 0.3s ease",
+          fontFamily: "Inter",
+        });
+
+        const socialLinksStyle = {
+          display: "flex",
+          gap: "1rem",
+          marginTop: "2rem",
+        };
+
+        const socialIconStyle = {
+          width: "50px",
+          height: "50px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          cursor: "pointer",
+          transition: "all 0.3s ease",
+          backdropFilter: "blur(10px)",
+        };
+
+        const techStackContainerStyle = {
+          position: "relative",
+          height: "500px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        };
+
+        return (
+          <section id="home" style={heroStyle}>
+            <div style={containerStyle}>
+              {/* Left Content */}
+              <div style={leftContentStyle} className="fade-in">
+                <div
+                  style={{
+                    marginBottom: "1rem",
+                    color: "var(--text-secondary)",
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  👋 Hi, I'm
+                </div>
+                <h1 style={titleStyle}>
+                  Viraj Lakshitha
+                  <br />
+                  Adhikari
+                </h1>
+                <div style={roleStyle}>Full Stack Software Engineer</div>
+                <p style={descriptionStyle}>
+                  Building scalable web applications with 3+ years of expertise
+                  in Java, Spring Boot, React, Node.js, and cloud technologies.
+                  Passionate about crafting innovative solutions that drive
+                  business value.
+                </p>
+                <div style={buttonContainerStyle}>
+                  <button
+                    style={buttonStyle(true)}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = "translateY(-2px)";
+                      e.target.style.boxShadow =
+                        "0 10px 30px rgba(0, 245, 255, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "translateY(0)";
+                      e.target.style.boxShadow = "none";
+                    }}
+                    onClick={() =>
+                      document
+                        .getElementById("projects")
+                        .scrollIntoView({ behavior: "smooth" })
+                    }
+                  >
+                    View My Work
+                  </button>
+                  <button
+                    style={buttonStyle(false)}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = "var(--accent)";
+                      e.target.style.transform = "translateY(-2px)";
+                      e.target.style.boxShadow =
+                        "0 10px 30px rgba(0, 245, 255, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = "transparent";
+                      e.target.style.transform = "translateY(0)";
+                      e.target.style.boxShadow = "none";
+                    }}
+                    onClick={() =>
+                      document
+                        .getElementById("contact")
+                        .scrollIntoView({ behavior: "smooth" })
+                    }
+                  >
+                    Let's Talk
+                  </button>
+                </div>
+
+                {/* Social Icons */}
+                <div style={socialLinksStyle}>
+                  <a
+                    href="https://github.com/Viraj-Lakshitha12"
+                    target="_blank"
+                    style={socialIconStyle}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                      e.currentTarget.style.boxShadow =
+                        "0 10px 20px rgba(0, 245, 255, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="var(--accent)"
+                    >
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                  </a>
+                  <a
+                    href="https://linkedin.com/in/viraj-lakshitha"
+                    target="_blank"
+                    style={socialIconStyle}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                      e.currentTarget.style.boxShadow =
+                        "0 10px 20px rgba(0, 245, 255, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="var(--accent)"
+                    >
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                  </a>
+                  <a
+                    href="mailto:viraj.lakshitha.22222@gmail.com"
+                    style={socialIconStyle}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                      e.currentTarget.style.boxShadow =
+                        "0 10px 20px rgba(0, 245, 255, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="var(--accent)"
+                    >
+                      <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Content - Animated Tech Stack */}
+              <div style={techStackContainerStyle} className="fade-in">
+                {techStack.map((tech, index) => (
+                  <div
+                    key={index}
+                    className="tech-card"
+                    style={{
+                      top: tech.top,
+                      left: tech.left,
+                      right: tech.right,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "2.5rem",
+                        marginBottom: "0.5rem",
+                        textAlign: "center",
+                      }}
+                    >
+                      {tech.icon}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.9rem",
+                        fontWeight: "600",
+                        color: tech.color,
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {tech.name}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Central Glow */}
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "300px",
+                    height: "300px",
+                    borderRadius: "50%",
+                    background:
+                      "radial-gradient(circle, rgba(0, 245, 255, 0.2) 0%, transparent 70%)",
+                    animation: "pulse 4s ease-in-out infinite",
+                  }}
+                ></div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // About Section (keeping from previous version)
+      const About = () => {
+        const sectionStyle = {
+          padding: "8rem 2rem",
+          background: "var(--bg-secondary)",
+        };
+
+        const containerStyle = {
+          maxWidth: "1400px",
+          margin: "0 auto",
+        };
+
+        const titleStyle = {
+          fontSize: "clamp(2.5rem, 6vw, 4rem)",
+          fontWeight: "700",
+          marginBottom: "3rem",
+          fontFamily: "Space Grotesk",
+        };
+
+        const gridStyle = {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "2rem",
+          marginTop: "3rem",
+        };
+
+        const cardStyle = {
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          padding: "2rem",
+          backdropFilter: "blur(10px)",
+          transition: "all 0.3s ease",
+        };
+
+        const statNumberStyle = {
+          fontSize: "3rem",
+          fontWeight: "700",
+          background:
+            "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontFamily: "Space Grotesk",
+        };
+
+        return (
+          <section id="about" style={sectionStyle}>
+            <div style={containerStyle}>
+              <h2 style={titleStyle}>About Me</h2>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: "2rem",
+                }}
+              >
+                <div>
+                  <p
+                    style={{
+                      fontSize: "1.2rem",
+                      color: "var(--text-secondary)",
+                      lineHeight: "1.8",
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    I'm a Full Stack Software Engineer with hands-on experience
+                    in building scalable microservices, RESTful APIs, and
+                    database-driven applications. Currently working at{" "}
+                    <span style={{ color: "var(--accent)" }}>Intelleon</span>, I
+                    specialize in developing robust backend systems with Java
+                    and Spring Boot, while crafting intuitive frontend
+                    experiences with React.
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "1.1rem",
+                      color: "var(--text-secondary)",
+                      lineHeight: "1.8",
+                    }}
+                  >
+                    My expertise includes DevOps practices, CI/CD pipelines, and
+                    agile methodologies. I'm passionate about solving complex
+                    problems, optimizing system performance, and delivering
+                    business value through innovative software solutions.
+                  </p>
+                </div>
+              </div>
+              <div style={gridStyle}>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={statNumberStyle}>3+</div>
+                  <div
+                    style={{
+                      color: "var(--text-secondary)",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Years Experience
+                  </div>
+                </div>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={statNumberStyle}>10+</div>
+                  <div
+                    style={{
+                      color: "var(--text-secondary)",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Projects Completed
+                  </div>
+                </div>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={statNumberStyle}>20+</div>
+                  <div
+                    style={{
+                      color: "var(--text-secondary)",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Technologies
+                  </div>
+                </div>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={statNumberStyle}>4</div>
+                  <div
+                    style={{
+                      color: "var(--text-secondary)",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Certifications
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Experience Section
+      const Experience = () => {
+        const experiences = [
+          {
+            title: "Associate Software Engineer",
+            company: "Intelleon",
+            period: "Aug 2024 - Present",
+            description:
+              "Developed full-stack features for a long-term Australian loan application system using React for frontend interfaces, Node.js and Express.js for backend APIs, and PostgreSQL for database management. Improved application performance by optimizing code and integrations, resulting in faster response times and better user experience.",
+            tags: ["React", "Node.js", "Express.js", "PostgreSQL"],
+          },
+          {
+            title: "Software Engineer Intern",
+            company: "Intelleon",
+            period: "Mar 2024 - Aug 2024",
+            description:
+              "Assisted in the design and development of software applications, including a task management system for a Sri Lankan equipment maintenance company using Java, Spring Boot, and MySQL. Contributed to streamlining motor repair tracking and developed features for daily task assignments.",
+            tags: ["Java", "Spring Boot", "MySQL", "REST API"],
+          },
+          {
+            title: "IT Assistant",
+            company: "Zigo Pvt Ltd",
+            period: "Jan 2021 - Dec 2021",
+            description:
+              "Provided technical support and assistance for Point of Sale (POS) systems in daily retail operations using hardware troubleshooting and software tools. Resolved hardware/software issues promptly to minimize downtime.",
+            tags: ["POS Systems", "Hardware Support", "Troubleshooting"],
+          },
+        ];
+
+        const sectionStyle = {
+          padding: "8rem 2rem",
+        };
+
+        const cardStyle = {
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          padding: "2rem",
+          marginBottom: "2rem",
+          backdropFilter: "blur(10px)",
+          transition: "all 0.3s ease",
+        };
+
+        return (
+          <section id="experience" style={sectionStyle}>
+            <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                  fontWeight: "700",
+                  marginBottom: "3rem",
+                  fontFamily: "Space Grotesk",
+                }}
+              >
+                Professional Experience
+              </h2>
+              <div style={{ position: "relative", paddingLeft: "2rem" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: "2px",
+                    background:
+                      "linear-gradient(to bottom, var(--accent), var(--accent-secondary))",
+                  }}
+                ></div>
+                {experiences.map((exp, index) => (
+                  <div
+                    key={index}
+                    style={cardStyle}
+                    className="fade-in"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateX(10px)";
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateX(0)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "start",
+                        marginBottom: "1rem",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <div>
+                        <h3
+                          style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}
+                        >
+                          {exp.title}
+                        </h3>
+                        <div
+                          style={{
+                            color: "var(--accent)",
+                            fontSize: "1.1rem",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {exp.company}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          color: "var(--text-secondary)",
+                          fontSize: "0.9rem",
+                          fontFamily: "Space Grotesk",
+                        }}
+                      >
+                        {exp.period}
+                      </div>
+                    </div>
+                    <p
+                      style={{
+                        color: "var(--text-secondary)",
+                        lineHeight: "1.6",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      {exp.description}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      {exp.tags.map((tag, i) => (
+                        <span key={i} className="tech-badge">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Education Section */}
+              <h3
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: "700",
+                  marginTop: "4rem",
+                  marginBottom: "2rem",
+                  fontFamily: "Space Grotesk",
+                }}
+              >
+                Education
+              </h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+                  gap: "2rem",
+                }}
+              >
+                <div style={cardStyle}>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+                    🎓
+                  </div>
+                  <h4 style={{ fontSize: "1.3rem", marginBottom: "0.5rem" }}>
+                    BSc (Hons) in Computing
+                  </h4>
+                  <div
+                    style={{ color: "var(--accent)", marginBottom: "0.5rem" }}
+                  >
+                    Wrexham University - UK
+                  </div>
+                  <div
+                    style={{
+                      color: "var(--text-secondary)",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    2025 - 2026 (In Progress)
+                  </div>
+                </div>
+                <div style={cardStyle}>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+                    💻
+                  </div>
+                  <h4 style={{ fontSize: "1.3rem", marginBottom: "0.5rem" }}>
+                    Graduate Diploma in Software Engineering
+                  </h4>
+                  <div
+                    style={{ color: "var(--accent)", marginBottom: "0.5rem" }}
+                  >
+                    Institute of Software Engineering (IJSE)
+                  </div>
+                  <div
+                    style={{
+                      color: "var(--text-secondary)",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    2022 - 2024
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Projects Section
+      const Projects = () => {
+        const projects = [
+          {
+            title: "Loan Management System",
+            description:
+              "Enterprise-grade Spring Boot application with REST APIs, Kafka event streaming, JWT authentication, and production-ready patterns. Built for managing loan applications with microservices architecture.",
+            tags: [
+              "Spring Boot 3.2.4",
+              "Spring Security",
+              "JWT",
+              "Kafka",
+              "MySQL",
+              "Docker",
+            ],
+            github:
+              "https://github.com/Viraj-Lakshitha12/Loan-Management-System",
+            language: "Java",
+            isPrivate: false,
+          },
+          {
+            title: "Food Ordering System",
+            description:
+              "A modern and user-friendly Food Ordering App built with React, Tailwind CSS, Node.js, and TypeScript. Features real-time updates and seamless user experience.",
+            tags: [
+              "React",
+              "Node.js",
+              "TypeScript",
+              "MongoDB",
+              "Express.js",
+              "Tailwind CSS",
+            ],
+            github: "https://github.com/Viraj-Lakshitha12/Food-Ordering-System",
+            language: "TypeScript",
+            isPrivate: false,
+          },
+          {
+            title: "E-Commerce API",
+            description:
+              "A complete backend system for an e-commerce platform built using microservices architecture. Includes authentication, user management, product catalog, cart, orders, payments, inventory, and notifications.",
+            tags: [
+              "Spring Boot",
+              "PostgreSQL",
+              "Microservices",
+              "Docker",
+              "REST API",
+            ],
+            github: "https://github.com/Viraj-Lakshitha12/E-Commerce-API",
+            language: "Java",
+            isPrivate: true,
+          },
+          {
+            title: "Travel Planning Application",
+            description:
+              "Dynamic web application using microservices with Spring Boot, utilizing Hibernate for efficient data handling and MySQL for storage to streamline travel itinerary planning.",
+            tags: [
+              "Spring Boot",
+              "Hibernate",
+              "MySQL",
+              "JavaScript",
+              "REST API",
+            ],
+            github:
+              "https://github.com/Viraj-Lakshitha12/Travel-Planning-Application",
+            language: "JavaScript",
+            isPrivate: false,
+          },
+          {
+            title: "SC Graphic E-Commerce",
+            description:
+              "E-commerce website for SC Graphic featuring an admin dashboard for product management, integrated with Daraz store to sync product listings. Achieving 100+ daily visits.",
+            tags: ["React", "Spring Boot", "MySQL", "API Integration"],
+            language: "React",
+            isPrivate: false,
+          },
+          {
+            title: "Node.js with CI/CD",
+            description:
+              "Node.js project demonstrating continuous integration and deployment practices with modern DevOps tools.",
+            tags: ["Node.js", "CI/CD", "DevOps", "Jenkins", "Docker"],
+            github: "https://github.com/Viraj-Lakshitha12/node-with-ci-cd",
+            language: "JavaScript",
+            isPrivate: false,
+          },
+        ];
+
+        const sectionStyle = {
+          padding: "8rem 2rem",
+          background: "var(--bg-secondary)",
+        };
+
+        const gridStyle = {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+          gap: "2rem",
+          marginTop: "3rem",
+        };
+
+        const cardStyle = {
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          padding: "2rem",
+          backdropFilter: "blur(10px)",
+          transition: "all 0.3s ease",
+          cursor: "pointer",
+          position: "relative",
+          overflow: "hidden",
+        };
+
+        const languageColors = {
+          Java: "#b07219",
+          JavaScript: "#f1e05a",
+          TypeScript: "#3178c6",
+          React: "#61dafb",
+        };
+
+        return (
+          <section id="projects" style={sectionStyle}>
+            <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                  fontWeight: "700",
+                  marginBottom: "1rem",
+                  fontFamily: "Space Grotesk",
+                }}
+              >
+                Featured Projects
+              </h2>
+              <p
+                style={{
+                  color: "var(--text-secondary)",
+                  fontSize: "1.1rem",
+                  marginBottom: "3rem",
+                }}
+              >
+                Explore my latest work on GitHub - from enterprise applications
+                to experimental projects
+              </p>
+              <div style={gridStyle}>
+                {projects.map((project, index) => (
+                  <div
+                    key={index}
+                    style={cardStyle}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-10px)";
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                      e.currentTarget.style.boxShadow =
+                        "0 20px 40px rgba(0, 245, 255, 0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                    className="fade-in"
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "start",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <h3 style={{ fontSize: "1.5rem", flex: 1 }}>
+                        {project.title}
+                      </h3>
+                      {project.isPrivate && (
+                        <span
+                          style={{
+                            background: "rgba(255, 0, 255, 0.2)",
+                            color: "var(--accent-secondary)",
+                            padding: "0.3rem 0.8rem",
+                            borderRadius: "6px",
+                            fontSize: "0.75rem",
+                            fontWeight: "600",
+                          }}
+                        >
+                          PRIVATE
+                        </span>
+                      )}
+                    </div>
+                    <p
+                      style={{
+                        color: "var(--text-secondary)",
+                        lineHeight: "1.6",
+                        marginBottom: "1.5rem",
+                        minHeight: "80px",
+                      }}
+                    >
+                      {project.description}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.5rem",
+                        marginBottom: "1.5rem",
+                      }}
+                    >
+                      {project.tags.map((tag, i) => (
+                        <span key={i} className="tech-badge">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "auto",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "12px",
+                            height: "12px",
+                            borderRadius: "50%",
+                            background:
+                              languageColors[project.language] ||
+                              "var(--accent)",
+                          }}
+                        ></div>
+                        <span
+                          style={{
+                            color: "var(--text-secondary)",
+                            fontSize: "0.9rem",
+                          }}
+                        >
+                          {project.language}
+                        </span>
+                      </div>
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          className="github-link"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                          >
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                          </svg>
+                          View Code
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Skills Section
+      const Skills = () => {
+        const skillCategories = [
+          {
+            title: "Programming Languages",
+            icon: "💻",
+            skills: ["Java", "JavaScript", "TypeScript", "Python"],
+          },
+          {
+            title: "Frontend",
+            icon: "🎨",
+            skills: ["React", "Redux", "HTML5", "CSS3", "Tailwind CSS"],
+          },
+          {
+            title: "Backend",
+            icon: "⚙️",
+            skills: ["Spring Boot", "Node.js", "Express.js"],
+          },
+          {
+            title: "Databases",
+            icon: "🗄️",
+            skills: ["MySQL", "MongoDB", "PostgreSQL", "Redis"],
+          },
+          {
+            title: "DevOps & Cloud",
+            icon: "☁️",
+            skills: [
+              "AWS (EC2, S3)",
+              "Docker",
+              "Kubernetes",
+              "Jenkins",
+              "NGINX",
+            ],
+          },
+          {
+            title: "Tools & Others",
+            icon: "🛠️",
+            skills: [
+              "Git/GitHub",
+              "Maven",
+              "Hibernate",
+              "JWT",
+              "REST API",
+              "CI/CD",
+              "Agile/Scrum",
+            ],
+          },
+        ];
+
+        const certifications = [
+          "Kubernetes For Absolute Beginners - KodeKloud",
+          "Docker For Absolute Beginners - KodeKloud",
+          "Linux For Absolute Beginners - KodeKloud",
+          "AWS Basics - KodeKloud",
+        ];
+
+        const sectionStyle = {
+          padding: "8rem 2rem",
+        };
+
+        const gridStyle = {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "2rem",
+          marginTop: "3rem",
+        };
+
+        const cardStyle = {
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          padding: "2rem",
+          backdropFilter: "blur(10px)",
+          transition: "all 0.3s ease",
+        };
+
+        return (
+          <section id="skills" style={sectionStyle}>
+            <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                  fontWeight: "700",
+                  marginBottom: "3rem",
+                  fontFamily: "Space Grotesk",
+                }}
+              >
+                Skills & Technologies
+              </h2>
+              <div style={gridStyle}>
+                {skillCategories.map((category, index) => (
+                  <div
+                    key={index}
+                    style={cardStyle}
+                    className="fade-in"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.borderColor = "var(--accent)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                    }}
+                  >
+                    <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
+                      {category.icon}
+                    </div>
+                    <h3
+                      style={{
+                        fontSize: "1.5rem",
+                        marginBottom: "1.5rem",
+                        color: "var(--accent)",
+                      }}
+                    >
+                      {category.title}
+                    </h3>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      {category.skills.map((skill, i) => (
+                        <span key={i} className="tech-badge">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Certifications */}
+              <h3
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: "700",
+                  marginTop: "4rem",
+                  marginBottom: "2rem",
+                  fontFamily: "Space Grotesk",
+                }}
+              >
+                Certifications
+              </h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                  gap: "1rem",
+                }}
+              >
+                {certifications.map((cert, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      ...cardStyle,
+                      padding: "1.5rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "2rem",
+                        color: "var(--accent-tertiary)",
+                      }}
+                    >
+                      ✓
+                    </div>
+                    <div style={{ color: "var(--text-secondary)" }}>{cert}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Contact Section with Map
+      const Contact = () => {
+        const mapRef = useRef(null);
+
+        useEffect(() => {
+          if (mapRef.current && !mapRef.current._leaflet_id) {
+            const map = L.map(mapRef.current).setView([6.9271, 79.8612], 13);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              attribution: "© OpenStreetMap contributors",
+            }).addTo(map);
+
+            const customIcon = L.divIcon({
+              className: "custom-marker",
+              html: '<div style="background: var(--accent); width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,245,255,0.5);"></div>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15],
             });
 
-            return (
-                <nav style={navStyle}>
-                    <div style={containerStyle}>
-                        <div style={logoStyle}>VIRAJ LAKSHITHA</div>
-                        <ul style={navLinksStyle}>
-                            {['Home', 'About', 'Experience', 'Projects', 'Skills', 'Contact'].map((item) => (
-                                <li 
-                                    key={item}
-                                    style={linkStyle(activeSection === item.toLowerCase())}
-                                    onClick={() => scrollToSection(item.toLowerCase())}
-                                    onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
-                                    onMouseLeave={(e) => e.target.style.color = activeSection === item.toLowerCase() ? 'var(--accent)' : 'var(--text-secondary)'}
-                                >
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </nav>
-            );
+            L.marker([6.9271, 79.8612], { icon: customIcon })
+              .addTo(map)
+              .bindPopup(
+                "<b>Colombo, Sri Lanka</b><br>Available for opportunities",
+              );
+          }
+        }, []);
+
+        const sectionStyle = {
+          padding: "8rem 2rem",
+          background: "var(--bg-secondary)",
         };
 
-        // Hero Section
-        const Hero = () => {
-            const heroStyle = {
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                position: 'relative',
-                padding: '0 2rem',
-            };
-
-            const containerStyle = {
-                maxWidth: '1400px',
-                margin: '0 auto',
-                width: '100%',
-            };
-
-            const titleStyle = {
-                fontSize: 'clamp(2.5rem, 8vw, 6rem)',
-                fontWeight: '800',
-                lineHeight: '1.1',
-                marginBottom: '1rem',
-                background: 'linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent-secondary) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontFamily: 'Space Grotesk',
-            };
-
-            const roleStyle = {
-                fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                color: 'var(--accent-tertiary)',
-                marginBottom: '1.5rem',
-                fontWeight: '600',
-            };
-
-            const descriptionStyle = {
-                fontSize: '1.2rem',
-                color: 'var(--text-secondary)',
-                maxWidth: '700px',
-                lineHeight: '1.8',
-                marginBottom: '3rem',
-            };
-
-            const buttonContainerStyle = {
-                display: 'flex',
-                gap: '1rem',
-                flexWrap: 'wrap',
-                marginBottom: '2rem',
-            };
-
-            const buttonStyle = (isPrimary) => ({
-                padding: '1rem 2rem',
-                fontSize: '1rem',
-                fontWeight: '600',
-                border: isPrimary ? 'none' : '2px solid var(--accent)',
-                background: isPrimary ? 'linear-gradient(135deg, var(--accent), var(--accent-secondary))' : 'transparent',
-                color: '#fff',
-                cursor: 'pointer',
-                borderRadius: '8px',
-                transition: 'all 0.3s ease',
-                fontFamily: 'Inter',
-            });
-
-            const socialLinksStyle = {
-                display: 'flex',
-                gap: '1.5rem',
-                marginTop: '2rem',
-            };
-
-            const socialLinkStyle = {
-                color: 'var(--text-secondary)',
-                fontSize: '1.5rem',
-                transition: 'all 0.3s ease',
-                cursor: 'pointer',
-            };
-
-            return (
-                <section id="home" style={heroStyle} className="fade-in">
-                    <div style={containerStyle}>
-                        <div style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>👋 Hi, I'm</div>
-                        <h1 style={titleStyle}>Viraj Lakshitha Adhikari</h1>
-                        <div style={roleStyle}>Full Stack Software Engineer</div>
-                        <p style={descriptionStyle}>
-                            Experienced Full Stack Developer with 3+ years of expertise in Java, Spring Boot, React, Node.js, 
-                            and cloud technologies (AWS, Docker, Kubernetes). Skilled in building scalable microservices, 
-                            RESTful APIs, and delivering innovative software solutions.
-                        </p>
-                        <div style={buttonContainerStyle}>
-                            <button 
-                                style={buttonStyle(true)}
-                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
-                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
-                                onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}
-                            >
-                                View My Work
-                            </button>
-                            <button 
-                                style={buttonStyle(false)}
-                                onMouseEnter={(e) => {
-                                    e.target.style.background = 'var(--accent)';
-                                    e.target.style.transform = 'translateY(-2px)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.style.background = 'transparent';
-                                    e.target.style.transform = 'translateY(0)';
-                                }}
-                                onClick={() => window.open('https://github.com/Viraj-Lakshitha12', '_blank')}
-                            >
-                                GitHub Profile
-                            </button>
-                        </div>
-                        <div style={socialLinksStyle}>
-                            <a href="https://github.com/Viraj-Lakshitha12" target="_blank" style={socialLinkStyle}
-                               onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
-                               onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>
-                                GitHub
-                            </a>
-                            <a href="https://linkedin.com/in/viraj-lakshitha" target="_blank" style={socialLinkStyle}
-                               onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
-                               onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>
-                                LinkedIn
-                            </a>
-                            <a href="mailto:viraj.lakshitha.22222@gmail.com" style={socialLinkStyle}
-                               onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
-                               onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>
-                                Email
-                            </a>
-                        </div>
-                    </div>
-                </section>
-            );
+        const gridStyle = {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "2rem",
+          marginTop: "3rem",
         };
 
-        // About Section
-        const About = () => {
-            const sectionStyle = {
-                padding: '8rem 2rem',
-                background: 'var(--bg-secondary)',
-            };
-
-            const containerStyle = {
-                maxWidth: '1400px',
-                margin: '0 auto',
-            };
-
-            const titleStyle = {
-                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                fontWeight: '700',
-                marginBottom: '3rem',
-                fontFamily: 'Space Grotesk',
-            };
-
-            const gridStyle = {
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                gap: '2rem',
-                marginTop: '3rem',
-            };
-
-            const cardStyle = {
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '2rem',
-                backdropFilter: 'blur(10px)',
-                transition: 'all 0.3s ease',
-            };
-
-            const statNumberStyle = {
-                fontSize: '3rem',
-                fontWeight: '700',
-                background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontFamily: 'Space Grotesk',
-            };
-
-            return (
-                <section id="about" style={sectionStyle}>
-                    <div style={containerStyle}>
-                        <h2 style={titleStyle}>About Me</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
-                            <div>
-                                <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-                                    I'm a Full Stack Software Engineer with hands-on experience in building scalable microservices, 
-                                    RESTful APIs, and database-driven applications. Currently working at <span style={{ color: 'var(--accent)' }}>Intelleon</span>, 
-                                    I specialize in developing robust backend systems with Java and Spring Boot, while crafting 
-                                    intuitive frontend experiences with React.
-                                </p>
-                                <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                                    My expertise includes DevOps practices, CI/CD pipelines, and agile methodologies. I'm passionate 
-                                    about solving complex problems, optimizing system performance, and delivering business value 
-                                    through innovative software solutions.
-                                </p>
-                            </div>
-                        </div>
-                        <div style={gridStyle}>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                                <div style={statNumberStyle}>3+</div>
-                                <div style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Years Experience</div>
-                            </div>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                                <div style={statNumberStyle}>10+</div>
-                                <div style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Projects Completed</div>
-                            </div>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                                <div style={statNumberStyle}>20+</div>
-                                <div style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Technologies</div>
-                            </div>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                                <div style={statNumberStyle}>4</div>
-                                <div style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Certifications</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
+        const cardStyle = {
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          padding: "2rem",
+          backdropFilter: "blur(10px)",
+          textAlign: "center",
+          transition: "all 0.3s ease",
         };
 
-        // Experience Section
-        const Experience = () => {
-            const experiences = [
-                {
-                    title: 'Associate Software Engineer',
-                    company: 'Intelleon',
-                    period: 'Aug 2024 - Present',
-                    description: 'Developed full-stack features for a long-term Australian loan application system using React for frontend interfaces, Node.js and Express.js for backend APIs, and PostgreSQL for database management. Improved application performance by optimizing code and integrations, resulting in faster response times and better user experience.',
-                    tags: ['React', 'Node.js', 'Express.js', 'PostgreSQL']
-                },
-                {
-                    title: 'Software Engineer Intern',
-                    company: 'Intelleon',
-                    period: 'Mar 2024 - Aug 2024',
-                    description: 'Assisted in the design and development of software applications, including a task management system for a Sri Lankan equipment maintenance company using Java, Spring Boot, and MySQL. Contributed to streamlining motor repair tracking and developed features for daily task assignments.',
-                    tags: ['Java', 'Spring Boot', 'MySQL', 'REST API']
-                },
-                {
-                    title: 'IT Assistant',
-                    company: 'Zigo Pvt Ltd',
-                    period: 'Jan 2021 - Dec 2021',
-                    description: 'Provided technical support and assistance for Point of Sale (POS) systems in daily retail operations using hardware troubleshooting and software tools. Resolved hardware/software issues promptly to minimize downtime.',
-                    tags: ['POS Systems', 'Hardware Support', 'Troubleshooting']
-                }
-            ];
+        return (
+          <section id="contact" style={sectionStyle}>
+            <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                  fontWeight: "700",
+                  marginBottom: "1rem",
+                  fontFamily: "Space Grotesk",
+                  textAlign: "center",
+                }}
+              >
+                Let's Work Together
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.2rem",
+                  color: "var(--text-secondary)",
+                  lineHeight: "1.8",
+                  marginBottom: "4rem",
+                  textAlign: "center",
+                  maxWidth: "700px",
+                  margin: "0 auto 4rem",
+                }}
+              >
+                I'm currently available for freelance work and full-time
+                opportunities. Feel free to reach out!
+              </p>
 
-            const sectionStyle = {
-                padding: '8rem 2rem',
-            };
+              {/* Contact Cards */}
+              <div style={gridStyle}>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                    📧
+                  </div>
+                  <h4 style={{ marginBottom: "1rem" }}>Email</h4>
+                  <a
+                    href="mailto:viraj.lakshitha.22222@gmail.com"
+                    style={{
+                      color: "var(--accent)",
+                      textDecoration: "none",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    viraj.lakshitha.22222@gmail.com
+                  </a>
+                </div>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                    📱
+                  </div>
+                  <h4 style={{ marginBottom: "1rem" }}>Phone</h4>
+                  <a
+                    href="tel:+94769291462"
+                    style={{ color: "var(--accent)", textDecoration: "none" }}
+                  >
+                    +94 769 291 462
+                  </a>
+                </div>
+                <div
+                  style={cardStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
+                >
+                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                    📍
+                  </div>
+                  <h4 style={{ marginBottom: "1rem" }}>Location</h4>
+                  <p style={{ color: "var(--text-secondary)" }}>
+                    Colombo, Sri Lanka
+                  </p>
+                </div>
+              </div>
 
-            const cardStyle = {
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '2rem',
-                marginBottom: '2rem',
-                backdropFilter: 'blur(10px)',
-                transition: 'all 0.3s ease',
-            };
+              {/* Map */}
+              <div style={{ marginTop: "4rem" }}>
+                <h3
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: "700",
+                    marginBottom: "2rem",
+                    fontFamily: "Space Grotesk",
+                  }}
+                >
+                  Find Me Here
+                </h3>
+                <div ref={mapRef} className="map-container"></div>
+              </div>
 
-            return (
-                <section id="experience" style={sectionStyle}>
-                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '700', marginBottom: '3rem', fontFamily: 'Space Grotesk' }}>
-                            Professional Experience
-                        </h2>
-                        <div style={{ position: 'relative', paddingLeft: '2rem' }}>
-                            <div style={{
-                                position: 'absolute',
-                                left: 0,
-                                top: 0,
-                                bottom: 0,
-                                width: '2px',
-                                background: 'linear-gradient(to bottom, var(--accent), var(--accent-secondary))',
-                            }}></div>
-                            {experiences.map((exp, index) => (
-                                <div key={index} style={cardStyle} className="fade-in"
-                                     onMouseEnter={(e) => {
-                                         e.currentTarget.style.transform = 'translateX(10px)';
-                                         e.currentTarget.style.borderColor = 'var(--accent)';
-                                     }}
-                                     onMouseLeave={(e) => {
-                                         e.currentTarget.style.transform = 'translateX(0)';
-                                         e.currentTarget.style.borderColor = 'var(--border)';
-                                     }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem', flexWrap: 'wrap' }}>
-                                        <div>
-                                            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{exp.title}</h3>
-                                            <div style={{ color: 'var(--accent)', fontSize: '1.1rem', fontWeight: '600' }}>{exp.company}</div>
-                                        </div>
-                                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontFamily: 'Space Grotesk' }}>
-                                            {exp.period}
-                                        </div>
-                                    </div>
-                                    <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '1rem' }}>
-                                        {exp.description}
-                                    </p>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                        {exp.tags.map((tag, i) => (
-                                            <span key={i} className="tech-badge">{tag}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+              {/* Social Links */}
+              <div style={{ marginTop: "4rem", textAlign: "center" }}>
+                <h3
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: "700",
+                    marginBottom: "2rem",
+                    fontFamily: "Space Grotesk",
+                  }}
+                >
+                  Connect With Me
+                </h3>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "2rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <a
+                    href="https://github.com/Viraj-Lakshitha12"
+                    target="_blank"
+                    className="github-link"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                    GitHub
+                  </a>
+                  <a
+                    href="https://linkedin.com/in/viraj-lakshitha"
+                    target="_blank"
+                    className="github-link"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
 
-                        {/* Education Section */}
-                        <h3 style={{ fontSize: '2rem', fontWeight: '700', marginTop: '4rem', marginBottom: '2rem', fontFamily: 'Space Grotesk' }}>
-                            Education
-                        </h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
-                            <div style={cardStyle}>
-                                <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🎓</div>
-                                <h4 style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>BSc (Hons) in Computing</h4>
-                                <div style={{ color: 'var(--accent)', marginBottom: '0.5rem' }}>Wrexham University - UK</div>
-                                <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>2025 - 2026 (In Progress)</div>
-                            </div>
-                            <div style={cardStyle}>
-                                <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>💻</div>
-                                <h4 style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>Graduate Diploma in Software Engineering</h4>
-                                <div style={{ color: 'var(--accent)', marginBottom: '0.5rem' }}>Institute of Software Engineering (IJSE)</div>
-                                <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>2022 - 2024</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
+      // Footer
+      const Footer = () => {
+        return (
+          <footer
+            style={{
+              padding: "3rem 2rem",
+              background: "var(--bg-primary)",
+              borderTop: "1px solid var(--border)",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+              <p
+                style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}
+              >
+                Built with React · Designed with passion in 2026
+              </p>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                © 2026 Viraj Lakshitha Adhikari. All rights reserved.
+              </p>
+            </div>
+          </footer>
+        );
+      };
 
-        // Projects Section - Updated with real GitHub projects
-        const Projects = () => {
-            const projects = [
-                {
-                    title: 'Loan Management System',
-                    description: 'Enterprise-grade Spring Boot application with REST APIs, Kafka event streaming, JWT authentication, and production-ready patterns. Built for managing loan applications with microservices architecture.',
-                    tags: ['Spring Boot 3.2.4', 'Spring Security', 'JWT', 'Kafka', 'MySQL', 'Docker'],
-                    github: 'https://github.com/Viraj-Lakshitha12/Loan-Management-System',
-                    language: 'Java',
-                    isPrivate: false
-                },
-                {
-                    title: 'Food Ordering System',
-                    description: 'A modern and user-friendly Food Ordering App built with React, Tailwind CSS, Node.js, and TypeScript. Features real-time updates and seamless user experience.',
-                    tags: ['React', 'Node.js', 'TypeScript', 'MongoDB', 'Express.js', 'Tailwind CSS'],
-                    github: 'https://github.com/Viraj-Lakshitha12/Food-Ordering-System',
-                    language: 'TypeScript',
-                    isPrivate: false
-                },
-                {
-                    title: 'E-Commerce API',
-                    description: 'A complete backend system for an e-commerce platform built using microservices architecture. Includes authentication, user management, product catalog, cart, orders, payments, inventory, and notifications.',
-                    tags: ['Spring Boot', 'PostgreSQL', 'Microservices', 'Docker', 'REST API'],
-                    github: 'https://github.com/Viraj-Lakshitha12/E-Commerce-API',
-                    language: 'Java',
-                    isPrivate: true
-                },
-                {
-                    title: 'Travel Planning Application',
-                    description: 'Dynamic web application using microservices with Spring Boot, utilizing Hibernate for efficient data handling and MySQL for storage to streamline travel itinerary planning.',
-                    tags: ['Spring Boot', 'Hibernate', 'MySQL', 'JavaScript', 'REST API'],
-                    github: 'https://github.com/Viraj-Lakshitha12/Travel-Planning-Application',
-                    language: 'JavaScript',
-                    isPrivate: false
-                },
-                {
-                    title: 'SC Graphic E-Commerce',
-                    description: 'E-commerce website for SC Graphic featuring an admin dashboard for product management, integrated with Daraz store to sync product listings. Achieving 100+ daily visits.',
-                    tags: ['React', 'Spring Boot', 'MySQL', 'API Integration'],
-                    language: 'React',
-                    isPrivate: false
-                },
-                {
-                    title: 'Node.js with CI/CD',
-                    description: 'Node.js project demonstrating continuous integration and deployment practices with modern DevOps tools.',
-                    tags: ['Node.js', 'CI/CD', 'DevOps', 'Jenkins', 'Docker'],
-                    github: 'https://github.com/Viraj-Lakshitha12/node-with-ci-cd',
-                    language: 'JavaScript',
-                    isPrivate: false
-                }
-            ];
+      // Main App Component
+      const App = () => {
+        return (
+          <>
+            <Navigation />
+            <Hero />
+            <About />
+            <Experience />
+            <Projects />
+            <Skills />
+            <Contact />
+            <Footer />
+          </>
+        );
+      };
 
-            const sectionStyle = {
-                padding: '8rem 2rem',
-                background: 'var(--bg-secondary)',
-            };
-
-            const gridStyle = {
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '2rem',
-                marginTop: '3rem',
-            };
-
-            const cardStyle = {
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '2rem',
-                backdropFilter: 'blur(10px)',
-                transition: 'all 0.3s ease',
-                cursor: 'pointer',
-                position: 'relative',
-                overflow: 'hidden',
-            };
-
-            const languageColors = {
-                'Java': '#b07219',
-                'JavaScript': '#f1e05a',
-                'TypeScript': '#3178c6',
-                'React': '#61dafb'
-            };
-
-            return (
-                <section id="projects" style={sectionStyle}>
-                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '700', marginBottom: '1rem', fontFamily: 'Space Grotesk' }}>
-                            Featured Projects
-                        </h2>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '3rem' }}>
-                            Explore my latest work on GitHub - from enterprise applications to experimental projects
-                        </p>
-                        <div style={gridStyle}>
-                            {projects.map((project, index) => (
-                                <div 
-                                    key={index} 
-                                    style={cardStyle}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-10px)';
-                                        e.currentTarget.style.borderColor = 'var(--accent)';
-                                        e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 245, 255, 0.2)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.borderColor = 'var(--border)';
-                                        e.currentTarget.style.boxShadow = 'none';
-                                    }}
-                                    className="fade-in"
-                                >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
-                                        <h3 style={{ fontSize: '1.5rem', flex: 1 }}>{project.title}</h3>
-                                        {project.isPrivate && (
-                                            <span style={{ 
-                                                background: 'rgba(255, 0, 255, 0.2)', 
-                                                color: 'var(--accent-secondary)', 
-                                                padding: '0.3rem 0.8rem', 
-                                                borderRadius: '6px', 
-                                                fontSize: '0.75rem',
-                                                fontWeight: '600'
-                                            }}>
-                                                PRIVATE
-                                            </span>
-                                        )}
-                                    </div>
-                                    <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '1.5rem', minHeight: '80px' }}>
-                                        {project.description}
-                                    </p>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                                        {project.tags.map((tag, i) => (
-                                            <span key={i} className="tech-badge">{tag}</span>
-                                        ))}
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <div style={{
-                                                width: '12px',
-                                                height: '12px',
-                                                borderRadius: '50%',
-                                                background: languageColors[project.language] || 'var(--accent)'
-                                            }}></div>
-                                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{project.language}</span>
-                                        </div>
-                                        {project.github && (
-                                            <a 
-                                                href={project.github} 
-                                                target="_blank" 
-                                                className="github-link"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                                                </svg>
-                                                View Code
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        // Skills Section
-        const Skills = () => {
-            const skillCategories = [
-                {
-                    title: 'Programming Languages',
-                    icon: '💻',
-                    skills: ['Java', 'JavaScript', 'TypeScript', 'Python']
-                },
-                {
-                    title: 'Frontend',
-                    icon: '🎨',
-                    skills: ['React', 'Redux', 'HTML5', 'CSS3', 'Tailwind CSS']
-                },
-                {
-                    title: 'Backend',
-                    icon: '⚙️',
-                    skills: ['Spring Boot', 'Node.js', 'Express.js']
-                },
-                {
-                    title: 'Databases',
-                    icon: '🗄️',
-                    skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'Redis']
-                },
-                {
-                    title: 'DevOps & Cloud',
-                    icon: '☁️',
-                    skills: ['AWS (EC2, S3)', 'Docker', 'Kubernetes', 'Jenkins', 'NGINX']
-                },
-                {
-                    title: 'Tools & Others',
-                    icon: '🛠️',
-                    skills: ['Git/GitHub', 'Maven', 'Hibernate', 'JWT', 'REST API', 'CI/CD', 'Agile/Scrum']
-                }
-            ];
-
-            const certifications = [
-                'Kubernetes For Absolute Beginners - KodeKloud',
-                'Docker For Absolute Beginners - KodeKloud',
-                'Linux For Absolute Beginners - KodeKloud',
-                'AWS Basics - KodeKloud'
-            ];
-
-            const sectionStyle = {
-                padding: '8rem 2rem',
-            };
-
-            const gridStyle = {
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem',
-                marginTop: '3rem',
-            };
-
-            const cardStyle = {
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '2rem',
-                backdropFilter: 'blur(10px)',
-                transition: 'all 0.3s ease',
-            };
-
-            return (
-                <section id="skills" style={sectionStyle}>
-                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '700', marginBottom: '3rem', fontFamily: 'Space Grotesk' }}>
-                            Skills & Technologies
-                        </h2>
-                        <div style={gridStyle}>
-                            {skillCategories.map((category, index) => (
-                                <div key={index} style={cardStyle} className="fade-in"
-                                     onMouseEnter={(e) => {
-                                         e.currentTarget.style.transform = 'translateY(-5px)';
-                                         e.currentTarget.style.borderColor = 'var(--accent)';
-                                     }}
-                                     onMouseLeave={(e) => {
-                                         e.currentTarget.style.transform = 'translateY(0)';
-                                         e.currentTarget.style.borderColor = 'var(--border)';
-                                     }}>
-                                    <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{category.icon}</div>
-                                    <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--accent)' }}>
-                                        {category.title}
-                                    </h3>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                        {category.skills.map((skill, i) => (
-                                            <span key={i} className="tech-badge">{skill}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Certifications */}
-                        <h3 style={{ fontSize: '2rem', fontWeight: '700', marginTop: '4rem', marginBottom: '2rem', fontFamily: 'Space Grotesk' }}>
-                            Certifications
-                        </h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
-                            {certifications.map((cert, index) => (
-                                <div key={index} style={{
-                                    ...cardStyle,
-                                    padding: '1.5rem',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '1rem'
-                                }}>
-                                    <div style={{ fontSize: '2rem' }}>✓</div>
-                                    <div style={{ color: 'var(--text-secondary)' }}>{cert}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        // Contact Section with Map
-        const Contact = () => {
-            const mapRef = useRef(null);
-
-            useEffect(() => {
-                if (mapRef.current && !mapRef.current._leaflet_id) {
-                    const map = L.map(mapRef.current).setView([6.9271, 79.8612], 13);
-                    
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors'
-                    }).addTo(map);
-
-                    const customIcon = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<div style="background: var(--accent); width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,245,255,0.5);"></div>',
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    });
-
-                    L.marker([6.9271, 79.8612], { icon: customIcon }).addTo(map)
-                        .bindPopup('<b>Colombo, Sri Lanka</b><br>Available for opportunities');
-                }
-            }, []);
-
-            const sectionStyle = {
-                padding: '8rem 2rem',
-                background: 'var(--bg-secondary)',
-            };
-
-            const gridStyle = {
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem',
-                marginTop: '3rem',
-            };
-
-            const cardStyle = {
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '2rem',
-                backdropFilter: 'blur(10px)',
-                textAlign: 'center',
-                transition: 'all 0.3s ease',
-            };
-
-            return (
-                <section id="contact" style={sectionStyle}>
-                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '700', marginBottom: '1rem', fontFamily: 'Space Grotesk', textAlign: 'center' }}>
-                            Let's Work Together
-                        </h2>
-                        <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', lineHeight: '1.8', marginBottom: '4rem', textAlign: 'center', maxWidth: '700px', margin: '0 auto 4rem' }}>
-                            I'm currently available for freelance work and full-time opportunities. Feel free to reach out!
-                        </p>
-
-                        {/* Contact Cards */}
-                        <div style={gridStyle}>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => {
-                                     e.currentTarget.style.transform = 'translateY(-5px)';
-                                     e.currentTarget.style.borderColor = 'var(--accent)';
-                                 }}
-                                 onMouseLeave={(e) => {
-                                     e.currentTarget.style.transform = 'translateY(0)';
-                                     e.currentTarget.style.borderColor = 'var(--border)';
-                                 }}>
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📧</div>
-                                <h4 style={{ marginBottom: '1rem' }}>Email</h4>
-                                <a href="mailto:viraj.lakshitha.22222@gmail.com" 
-                                   style={{ color: 'var(--accent)', textDecoration: 'none', wordBreak: 'break-word' }}>
-                                    viraj.lakshitha.22222@gmail.com
-                                </a>
-                            </div>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => {
-                                     e.currentTarget.style.transform = 'translateY(-5px)';
-                                     e.currentTarget.style.borderColor = 'var(--accent)';
-                                 }}
-                                 onMouseLeave={(e) => {
-                                     e.currentTarget.style.transform = 'translateY(0)';
-                                     e.currentTarget.style.borderColor = 'var(--border)';
-                                 }}>
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📱</div>
-                                <h4 style={{ marginBottom: '1rem' }}>Phone</h4>
-                                <a href="tel:+94769291462" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-                                    +94 769 291 462
-                                </a>
-                            </div>
-                            <div style={cardStyle}
-                                 onMouseEnter={(e) => {
-                                     e.currentTarget.style.transform = 'translateY(-5px)';
-                                     e.currentTarget.style.borderColor = 'var(--accent)';
-                                 }}
-                                 onMouseLeave={(e) => {
-                                     e.currentTarget.style.transform = 'translateY(0)';
-                                     e.currentTarget.style.borderColor = 'var(--border)';
-                                 }}>
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📍</div>
-                                <h4 style={{ marginBottom: '1rem' }}>Location</h4>
-                                <p style={{ color: 'var(--text-secondary)' }}>Colombo, Sri Lanka</p>
-                            </div>
-                        </div>
-
-                        {/* Map */}
-                        <div style={{ marginTop: '4rem' }}>
-                            <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '2rem', fontFamily: 'Space Grotesk' }}>
-                                Find Me Here
-                            </h3>
-                            <div ref={mapRef} className="map-container"></div>
-                        </div>
-
-                        {/* Social Links */}
-                        <div style={{ marginTop: '4rem', textAlign: 'center' }}>
-                            <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '2rem', fontFamily: 'Space Grotesk' }}>
-                                Connect With Me
-                            </h3>
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-                                <a href="https://github.com/Viraj-Lakshitha12" target="_blank" className="github-link">
-                                    GitHub
-                                </a>
-                                <a href="https://linkedin.com/in/viraj-lakshitha" target="_blank" className="github-link">
-                                    LinkedIn
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        // Footer
-        const Footer = () => {
-            return (
-                <footer style={{
-                    padding: '3rem 2rem',
-                    background: 'var(--bg-primary)',
-                    borderTop: '1px solid var(--border)',
-                    textAlign: 'center'
-                }}>
-                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                            Built with React · Designed with passion
-                        </p>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                            © 2026 Viraj Lakshitha Adhikari. All rights reserved.
-                        </p>
-                    </div>
-                </footer>
-            );
-        };
-
-        // Main App Component
-        const App = () => {
-            return (
-                <>
-                    <Navigation />
-                    <Hero />
-                    <About />
-                    <Experience />
-                    <Projects />
-                    <Skills />
-                    <Contact />
-                    <Footer />
-                </>
-            );
-        };
-
-        // Render App
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+      // Render App
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
     </script>
-</body>
+  </body>
 </html>
