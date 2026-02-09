@@ -408,107 +408,15 @@
                     key={item}
                     style={linkStyle(activeSection === item.toLowerCase())}
                     onClick={() => scrollToSection(item.toLowerCase())}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = "var(--accent)";
-                      e.target.style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color =
+                    onMouseEnter={(e) =>
+                      (e.target.style.color = "var(--accent)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.color =
                         activeSection === item.toLowerCase()
                           ? "var(--accent)"
-                          : "var(--text-secondary)";
-                      e.target.style.transform = "translateY(0)";
-                    }}
-                  >
-                    {item}
-                    {activeSection === item.toLowerCase() && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          height: "2px",
-                          background:
-                            "linear-gradient(90deg, var(--accent), var(--accent-secondary))",
-                          borderRadius: "2px",
-                        }}
-                      ></div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Mobile Hamburger */}
-              <div
-                className="mobile-menu"
-                style={{
-                  ...hamburgerStyle,
-                  display: window.innerWidth <= 768 ? "flex" : "none",
-                }}
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                <div
-                  style={{
-                    width: "25px",
-                    height: "3px",
-                    background: "var(--accent)",
-                    borderRadius: "2px",
-                    transition: "all 0.3s",
-                  }}
-                ></div>
-                <div
-                  style={{
-                    width: "25px",
-                    height: "3px",
-                    background: "var(--accent)",
-                    borderRadius: "2px",
-                    transition: "all 0.3s",
-                  }}
-                ></div>
-                <div
-                  style={{
-                    width: "25px",
-                    height: "3px",
-                    background: "var(--accent)",
-                    borderRadius: "2px",
-                    transition: "all 0.3s",
-                  }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Mobile Menu */}
-            <div style={mobileMenuStyle}>
-              <ul
-                style={{
-                  listStyle: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.5rem",
-                }}
-              >
-                {[
-                  "Home",
-                  "About",
-                  "Experience",
-                  "Projects",
-                  "Skills",
-                  "Contact",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "600",
-                      color:
-                        activeSection === item.toLowerCase()
-                          ? "var(--accent)"
-                          : "var(--text-secondary)",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                    }}
-                    onClick={() => scrollToSection(item.toLowerCase())}
+                          : "var(--text-secondary)")
+                    }
                   >
                     {item}
                   </li>
@@ -865,7 +773,7 @@
         );
       };
 
-      // About Section (keeping from previous version)
+      // About Section
       const About = () => {
         const sectionStyle = {
           padding: "8rem 2rem",
@@ -1938,7 +1846,7 @@
               <p
                 style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}
               >
-                Built with React · Designed with passion in 2026
+                Built with React · Designed with passion
               </p>
               <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
                 © 2026 Viraj Lakshitha Adhikari. All rights reserved.
