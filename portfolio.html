@@ -39,7 +39,6 @@
       --gradient-1: radial-gradient(circle at 20% 30%, rgba(0, 245, 255, 0.2) 0%, transparent 50%);
       --gradient-2: radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.2) 0%, transparent 50%);
       --gradient-3: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.15) 0%, transparent 60%);
-      --sidebar-width: 280px;
     }
 
     [data-theme="light"] {
@@ -206,101 +205,6 @@
     .mode-option.active {
       border-color: var(--accent);
       background: rgba(var(--accent-rgb, 0, 245, 255), 0.1);
-    }
-
-    /* Sidebar Layout */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: var(--bg-card);
-      border-right: 1px solid var(--border);
-      backdrop-filter: blur(20px);
-      padding: 2rem 1.5rem;
-      overflow-y: auto;
-      z-index: 100;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar-content {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .main-content {
-      margin-left: var(--sidebar-width);
-      transition: margin-left 0.3s ease;
-    }
-
-    @media (max-width: 1024px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
-
-      .sidebar.active {
-        transform: translateX(0);
-      }
-
-      .main-content {
-        margin-left: 0;
-      }
-    }
-
-    /* Search Bar */
-    .search-container {
-      margin: 2rem 0;
-    }
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.8rem 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:focus-within {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(var(--accent-rgb, 0, 245, 255), 0.2);
-    }
-
-    .search-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1rem;
-      margin-left: 0.5rem;
-      outline: none;
-    }
-
-    /* Weather Widget */
-    .weather-widget {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      backdrop-filter: blur(10px);
-    }
-
-    .weather-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .temperature {
-      font-size: 2.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     /* 2026 Style Elements */
@@ -615,167 +519,7 @@
       );
     };
 
-    // Sidebar Component
-    const Sidebar = () => {
-      const [activeSection, setActiveSection] = useState("home");
-      const [searchQuery, setSearchQuery] = useState("");
-      const [sidebarOpen, setSidebarOpen] = useState(false);
-      const { theme, openModeModal } = React.useContext(ThemeContext);
-
-      useEffect(() => {
-        const handleScroll = () => {
-          const sections = ["home", "about", "experience", "projects", "skills", "contact"];
-          for (const section of sections) {
-            const element = document.getElementById(section);
-            if (element) {
-              const rect = element.getBoundingClientRect();
-              if (rect.top <= 100 && rect.bottom >= 100) {
-                setActiveSection(section);
-                break;
-              }
-            }
-          }
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
-
-      const scrollToSection = (id) => {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-        setActiveSection(id);
-        setSidebarOpen(false);
-      };
-
-      const handleSearch = (e) => {
-        if (e.key === 'Enter' && searchQuery.trim()) {
-          // Implement search functionality here
-          alert(`Searching for: ${searchQuery}`);
-          setSearchQuery("");
-        }
-      };
-
-      const sidebarLinks = [
-        { id: "home", label: "Home", icon: "🏠" },
-        { id: "about", label: "About", icon: "👤" },
-        { id: "experience", label: "Experience", icon: "💼" },
-        { id: "projects", label: "Projects", icon: "🚀" },
-        { id: "skills", label: "Skills", icon: "⚡" },
-        { id: "contact", label: "Contact", icon: "📞" }
-      ];
-
-      return (
-        <>
-          {/* Mobile Menu Toggle */}
-          <div
-            className="mobile-menu-toggle"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <i className="fas fa-bars" style={{ fontSize: '1.2rem', color: 'var(--accent)' }}></i>
-          </div>
-
-          {/* Sidebar */}
-          <div className={`sidebar ${sidebarOpen ? 'active' : ''}`}>
-            <div className="sidebar-content">
-              {/* Profile Section */}
-              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <div style={{
-                  width: '80px',
-                  height: '80px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
-                  margin: '0 auto 1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '2rem'
-                }}>
-                  VL
-                </div>
-                <h3 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Viraj Lakshitha</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Full Stack Engineer</p>
-              </div>
-
-              {/* Navigation Links */}
-              <nav style={{ flex: 1 }}>
-                <ul style={{ listStyle: 'none' }}>
-                  {sidebarLinks.map((link) => (
-                    <li key={link.id} style={{ marginBottom: '0.5rem' }}>
-                      <button
-                        onClick={() => scrollToSection(link.id)}
-                        style={{
-                          width: '100%',
-                          padding: '0.8rem 1rem',
-                          background: activeSection === link.id
-                            ? 'rgba(var(--accent-rgb, 0, 245, 255), 0.1)'
-                            : 'transparent',
-                          border: activeSection === link.id
-                            ? '1px solid var(--accent)'
-                            : '1px solid transparent',
-                          borderRadius: '8px',
-                          color: activeSection === link.id
-                            ? 'var(--accent)'
-                            : 'var(--text-secondary)',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.8rem',
-                          transition: 'all 0.3s ease',
-                          textAlign: 'left'
-                        }}
-                        onMouseEnter={(e) => {
-                          if (activeSection !== link.id) {
-                            e.currentTarget.style.color = 'var(--accent)';
-                            e.currentTarget.style.borderColor = 'var(--border)';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (activeSection !== link.id) {
-                            e.currentTarget.style.color = 'var(--text-secondary)';
-                            e.currentTarget.style.borderColor = 'transparent';
-                          }
-                        }}
-                      >
-                        <span style={{ fontSize: '1.2rem' }}>{link.icon}</span>
-                        <span>{link.label}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-
-              {/* Search Bar */}
-              <div className="search-container">
-                <div className="search-bar">
-                  <i className="fas fa-search" style={{ color: 'var(--text-secondary)' }}></i>
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleSearch}
-                  />
-                </div>
-              </div>
-
-              {/* Weather Widget */}
-              <div className="weather-widget">
-                <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Weather</h4>
-                <div className="weather-info">
-                  <div>
-                    <div className="temperature">79°F</div>
-                    <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Mostly cloudy</div>
-                  </div>
-                  <div style={{ fontSize: '2rem' }}>⛅</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      );
-    };
-
-    // Navigation Component - Updated for Sidebar Layout
+    // Navigation Component
     const Navigation = () => {
       const [scrolled, setScrolled] = useState(false);
       const { theme } = React.useContext(ThemeContext);
@@ -789,16 +533,19 @@
       const navStyle = {
         position: "fixed",
         top: 0,
-        left: "280px",
+        left: 0,
         right: 0,
         zIndex: 1000,
-        background: scrolled ? "rgba(10, 10, 15, 0.95)" : "rgba(10, 10, 15, 0.5)",
+        background: scrolled
+          ? "rgba(10, 10, 15, 0.95)"
+          : "rgba(10, 10, 15, 0.5)",
         backdropFilter: "blur(20px)",
-        borderBottom: scrolled ? "1px solid var(--border)" : "1px solid rgba(0, 245, 255, 0.1)",
+        borderBottom: scrolled
+          ? "1px solid var(--border)"
+          : "1px solid rgba(0, 245, 255, 0.1)",
         transition: "all 0.3s ease",
-        padding: "1rem 2rem",
+        padding: "1rem 0",
       };
-
       if (theme === 'light') {
         navStyle.background = scrolled ? 'rgba(245, 247, 255, 0.95)' : 'rgba(245, 247, 255, 0.5)';
       } else if (theme === 'colorful-2026') {
@@ -857,7 +604,7 @@
       );
     };
 
-    // Hero Section - Updated for Sidebar Layout
+    // Hero Section
     const Hero = () => {
       const techStack = [
         { name: "Java", icon: "☕", color: "#b07219", top: "10%", left: "10%" },
@@ -1744,7 +1491,7 @@
       );
     };
 
-      // Contact Section with Map
+    // Contact Section with Map
     const Contact = () => {
       const mapRef = useRef(null);
 
@@ -1951,7 +1698,6 @@
       return (
         <ThemeProvider>
           <div className="main-content">
-            <Sidebar />
             <Navigation />
             <Hero />
             <About />
