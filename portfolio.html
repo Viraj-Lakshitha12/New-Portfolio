@@ -20,61 +20,50 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     :root {
-      /* Dark Mode (Default) - Enhanced 2026 Style */
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #13131a;
-      --bg-card: rgba(20, 20, 30, 0.9);
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a12;
+      --bg-card: rgba(15, 15, 25, 0.6);
       --accent: #00f5ff;
       --accent-secondary: #ff00ff;
       --accent-tertiary: #00ff88;
-      --accent-vibrant: #ff6b6b;
       --text-primary: #ffffff;
-      --text-secondary: #b0b0c0;
-      --border: rgba(0, 245, 255, 0.3);
-      --shadow-color: rgba(0, 0, 0, 0.4);
-      --gradient-1: radial-gradient(circle at 20% 30%, rgba(0, 245, 255, 0.2) 0%, transparent 50%);
-      --gradient-2: radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.2) 0%, transparent 50%);
-      --gradient-3: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.15) 0%, transparent 60%);
+      --text-secondary: #a0a0b5;
+      --border: rgba(255, 255, 255, 0.06);
+      --glow: rgba(0, 245, 255, 0.5);
+      --nav-height: 70px;
     }
 
     [data-theme="light"] {
-      /* Light Mode - Modern 2026 Tech Stack */
-      --bg-primary: #f5f7ff;
-      --bg-secondary: #ffffff;
-      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fc;
+      --bg-card: rgba(255, 255, 255, 0.8);
       --accent: #0066ff;
       --accent-secondary: #6633ff;
       --accent-tertiary: #00cc88;
-      --accent-vibrant: #ff3366;
-      --text-primary: #1a1a2e;
+      --text-primary: #0a0a1a;
       --text-secondary: #5a5a7a;
-      --border: rgba(0, 102, 255, 0.15);
-      --shadow-color: rgba(0, 0, 0, 0.08);
-      --gradient-1: radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.1) 0%, transparent 50%);
-      --gradient-2: radial-gradient(circle at 80% 70%, rgba(102, 51, 255, 0.1) 0%, transparent 50%);
-      --gradient-3: radial-gradient(circle at 50% 50%, rgba(0, 204, 136, 0.08) 0%, transparent 60%);
+      --border: rgba(0, 0, 0, 0.06);
+      --glow: rgba(0, 102, 255, 0.3);
     }
 
     [data-theme="colorful-2026"] {
-      /* Colorful 2026 Mode - Vibrant & Modern */
-      --bg-primary: #0f0f1a;
-      --bg-secondary: #1a1a2e;
-      --bg-card: rgba(26, 26, 46, 0.9);
+      --bg-primary: #0a0015;
+      --bg-secondary: #150028;
+      --bg-card: rgba(20, 20, 40, 0.6);
       --accent: #ff6b6b;
       --accent-secondary: #4ecdc4;
       --accent-tertiary: #ffd166;
-      --accent-vibrant: #ff9a76;
       --text-primary: #ffffff;
       --text-secondary: #b8b8d1;
-      --border: rgba(255, 107, 107, 0.3);
-      --shadow-color: rgba(0, 0, 0, 0.5);
-      --gradient-1: radial-gradient(circle at 20% 30%, rgba(255, 107, 107, 0.2) 0%, transparent 50%);
-      --gradient-2: radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.2) 0%, transparent 50%);
-      --gradient-3: radial-gradient(circle at 50% 50%, rgba(255, 209, 102, 0.2) 0%, transparent 60%);
+      --border: rgba(255, 107, 107, 0.1);
+      --glow: rgba(255, 107, 107, 0.4);
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -82,18 +71,40 @@
       background: var(--bg-primary);
       color: var(--text-primary);
       overflow-x: hidden;
-      transition: background-color 0.5s ease;
+      line-height: 1.6;
     }
 
+    /* Ultra-Modern Animated Mesh Gradient Background */
     body::before {
       content: "";
       position: fixed;
-      width: 100%;
-      height: 100%;
-      background: var(--gradient-1), var(--gradient-2), var(--gradient-3);
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0, 245, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(0, 255, 136, 0.06) 0%, transparent 50%);
+      animation: meshMove 25s ease-in-out infinite;
       pointer-events: none;
       z-index: 0;
-      transition: background 0.5s ease;
+    }
+
+    @keyframes meshMove {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      33% {
+        transform: translate(30px, -50px) rotate(120deg);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) rotate(240deg);
+      }
     }
 
     #root {
@@ -108,120 +119,443 @@
     h5,
     h6 {
       font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 4px;
-    }
-
-    /* Theme Toggle Button - Only One Icon */
-    .theme-toggle {
+    /* ULTRA-MODERN FLOATING GLASS NAVBAR - 2026 */
+    .modern-navbar {
       position: fixed;
-      top: 100px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 1100px;
+      z-index: 1000;
+      padding: 14px 28px;
+      background: rgba(10, 10, 18, 0.4);
+      backdrop-filter: blur(30px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modern-navbar.scrolled {
+      top: 10px;
+      padding: 12px 24px;
+      background: rgba(10, 10, 18, 0.7);
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.05rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.3px;
+      position: relative;
+      font-family: "Space Grotesk", sans-serif;
+    }
+
+    .nav-logo::after {
+      content: "2026";
+      position: absolute;
+      top: -10px;
+      right: -38px;
+      font-size: 0.6rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-tertiary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      padding: 8px 18px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 50px;
+      z-index: -1;
+    }
+
+    .nav-link:hover::before {
+      opacity: 0.12;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    /* Theme Toggle - Sleek Modern */
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1001;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
     }
 
     .theme-toggle:hover {
-      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.08);
+      transform: scale(1.05) rotate(10deg);
       border-color: var(--accent);
-      box-shadow: 0 0 30px var(--accent);
     }
 
     .theme-icon {
-      font-size: 1.5rem;
+      font-size: 1.15rem;
       transition: transform 0.3s ease;
     }
 
-    /* Mode Selection Modal */
+    /* Sections - Modern Spacing */
+    section {
+      padding: 100px 24px;
+      max-width: 1320px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    section:first-of-type {
+      padding-top: 140px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Modern Gradient Text Effect */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
+    }
+
+    @keyframes gradientShift {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    /* Ultra-Modern Glass Cards */
+    .modern-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modern-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+
+    .modern-card:hover::before {
+      opacity: 0.04;
+    }
+
+    .modern-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 0 60px var(--glow);
+    }
+
+    /* Modern Buttons with Ripple Effect */
+    .btn-primary {
+      padding: 15px 32px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: #fff;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px var(--glow);
+      font-family: "Inter", sans-serif;
+    }
+
+    .btn-primary::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-primary:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--glow);
+    }
+
+    .btn-primary span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-secondary {
+      padding: 15px 32px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      border: 1.5px solid var(--accent);
+      background: transparent;
+      color: var(--text-primary);
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      font-family: "Inter", sans-serif;
+    }
+
+    .btn-secondary::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+    }
+
+    .btn-secondary span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-secondary:hover::before {
+      width: 100%;
+    }
+
+    .btn-secondary:hover {
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--glow);
+      color: #fff;
+    }
+
+    /* Tech Badge - Sleek Modern */
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .tech-badge:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 48px;
+      border: 2px solid var(--accent);
+      border-radius: 25px;
+      display: flex;
+      justify-content: center;
+      padding-top: 8px;
+      opacity: 0.5;
+      animation: fadeInOut 3s infinite;
+    }
+
+    .scroll-indicator::before {
+      content: "";
+      width: 4px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: scrollDown 2s infinite;
+    }
+
+    @keyframes scrollDown {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeInOut {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    /* Map Container */
+    .map-container {
+      width: 100%;
+      height: 450px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Mode Modal */
     .mode-modal {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       background: var(--bg-card);
+      backdrop-filter: blur(40px) saturate(180%);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
+      border-radius: 28px;
+      padding: 36px;
       z-index: 2000;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 60px var(--shadow-color);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
       max-width: 500px;
       width: 90%;
     }
 
     .mode-modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
       z-index: 1999;
     }
 
     .mode-options {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin: 2rem 0;
+      gap: 14px;
+      margin: 24px 0;
     }
 
     .mode-option {
-      padding: 1.5rem;
-      border: 2px solid var(--border);
-      border-radius: 12px;
+      padding: 22px;
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
       cursor: pointer;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255, 255, 255, 0.02);
     }
 
     .mode-option:hover {
       border-color: var(--accent);
-      transform: translateY(-5px);
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .mode-option.active {
       border-color: var(--accent);
-      background: rgba(var(--accent-rgb, 0, 245, 255), 0.1);
-    }
-
-    /* 2026 Style Elements */
-    .year-2026 {
-      position: relative;
-    }
-
-    .year-2026::after {
-      content: "2026";
-      position: absolute;
-      top: -10px;
-      right: -40px;
-      font-size: 0.8rem;
-      color: var(--accent);
-      font-weight: 700;
-      opacity: 0.7;
-      animation: pulse 2s infinite;
+      background: rgba(0, 245, 255, 0.08);
+      box-shadow: 0 0 30px var(--glow);
     }
 
     /* Animations */
@@ -241,105 +575,59 @@
 
       0%,
       100% {
-        transform: translateY(0px) rotate(0deg);
+        transform: translateY(0px);
       }
 
       50% {
-        transform: translateY(-20px) rotate(5deg);
-      }
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 0.7;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.05);
+        transform: translateY(-15px);
       }
     }
 
     .fade-in {
-      animation: fadeInUp 0.6s ease-out forwards;
+      animation: fadeInUp 0.7s ease-out forwards;
     }
 
-    .github-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--accent);
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--accent);
-      border-radius: 6px;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
+    .float-animation {
+      animation: float 5s ease-in-out infinite;
     }
 
-    .github-link:hover {
-      background: var(--accent);
-      color: var(--bg-primary);
-      transform: translateY(-2px);
-    }
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .modern-navbar {
+        width: calc(100% - 20px);
+        padding: 12px 18px;
+        border-radius: 60px;
+      }
 
-    .tech-badge {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      background: rgba(var(--accent-rgb, 0, 245, 255), 0.1);
-      border: 1px solid rgba(var(--accent-rgb, 0, 245, 255), 0.3);
-      border-radius: 6px;
-      font-size: 0.85rem;
-      color: var(--accent);
-      margin: 0.25rem;
-      transition: all 0.3s ease;
-    }
+      .nav-links {
+        display: none;
+      }
 
-    .tech-badge:hover {
-      transform: translateY(-2px);
-      background: rgba(var(--accent-rgb, 0, 245, 255), 0.2);
-    }
+      .mobile-menu-btn {
+        display: flex !important;
+        width: 38px;
+        height: 38px;
+        border: none;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+      }
 
-    .map-container {
-      width: 100%;
-      height: 400px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
+      section {
+        padding: 70px 20px;
+      }
 
-    /* Mobile Menu Toggle */
-    .mobile-menu-toggle {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1002;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.8rem;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-    }
-
-    @media (max-width: 1024px) {
-      .mobile-menu-toggle {
-        display: block;
+      section:first-of-type {
+        padding-top: 110px;
+        min-height: 90vh;
       }
 
       .map-container {
         height: 300px;
-      }
-
-      .theme-toggle {
-        top: 80px;
-        right: 10px;
-        width: 45px;
-        height: 45px;
       }
 
       .mode-options {
@@ -347,33 +635,109 @@
       }
     }
 
-    /* Tech Stack Floating Cards */
-    .tech-card {
-      position: absolute;
-      background: var(--bg-card);
+    /* Accessibility & UX */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #000;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
+      border-radius: 10px;
+    }
+
+    /* Social Icons Modern */
+    .social-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      backdrop-filter: blur(10px);
-      animation: float 6s ease-in-out infinite;
-      transition: all 0.3s ease;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    .tech-card:hover {
-      transform: scale(1.1) !important;
+    .social-icon::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .social-icon:hover::before {
+      opacity: 0.15;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-4px);
       border-color: var(--accent);
-      box-shadow: 0 0 30px rgba(var(--accent-rgb, 0, 245, 255), 0.4);
+      box-shadow: 0 8px 24px var(--glow);
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .desktop-menu {
-        display: none;
-      }
+    .social-icon i {
+      color: var(--accent);
+      font-size: 1.15rem;
+      position: relative;
+      z-index: 1;
+    }
 
-      .mobile-menu {
-        display: block;
-      }
+    /* Tech Stack Grid Modern */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+    }
+
+    .tech-card-modern {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tech-card-modern:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .tech-card-modern .icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .tech-card-modern .name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
@@ -384,10 +748,8 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Theme Context
     const ThemeContext = React.createContext();
 
-    // Theme Provider Component
     const ThemeProvider = ({ children }) => {
       const [theme, setTheme] = useState('dark');
       const [showModeModal, setShowModeModal] = useState(false);
@@ -404,50 +766,40 @@
         document.documentElement.setAttribute('data-theme', newTheme);
       };
 
-      const openModeModal = () => {
-        setShowModeModal(true);
-      };
-
-      const closeModeModal = () => {
-        setShowModeModal(false);
-      };
-
       return (
-        <ThemeContext.Provider value={{ theme, toggleTheme, openModeModal, closeModeModal }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, openModeModal: () => setShowModeModal(true), closeModeModal: () => setShowModeModal(false) }}>
           {children}
           {showModeModal && <ModeSelectionModal />}
         </ThemeContext.Provider>
       );
     };
 
-    // Mode Selection Modal Component
     const ModeSelectionModal = () => {
       const { theme, toggleTheme, closeModeModal } = React.useContext(ThemeContext);
-
       const modeOptions = [
         {
           id: 'dark',
           name: 'Dark Mode',
           icon: '🌙',
-          description: 'Neon tech vibe with cyberpunk accents'
+          description: 'Sleek cyberpunk aesthetics'
         },
         {
           id: 'light',
           name: 'Light Mode',
           icon: '☀️',
-          description: 'Clean modern interface for productivity'
+          description: 'Clean modern interface'
         },
         {
           id: 'auto',
           name: 'Auto Detect',
           icon: '⚙️',
-          description: 'Sync with system preferences'
+          description: 'Sync with system'
         },
         {
           id: 'colorful-2026',
           name: '2026 Colorful',
           icon: '🌈',
-          description: 'Vibrant 2026 tech stack palette'
+          description: 'Vibrant gradients'
         }
       ];
 
@@ -455,9 +807,7 @@
         if (modeId === 'auto') {
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           toggleTheme(prefersDark ? 'dark' : 'light');
-        } else {
-          toggleTheme(modeId);
-        }
+        } else toggleTheme(modeId);
         setTimeout(closeModeModal, 300);
       };
 
@@ -465,146 +815,81 @@
         <>
           <div className="mode-modal-overlay" onClick={closeModeModal}></div>
           <div className="mode-modal">
-            <h2 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Choose Theme Style</h2>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-              Select your preferred viewing mode. Changes apply instantly.
-            </p>
-
+            <h2 style={{ marginBottom: '10px', fontSize: '1.75rem' }}>Choose Your Theme</h2>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '22px', fontSize: '0.93rem' }}>Select your preferred viewing mode</p>
             <div className="mode-options">
               {modeOptions.map((option) => (
-                <div
-                  key={option.id}
-                  className={`mode-option ${theme === option.id ? 'active' : ''}`}
-                  onClick={() => handleModeSelect(option.id)}
-                  style={{ background: 'var(--bg-card)' }}
-                >
-                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{option.icon}</div>
-                  <h4 style={{ marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{option.name}</h4>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{option.description}</p>
+                <div key={option.id} className={`mode-option ${theme === option.id ? 'active' : ''}`} onClick={() => handleModeSelect(option.id)}>
+                  <div style={{ fontSize: '2.4rem', marginBottom: '10px' }}>{option.icon}</div>
+                  <h4 style={{ marginBottom: '6px', fontSize: '1.05rem' }}>{option.name}</h4>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>{option.description}</p>
                 </div>
               ))}
             </div>
-
-            <button
-              onClick={closeModeModal}
-              style={{
-                padding: '0.8rem 2rem',
-                background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontWeight: '600',
-                width: '100%',
-                marginTop: '1rem'
-              }}
-            >
-              Apply & Close
+            <button onClick={closeModeModal} className="btn-primary" style={{ width: '100%', marginTop: '14px' }}>
+              <span>Apply Theme</span>
             </button>
           </div>
         </>
       );
     };
 
-    // Theme Toggle Button Component - Only One Icon
-    const ThemeToggleButton = () => {
+    const ModernNavbar = () => {
+      const [scrolled, setScrolled] = useState(false);
+      const [activeSection, setActiveSection] = useState('home');
       const { theme, openModeModal } = React.useContext(ThemeContext);
 
-      return (
-        <div className="theme-toggle" onClick={openModeModal}>
-          <span className="theme-icon">
-            {theme === 'dark' ? '🌙' : theme === 'light' ? '☀️' : '🌈'}
-          </span>
-        </div>
-      );
-    };
-
-    // Navigation Component
-    const Navigation = () => {
-      const [scrolled, setScrolled] = useState(false);
-      const { theme } = React.useContext(ThemeContext);
-
       useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        const handleScroll = () => {
+          setScrolled(window.scrollY > 50);
+
+          const sections = ['home', 'about', 'experience', 'projects', 'skills', 'contact'];
+          for (const section of sections) {
+            const element = document.getElementById(section);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              if (rect.top <= 120 && rect.bottom >= 120) {
+                setActiveSection(section);
+                break;
+              }
+            }
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
       }, []);
 
-      const navStyle = {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        background: scrolled
-          ? "rgba(10, 10, 15, 0.95)"
-          : "rgba(10, 10, 15, 0.5)",
-        backdropFilter: "blur(20px)",
-        borderBottom: scrolled
-          ? "1px solid var(--border)"
-          : "1px solid rgba(0, 245, 255, 0.1)",
-        transition: "all 0.3s ease",
-        padding: "1rem 0",
-      };
-      if (theme === 'light') {
-        navStyle.background = scrolled ? 'rgba(245, 247, 255, 0.95)' : 'rgba(245, 247, 255, 0.5)';
-      } else if (theme === 'colorful-2026') {
-        navStyle.background = scrolled ? 'rgba(15, 15, 26, 0.95)' : 'rgba(15, 15, 26, 0.5)';
-      }
+      const navItems = ['Home', 'About', 'Experience', 'Projects', 'Skills', 'Contact'];
 
       return (
-        <nav style={navStyle}>
-          <div style={{
-            maxWidth: "1400px",
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}>
-            <div style={{
-              fontSize: "1.3rem",
-              fontWeight: "800",
-              background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              fontFamily: "Space Grotesk",
-              letterSpacing: "1px",
-            }} className="year-2026">
-              VIRAJ LAKSHITHA
-            </div>
-
-            {/* Desktop Menu */}
-            <ul className="desktop-menu" style={{
-              display: "flex",
-              gap: "2.5rem",
-              listStyle: "none",
-              alignItems: "center",
-            }}>
-              {["Home", "About", "Experience", "Projects", "Skills", "Contact"].map((item) => (
+        <nav className={`modern-navbar ${scrolled ? 'scrolled' : ''}`}>
+          <div className="nav-content">
+            <div className="nav-logo">VIRAJ LAKSHITHA</div>
+            <ul className="nav-links">
+              {navItems.map((item) => (
                 <li
                   key={item}
-                  style={{
-                    color: "var(--text-secondary)",
-                    cursor: "pointer",
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    transition: "all 0.3s ease",
-                    padding: "0.5rem 0",
-                  }}
-                  onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: "smooth" })}
-                  onMouseEnter={(e) => e.target.style.color = "var(--accent)"}
-                  onMouseLeave={(e) => e.target.style.color = "var(--text-secondary)"}
+                  className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`}
+                  onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   {item}
                 </li>
               ))}
             </ul>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <div className="theme-toggle" onClick={openModeModal}>
+                <span className="theme-icon">{theme === 'dark' ? '🌙' : theme === 'light' ? '☀️' : '🌈'}</span>
+              </div>
+              <button className="mobile-menu-btn" style={{ display: 'none' }}>
+                <i className="fas fa-bars"></i>
+              </button>
+            </div>
           </div>
         </nav>
       );
     };
 
-    // Hero Section
     const Hero = () => {
       const techStack = [
         { name: "Java", icon: "☕", color: "#b07219", top: "10%", left: "10%" },
@@ -616,1104 +901,315 @@
       ];
 
       return (
-        <section id="home" style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          position: "relative",
-          padding: "8rem 2rem 4rem",
-        }}>
-          <div style={{
-            maxWidth: "1400px",
-            margin: "0 auto",
-            width: "100%",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-            gap: "4rem",
-            alignItems: "center",
-          }}>
-            {/* Left Content */}
-            <div style={{ zIndex: 10 }} className="fade-in">
-              <div style={{
-                marginBottom: "1rem",
-                color: "var(--text-secondary)",
-                fontSize: "1.1rem",
-              }}>
-                👋 Hi, I'm
+        <section id="home">
+          <div style={{ width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '50px', alignItems: 'center' }}>
+            <div className="fade-in">
+              <div style={{ marginBottom: '14px', color: 'var(--text-secondary)', fontSize: '1.08rem', fontWeight: '500' }}>
+                👋 Hey, I'm
               </div>
-              <h1 style={{
-                fontSize: "clamp(2rem, 6vw, 4rem)",
-                fontWeight: "800",
-                lineHeight: "1.1",
-                marginBottom: "1rem",
-                background: "linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                fontFamily: "Space Grotesk",
-              }}>
-                Viraj Lakshitha
-                <br />
-                Adhikari
+              <h1 className="gradient-text" style={{ fontSize: 'clamp(2.8rem, 7vw, 5.2rem)', fontWeight: '800', lineHeight: '1.08', marginBottom: '18px' }}>
+                Viraj Lakshitha<br />Adhikari
               </h1>
-              <div style={{
-                fontSize: "clamp(1.3rem, 3vw, 2rem)",
-                color: "var(--accent-tertiary)",
-                marginBottom: "1.5rem",
-                fontWeight: "700",
-              }}>
+              <div style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.3rem)', color: 'var(--accent-tertiary)', marginBottom: '22px', fontWeight: '700', lineHeight: '1.3' }}>
                 Full Stack Software Engineer
               </div>
-              <p style={{
-                fontSize: "1.1rem",
-                color: "var(--text-secondary)",
-                lineHeight: "1.8",
-                marginBottom: "2.5rem",
-              }}>
-                Building scalable web applications with 3+ years of expertise
-                in Java, Spring Boot, React, Node.js, and cloud technologies.
-                Passionate about crafting innovative solutions that drive
-                business value.
+              <p style={{ fontSize: '1.12rem', color: 'var(--text-secondary)', lineHeight: '1.75', marginBottom: '30px', maxWidth: '580px' }}>
+                Building scalable web applications with 3+ years of expertise in Java, Spring Boot, React, Node.js, and cloud technologies. Passionate about crafting innovative solutions that drive business value.
               </p>
-              <div style={{
-                display: "flex",
-                gap: "1rem",
-                flexWrap: "wrap",
-                marginBottom: "2rem",
-              }}>
-                <button
-                  style={{
-                    padding: "1rem 2rem",
-                    fontSize: "1rem",
-                    fontWeight: "600",
-                    border: "none",
-                    background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
-                    color: "#fff",
-                    cursor: "pointer",
-                    borderRadius: "8px",
-                    transition: "all 0.3s ease",
-                    fontFamily: "Inter",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow = "0 10px 30px rgba(var(--accent-rgb, 0, 245, 255), 0.3)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow = "none";
-                  }}
-                  onClick={() => document.getElementById("projects").scrollIntoView({ behavior: "smooth" })}
-                >
-                  View My Work
+              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '30px' }}>
+                <button className="btn-primary" onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}>
+                  <span>View My Work</span>
                 </button>
-                <button
-                  style={{
-                    padding: "1rem 2rem",
-                    fontSize: "1rem",
-                    fontWeight: "600",
-                    border: "2px solid var(--accent)",
-                    background: "transparent",
-                    color: "var(--text-primary)",
-                    cursor: "pointer",
-                    borderRadius: "8px",
-                    transition: "all 0.3s ease",
-                    fontFamily: "Inter",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = "var(--accent)";
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow = "0 10px 30px rgba(var(--accent-rgb, 0, 245, 255), 0.3)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = "transparent";
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow = "none";
-                  }}
-                  onClick={() => document.getElementById("contact").scrollIntoView({ behavior: "smooth" })}
-                >
-                  Let's Talk
+                <button className="btn-secondary" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
+                  <span>Let's Talk</span>
                 </button>
               </div>
-
-              {/* Social Icons */}
-              <div style={{
-                display: "flex",
-                gap: "1rem",
-                marginTop: "2rem",
-              }}>
+              <div style={{ display: 'flex', gap: '14px', marginTop: '30px' }}>
                 {[
-                  { icon: "github", url: "https://github.com/Viraj-Lakshitha12" },
-                  { icon: "linkedin", url: "https://www.linkedin.com/in/viraj-lakshitha01/" },
-                  { icon: "envelope", url: "mailto:viraj.lakshitha.22222@gmail.com" }
-                ].map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: "var(--bg-card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "12px",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                      backdropFilter: "blur(10px)",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-5px)";
-                      e.currentTarget.style.borderColor = "var(--accent)";
-                      e.currentTarget.style.boxShadow = "0 10px 20px rgba(var(--accent-rgb, 0, 245, 255), 0.3)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.borderColor = "var(--border)";
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                  >
-                    <i className={`fab fa-${social.icon}`} style={{ color: "var(--accent)", fontSize: "1.2rem" }}></i>
+                  { icon: 'github', url: 'https://github.com/Viraj-Lakshitha12' },
+                  { icon: 'linkedin', url: 'https://www.linkedin.com/in/viraj-lakshitha01/' },
+                  { icon: 'envelope', url: 'mailto:viraj.lakshitha.22222@gmail.com' }
+                ].map((social, i) => (
+                  <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <i className={`fab fa-${social.icon}`}></i>
                   </a>
                 ))}
               </div>
             </div>
 
-            {/* Right Content - Animated Tech Stack */}
-            <div style={{
-              position: "relative",
-              height: "500px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }} className="fade-in">
-              {techStack.map((tech, index) => (
-                <div
-                  key={index}
-                  className="tech-card"
-                  style={{
-                    top: tech.top,
-                    left: tech.left,
-                    right: tech.right,
-                  }}
-                >
-                  <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem", textAlign: "center" }}>
-                    {tech.icon}
-                  </div>
-                  <div style={{
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    color: tech.color,
-                    textAlign: "center",
-                    whiteSpace: "nowrap",
-                  }}>
-                    {tech.name}
-                  </div>
-                </div>
-              ))}
-
-              {/* Central Glow */}
-              <div
-                style={{
-                  position: "absolute",
-                  width: "300px",
-                  height: "300px",
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
-                  opacity: 0.2,
-                  animation: "pulse 4s ease-in-out infinite",
-                }}
-              ></div>
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    // About Section
-    const About = () => {
-      return (
-        <section id="about" style={{ padding: "8rem 2rem", background: "var(--bg-secondary)" }}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <h2 style={{
-              fontSize: "clamp(2.5rem, 6vw, 4rem)",
-              fontWeight: "700",
-              marginBottom: "3rem",
-              fontFamily: "Space Grotesk",
-            }}>
-              About Me
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
-              <div>
-                <p style={{
-                  fontSize: "1.2rem",
-                  color: "var(--text-secondary)",
-                  lineHeight: "1.8",
-                  marginBottom: "1.5rem",
-                }}>
-                  I'm a Full Stack Software Engineer with hands-on experience
-                  in building scalable microservices, RESTful APIs, and
-                  database-driven applications. Currently working at{" "}
-                  <span style={{ color: "var(--accent)" }}>Intelleon</span>, I
-                  specialize in developing robust backend systems with Java
-                  and Spring Boot, while crafting intuitive frontend
-                  experiences with React.
-                </p>
-                <p style={{
-                  fontSize: "1.1rem",
-                  color: "var(--text-secondary)",
-                  lineHeight: "1.8",
-                }}>
-                  My expertise includes DevOps practices, CI/CD pipelines, and
-                  agile methodologies. I'm passionate about solving complex
-                  problems, optimizing system performance, and delivering
-                  business value through innovative software solutions.
-                </p>
-              </div>
-            </div>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "2rem",
-              marginTop: "3rem",
-            }}>
-              {[
-                { value: "3+", label: "Years Experience" },
-                { value: "10+", label: "Projects Completed" },
-                { value: "20+", label: "Technologies" },
-                { value: "4", label: "Certifications" }
-              ].map((stat, index) => (
-                <div
-                  key={index}
-                  style={{
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    backdropFilter: "blur(10px)",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-5px)";
-                    e.currentTarget.style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                  }}
-                >
-                  <div style={{
-                    fontSize: "3rem",
-                    fontWeight: "700",
-                    background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    fontFamily: "Space Grotesk",
-                  }}>
-                    {stat.value}
-                  </div>
-                  <div style={{ color: "var(--text-secondary)", marginTop: "0.5rem" }}>
-                    {stat.label}
-                  </div>
+            <div className="tech-grid fade-in">
+              {techStack.map((tech, i) => (
+                <div key={i} className="tech-card-modern float-animation" style={{ animationDelay: `${i * 0.15}s` }}>
+                  <span className="icon">{tech.icon}</span>
+                  <span className="name" style={{ color: tech.color }}>{tech.name}</span>
                 </div>
               ))}
             </div>
           </div>
+          <div className="scroll-indicator"></div>
         </section>
       );
     };
 
-    // Experience Section
+    const About = () => (
+      <section id="about" style={{ background: 'var(--bg-secondary)' }}>
+        <h2 className="gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', marginBottom: '42px' }}>About Me</h2>
+        <div style={{ display: 'grid', gap: '28px', marginBottom: '42px', maxWidth: '900px' }}>
+          <p style={{ fontSize: '1.18rem', color: 'var(--text-secondary)', lineHeight: '1.75' }}>
+            I'm a Full Stack Software Engineer with hands-on experience in building scalable microservices, RESTful APIs, and database-driven applications. Currently working at <span style={{ color: 'var(--accent)', fontWeight: '600' }}>Intelleon</span>, I specialize in developing robust backend systems with Java and Spring Boot, while crafting intuitive frontend experiences with React.
+          </p>
+          <p style={{ fontSize: '1.08rem', color: 'var(--text-secondary)', lineHeight: '1.75' }}>
+            My expertise includes DevOps practices, CI/CD pipelines, and agile methodologies. I'm passionate about solving complex problems, optimizing system performance, and delivering business value through innovative software solutions.
+          </p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '22px' }}>
+          {[
+            { value: '3+', label: 'Years Experience' },
+            { value: '10+', label: 'Projects Completed' },
+            { value: '20+', label: 'Technologies' },
+            { value: '4', label: 'Certifications' }
+          ].map((stat, i) => (
+            <div key={i} className="modern-card" style={{ textAlign: 'center', padding: '30px 24px' }}>
+              <div className="gradient-text" style={{ fontSize: '3.2rem', fontWeight: '800', marginBottom: '8px', position: 'relative', zIndex: 1 }}>{stat.value}</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', fontWeight: '500', position: 'relative', zIndex: 1 }}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+
     const Experience = () => {
       const experiences = [
-        {
-          title: "Associate Software Engineer",
-          company: "Intelleon",
-          period: "Aug 2024 - Present",
-          description:
-            "Developed full-stack features for a long-term Australian loan application system using React for frontend interfaces, Node.js and Express.js for backend APIs, and PostgreSQL for database management.",
-          tags: ["React", "Node.js", "Express.js", "PostgreSQL"],
-        },
-        {
-          title: "Software Engineer Intern",
-          company: "Intelleon",
-          period: "Mar 2024 - Aug 2024",
-          description: "Assisted in the design and development of software applications, including a task management system for a Sri Lankan equipment maintenance company using Java, Spring Boot, and MySQL.",
-          tags: ["Java", "Spring Boot", "MySQL", "REST API"],
-        },
-        {
-          title: "IT Assistant",
-          company: "Zigo Pvt Ltd",
-          period: "Jan 2021 - Dec 2021",
-          description:
-            "Provided technical support and assistance for Point of Sale (POS) systems in daily retail operations using hardware troubleshooting and software tools.",
-          tags: ["POS Systems", "Hardware Support", "Troubleshooting"],
-        },
+        { title: 'Associate Software Engineer', company: 'Intelleon', period: 'Aug 2024 - Present', description: 'Developed full-stack features for a long-term Australian loan application system using React for frontend interfaces, Node.js and Express.js for backend APIs, and PostgreSQL for database management.', tags: ['React', 'Node.js', 'Express.js', 'PostgreSQL'] },
+        { title: 'Software Engineer Intern', company: 'Intelleon', period: 'Mar 2024 - Aug 2024', description: 'Assisted in the design and development of software applications, including a task management system for a Sri Lankan equipment maintenance company using Java, Spring Boot, and MySQL.', tags: ['Java', 'Spring Boot', 'MySQL', 'REST API'] },
+        { title: 'IT Assistant', company: 'Zigo Pvt Ltd', period: 'Jan 2021 - Dec 2021', description: 'Provided technical support and assistance for Point of Sale (POS) systems in daily retail operations using hardware troubleshooting and software tools.', tags: ['POS Systems', 'Hardware Support', 'Troubleshooting'] }
       ];
-      const cardStyle = {
-        background: "var(--bg-card)",
-        border: "1px solid var(--border)",
-        borderRadius: "12px",
-        padding: "2rem",
-        marginBottom: "2rem",
-        backdropFilter: "blur(10px)",
-        transition: "all 0.3s ease",
-      };
 
       return (
-        <section id="experience" style={{ padding: "8rem 2rem" }}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <h2 style={{
-              fontSize: "clamp(2.5rem, 6vw, 4rem)",
-              fontWeight: "700",
-              marginBottom: "3rem",
-              fontFamily: "Space Grotesk",
-            }}>
-              Professional Experience
-            </h2>
-            <div style={{ position: "relative", paddingLeft: "2rem" }}>
-              <div style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: "2px",
-                background: "linear-gradient(to bottom, var(--accent), var(--accent-secondary))",
-              }}></div>
-              {experiences.map((exp, index) => (
-                <div
-                  key={index}
-                  style={{
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    marginBottom: "2rem",
-                    backdropFilter: "blur(10px)",
-                    transition: "all 0.3s ease",
-                  }}
-                  className="fade-in"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateX(10px)";
-                    e.currentTarget.style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateX(0)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                  }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "1rem", flexWrap: "wrap" }}>
-                    <div>
-                      <h3 style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>{exp.title}</h3>
-                      <div style={{ color: "var(--accent)", fontSize: "1.1rem", fontWeight: "600" }}>{exp.company}</div>
-                    </div>
-                    <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem", fontFamily: "Space Grotesk" }}>{exp.period}</div>
+        <section id="experience">
+          <h2 className="gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', marginBottom: '42px' }}>Professional Experience</h2>
+          <div style={{ display: 'grid', gap: '22px', marginBottom: '70px' }}>
+            {experiences.map((exp, i) => (
+              <div key={i} className="modern-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.55rem', marginBottom: '8px', position: 'relative', zIndex: 1 }}>{exp.title}</h3>
+                    <div style={{ color: 'var(--accent)', fontSize: '1.15rem', fontWeight: '600', position: 'relative', zIndex: 1 }}>{exp.company}</div>
                   </div>
-                  <p style={{ color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "1rem" }}>{exp.description}</p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-                    {exp.tags.map((tag, i) => (
-                      <span key={i} className="tech-badge">{tag}</span>
-                    ))}
-                  </div>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', fontWeight: '500', background: 'rgba(255, 255, 255, 0.04)', padding: '7px 14px', borderRadius: '50px', position: 'relative', zIndex: 1 }}>{exp.period}</div>
                 </div>
-              ))}
-            </div>
-            {/* Education Section */}
-            <h3
-              style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                marginTop: "4rem",
-                marginBottom: "2rem",
-                fontFamily: "Space Grotesk",
-              }}
-            >
-              Education
-            </h3>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-                gap: "2rem",
-              }}
-            >
-              <div style={cardStyle}>
-                <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-                  🎓
-                </div>
-                <h4 style={{ fontSize: "1.3rem", marginBottom: "0.5rem" }}>
-                  BSc (Hons) in Computing
-                </h4>
-                <div
-                  style={{ color: "var(--accent)", marginBottom: "0.5rem" }}
-                >
-                  Wrexham University - UK
-                </div>
-                <div
-                  style={{
-                    color: "var(--text-secondary)",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  2025 - 2026 (In Progress)
+                <p style={{ color: 'var(--text-secondary)', lineHeight: '1.7', marginBottom: '18px', position: 'relative', zIndex: 1 }}>{exp.description}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', position: 'relative', zIndex: 1 }}>
+                  {exp.tags.map((tag, j) => (
+                    <span key={j} className="tech-badge">{tag}</span>
+                  ))}
                 </div>
               </div>
-              <div style={cardStyle}>
-                <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-                  💻
-                </div>
-                <h4 style={{ fontSize: "1.3rem", marginBottom: "0.5rem" }}>
-                  Graduate Diploma in Software Engineering
-                </h4>
-                <div
-                  style={{ color: "var(--accent)", marginBottom: "0.5rem" }}
-                >
-                  Institute of Software Engineering (IJSE)
-                </div>
-                <div
-                  style={{
-                    color: "var(--text-secondary)",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  2022 - 2024
-                </div>
+            ))}
+          </div>
+
+          <h3 style={{ fontSize: '2.1rem', fontWeight: '700', marginBottom: '28px' }}>Education</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '22px' }}>
+            {[
+              { icon: '🎓', title: 'BSc (Hons) in Computing', institution: 'Wrexham University - UK', period: '2025 - 2026 (In Progress)' },
+              { icon: '💻', title: 'Graduate Diploma in Software Engineering', institution: 'Institute of Software Engineering (IJSE)', period: '2022 - 2024' }
+            ].map((edu, i) => (
+              <div key={i} className="modern-card">
+                <div style={{ fontSize: '2.8rem', marginBottom: '14px' }}>{edu.icon}</div>
+                <h4 style={{ fontSize: '1.35rem', marginBottom: '10px', position: 'relative', zIndex: 1 }}>{edu.title}</h4>
+                <div style={{ color: 'var(--accent)', marginBottom: '7px', fontWeight: '600', position: 'relative', zIndex: 1 }}>{edu.institution}</div>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', position: 'relative', zIndex: 1 }}>{edu.period}</div>
               </div>
-            </div>
+            ))}
           </div>
         </section>
       );
     };
 
-    // Projects Section
     const Projects = () => {
       const projects = [
-        {
-          title: "Loan Management System",
-          description:
-            "Enterprise-grade Spring Boot application with REST APIs, Kafka event streaming, JWT authentication, and production-ready patterns. Built for managing loan applications with microservices architecture.",
-          tags: [
-            "Spring Boot 3.2.4",
-            "Spring Security",
-            "JWT",
-            "Kafka",
-            "MySQL",
-            "Docker",
-          ],
-          github:
-            "https://github.com/Viraj-Lakshitha12/Loan-Management-System",
-          language: "Java",
-          isPrivate: false,
-        },
-        {
-          title: "Food Ordering System",
-          description:
-            "A modern and user-friendly Food Ordering App built with React, Tailwind CSS, Node.js, and TypeScript. Features real-time updates and seamless user experience.",
-          tags: [
-            "React",
-            "Node.js",
-            "TypeScript",
-            "MongoDB",
-            "Express.js",
-            "Tailwind CSS",
-          ],
-          github: "https://github.com/Viraj-Lakshitha12/Food-Ordering-System",
-          language: "TypeScript",
-          isPrivate: false,
-        },
-        {
-          title: "E-Commerce API",
-          description:
-            "A complete backend system for an e-commerce platform built using microservices architecture. Includes authentication, user management, product catalog, cart, orders, payments, inventory, and notifications.",
-          tags: [
-            "Spring Boot",
-            "PostgreSQL",
-            "Microservices",
-            "Docker",
-            "REST API",
-          ],
-          github: "https://github.com/Viraj-Lakshitha12/E-Commerce-API",
-          language: "Java",
-          isPrivate: true,
-        },
-        {
-          title: "Travel Planning Application",
-          description:
-            "Dynamic web application using microservices with Spring Boot, utilizing Hibernate for efficient data handling and MySQL for storage to streamline travel itinerary planning.",
-          tags: [
-            "Spring Boot",
-            "Hibernate",
-            "MySQL",
-            "JavaScript",
-            "REST API",
-          ],
-          github:
-            "https://github.com/Viraj-Lakshitha12/Travel-Planning-Application",
-          language: "JavaScript",
-          isPrivate: false,
-        },
-        {
-          title: "SC Graphic E-Commerce",
-          description:
-            "E-commerce website for SC Graphic featuring an admin dashboard for product management, integrated with Daraz store to sync product listings. Achieving 100+ daily visits.",
-          tags: ["React", "Spring Boot", "MySQL", "API Integration"],
-          language: "React",
-          isPrivate: false,
-        },
-        {
-          title: "Node.js with CI/CD",
-          description:
-            "Node.js project demonstrating continuous integration and deployment practices with modern DevOps tools.",
-          tags: ["Node.js", "CI/CD", "DevOps", "Jenkins", "Docker"],
-          github: "https://github.com/Viraj-Lakshitha12/node-with-ci-cd",
-          language: "JavaScript",
-          isPrivate: false,
-        },
+        { title: 'Loan Management System', description: 'Enterprise-grade Spring Boot application with REST APIs, Kafka event streaming, JWT authentication, and production-ready patterns. Built for managing loan applications with microservices architecture.', tags: ['Spring Boot 3.2.4', 'Spring Security', 'JWT', 'Kafka', 'MySQL', 'Docker'], github: 'https://github.com/Viraj-Lakshitha12/Loan-Management-System', language: 'Java', color: '#b07219', isPrivate: false },
+        { title: 'Food Ordering System', description: 'A modern and user-friendly Food Ordering App built with React, Tailwind CSS, Node.js, and TypeScript. Features real-time updates and seamless user experience.', tags: ['React', 'Node.js', 'TypeScript', 'MongoDB', 'Express.js', 'Tailwind CSS'], github: 'https://github.com/Viraj-Lakshitha12/Food-Ordering-System', language: 'TypeScript', color: '#3178c6', isPrivate: false },
+        { title: 'E-Commerce API', description: 'A complete backend system for an e-commerce platform built using microservices architecture. Includes authentication, user management, product catalog, cart, orders, payments, inventory, and notifications.', tags: ['Spring Boot', 'PostgreSQL', 'Microservices', 'Docker', 'REST API'], github: 'https://github.com/Viraj-Lakshitha12/E-Commerce-API', language: 'Java', color: '#b07219', isPrivate: true },
+        { title: 'Travel Planning Application', description: 'Dynamic web application using microservices with Spring Boot, utilizing Hibernate for efficient data handling and MySQL for storage to streamline travel itinerary planning.', tags: ['Spring Boot', 'Hibernate', 'MySQL', 'JavaScript', 'REST API'], github: 'https://github.com/Viraj-Lakshitha12/Travel-Planning-Application', language: 'JavaScript', color: '#f1e05a', isPrivate: false },
+        { title: 'SC Graphic E-Commerce', description: 'E-commerce website for SC Graphic featuring an admin dashboard for product management, integrated with Daraz store to sync product listings. Achieving 100+ daily visits.', tags: ['React', 'Spring Boot', 'MySQL', 'API Integration'], language: 'React', color: '#61dafb', isPrivate: false },
+        { title: 'Node.js with CI/CD', description: 'Node.js project demonstrating continuous integration and deployment practices with modern DevOps tools.', tags: ['Node.js', 'CI/CD', 'DevOps', 'Jenkins', 'Docker'], github: 'https://github.com/Viraj-Lakshitha12/node-with-ci-cd', language: 'JavaScript', color: '#f1e05a', isPrivate: false }
       ];
 
-      const sectionStyle = {
-        padding: "8rem 2rem",
-        background: "var(--bg-secondary)",
-      };
-
-      const gridStyle = {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-        gap: "2rem",
-        marginTop: "3rem",
-      };
-
-      const cardStyle = {
-        background: "var(--bg-card)",
-        border: "1px solid var(--border)",
-        borderRadius: "12px",
-        padding: "2rem",
-        backdropFilter: "blur(10px)",
-        transition: "all 0.3s ease",
-        cursor: "pointer",
-        position: "relative",
-        overflow: "hidden",
-      };
-
-      const languageColors = {
-        Java: "#b07219",
-        JavaScript: "#f1e05a",
-        TypeScript: "#3178c6",
-        React: "#61dafb",
-      };
-
       return (
-        <section id="projects" style={sectionStyle}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: "clamp(2.5rem, 6vw, 4rem)",
-                fontWeight: "700",
-                marginBottom: "1rem",
-                fontFamily: "Space Grotesk",
-              }}
-            >
-              Featured Projects
-            </h2>
-            <p
-              style={{
-                color: "var(--text-secondary)",
-                fontSize: "1.1rem",
-                marginBottom: "3rem",
-              }}
-            >
-              Explore my latest work on GitHub - from enterprise applications
-              to experimental projects
-            </p>
-            <div style={gridStyle}>
-              {projects.map((project, index) => (
-                <div
-                  key={index}
-                  style={cardStyle}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-10px)";
-                    e.currentTarget.style.borderColor = "var(--accent)";
-                    e.currentTarget.style.boxShadow =
-                      "0 20px 40px rgba(0, 245, 255, 0.2)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                  className="fade-in"
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "start",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <h3 style={{ fontSize: "1.5rem", flex: 1 }}>
-                      {project.title}
-                    </h3>
-                    {project.isPrivate && (
-                      <span
-                        style={{
-                          background: "rgba(255, 0, 255, 0.2)",
-                          color: "var(--accent-secondary)",
-                          padding: "0.3rem 0.8rem",
-                          borderRadius: "6px",
-                          fontSize: "0.75rem",
-                          fontWeight: "600",
-                        }}
-                      >
-                        PRIVATE
-                      </span>
-                    )}
-                  </div>
-                  <p
-                    style={{
-                      color: "var(--text-secondary)",
-                      lineHeight: "1.6",
-                      marginBottom: "1.5rem",
-                      minHeight: "80px",
-                    }}
-                  >
-                    {project.description}
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "0.5rem",
-                      marginBottom: "1.5rem",
-                    }}
-                  >
-                    {project.tags.map((tag, i) => (
-                      <span key={i} className="tech-badge">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: "auto",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "12px",
-                          height: "12px",
-                          borderRadius: "50%",
-                          background:
-                            languageColors[project.language] ||
-                            "var(--accent)",
-                        }}
-                      ></div>
-                      <span
-                        style={{
-                          color: "var(--text-secondary)",
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        {project.language}
-                      </span>
-                    </div>
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        className="github-link"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="currentColor"
-                        >
-                          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-                        </svg>
-                        View Code
-                      </a>
-                    )}
-                  </div>
+        <section id="projects" style={{ background: 'var(--bg-secondary)' }}>
+          <h2 className="gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', marginBottom: '18px' }}>Featured Projects</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.12rem', marginBottom: '42px', maxWidth: '700px' }}>
+            Explore my latest work on GitHub - from enterprise applications to experimental projects
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '22px' }}>
+            {projects.map((project, i) => (
+              <div key={i} className="modern-card" style={{ cursor: 'pointer' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '14px' }}>
+                  <h3 style={{ fontSize: '1.45rem', flex: 1, position: 'relative', zIndex: 1 }}>{project.title}</h3>
+                  {project.isPrivate && (
+                    <span style={{ background: 'rgba(255, 0, 255, 0.12)', color: 'var(--accent-secondary)', padding: '5px 11px', borderRadius: '50px', fontSize: '0.72rem', fontWeight: '600', border: '1px solid rgba(255, 0, 255, 0.25)' }}>PRIVATE</span>
+                  )}
                 </div>
-              ))}
-            </div>
+                <p style={{ color: 'var(--text-secondary)', lineHeight: '1.65', marginBottom: '18px', minHeight: '75px', position: 'relative', zIndex: 1 }}>
+                  {project.description}
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', marginBottom: '18px', position: 'relative', zIndex: 1 }}>
+                  {project.tags.map((tag, j) => (
+                    <span key={j} className="tech-badge">{tag}</span>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+                    <div style={{ width: '11px', height: '11px', borderRadius: '50%', background: project.color }}></div>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>{project.language}</span>
+                  </div>
+                  {project.github && (
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', color: 'var(--accent)', textDecoration: 'none', padding: '7px 14px', border: '1px solid var(--accent)', borderRadius: '50px', fontSize: '0.86rem', fontWeight: '500', transition: 'all 0.3s ease' }} onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = '#000'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--accent)'; }}>
+                      <i className="fab fa-github"></i> View Code
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       );
     };
 
-    // Skills Section
     const Skills = () => {
       const skillCategories = [
-        { title: "Programming Languages", icon: "💻", skills: ["Java", "JavaScript", "TypeScript", "Python"] },
-        { title: "Frontend", icon: "🎨", skills: ["React", "Redux", "HTML5", "CSS3", "Tailwind CSS"] },
-        { title: "Backend", icon: "⚙️", skills: ["Spring Boot", "Node.js", "Express.js"] },
-        { title: "Databases", icon: "🗄️", skills: ["MySQL", "MongoDB", "PostgreSQL", "Redis"] },
-        { title: "DevOps & Cloud", icon: "☁️", skills: ["AWS (EC2, S3)", "Docker", "Kubernetes", "Jenkins", "NGINX"] },
-        { title: "Tools & Others", icon: "🛠️", skills: ["Git/GitHub", "Maven", "Hibernate", "JWT", "REST API", "CI/CD", "Agile/Scrum"] },
+        { title: 'Programming Languages', icon: '💻', skills: ['Java', 'JavaScript', 'TypeScript', 'Python'] },
+        { title: 'Frontend', icon: '🎨', skills: ['React', 'Redux', 'HTML5', 'CSS3', 'Tailwind CSS'] },
+        { title: 'Backend', icon: '⚙️', skills: ['Spring Boot', 'Node.js', 'Express.js'] },
+        { title: 'Databases', icon: '🗄️', skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'Redis'] },
+        { title: 'DevOps & Cloud', icon: '☁️', skills: ['AWS (EC2, S3)', 'Docker', 'Kubernetes', 'Jenkins', 'NGINX'] },
+        { title: 'Tools & Others', icon: '🛠️', skills: ['Git/GitHub', 'Maven', 'Hibernate', 'JWT', 'REST API', 'CI/CD', 'Agile/Scrum'] }
       ];
+
       const certifications = [
-        "Kubernetes For Absolute Beginners - KodeKloud",
-        "Docker For Absolute Beginners - KodeKloud",
-        "Linux For Absolute Beginners - KodeKloud",
-        "AWS Basics - KodeKloud",
+        'Kubernetes For Absolute Beginners - KodeKloud',
+        'Docker For Absolute Beginners - KodeKloud',
+        'Linux For Absolute Beginners - KodeKloud',
+        'AWS Basics - KodeKloud'
       ];
-
-      const sectionStyle = {
-        padding: "8rem 2rem",
-      };
-
-      const gridStyle = {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        gap: "2rem",
-        marginTop: "3rem",
-      };
-
-      const cardStyle = {
-        background: "var(--bg-card)",
-        border: "1px solid var(--border)",
-        borderRadius: "12px",
-        padding: "2rem",
-        backdropFilter: "blur(10px)",
-        transition: "all 0.3s ease",
-      };
-
 
       return (
-        <section id="skills" style={{ padding: "8rem 2rem" }}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <h2 style={{
-              fontSize: "clamp(2.5rem, 6vw, 4rem)",
-              fontWeight: "700",
-              marginBottom: "3rem",
-              fontFamily: "Space Grotesk",
-            }}>
-              Skills & Technologies
-            </h2>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "2rem",
-              marginTop: "3rem",
-            }}>
-              {skillCategories.map((category, index) => (
-                <div
-                  key={index}
-                  style={{
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    backdropFilter: "blur(10px)",
-                    transition: "all 0.3s ease",
-                  }}
-                  className="fade-in"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-5px)";
-                    e.currentTarget.style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                  }}
-                >
-                  <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>{category.icon}</div>
-                  <h3 style={{ fontSize: "1.5rem", marginBottom: "1.5rem", color: "var(--accent)" }}>
-                    {category.title}
-                  </h3>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-                    {category.skills.map((skill, i) => (
-                      <span key={i} className="tech-badge">{skill}</span>
-                    ))}
-                  </div>
+        <section id="skills">
+          <h2 className="gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', marginBottom: '42px' }}>Skills & Technologies</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '22px', marginBottom: '70px' }}>
+            {skillCategories.map((category, i) => (
+              <div key={i} className="modern-card">
+                <div style={{ fontSize: '2.8rem', marginBottom: '14px' }}>{category.icon}</div>
+                <h3 style={{ fontSize: '1.45rem', marginBottom: '18px', color: 'var(--accent)', position: 'relative', zIndex: 1 }}>{category.title}</h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', position: 'relative', zIndex: 1 }}>
+                  {category.skills.map((skill, j) => (
+                    <span key={j} className="tech-badge">{skill}</span>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {/* Certifications */}
-            <h3
-              style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                marginTop: "4rem",
-                marginBottom: "2rem",
-                fontFamily: "Space Grotesk",
-              }}
-            >
-              Certifications
-            </h3>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "1rem",
-              }}
-            >
-              {certifications.map((cert, index) => (
-                <div
-                  key={index}
-                  style={{
-                    ...cardStyle,
-                    padding: "1.5rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1rem",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "2rem",
-                      color: "var(--accent-tertiary)",
-                    }}
-                  >
-                    ✓
-                  </div>
-                  <div style={{ color: "var(--text-secondary)" }}>{cert}</div>
-                </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 style={{ fontSize: '2.1rem', fontWeight: '700', marginBottom: '28px' }}>Certifications</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
+            {certifications.map((cert, i) => (
+              <div key={i} className="modern-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{ fontSize: '1.9rem', color: 'var(--accent-tertiary)' }}>✓</div>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', position: 'relative', zIndex: 1 }}>{cert}</div>
+              </div>
+            ))}
           </div>
         </section>
       );
     };
 
-    // Contact Section with Map
     const Contact = () => {
       const mapRef = useRef(null);
 
       useEffect(() => {
         if (mapRef.current && !mapRef.current._leaflet_id) {
           const map = L.map(mapRef.current).setView([6.9271, 79.8612], 13);
-          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "© OpenStreetMap contributors",
-          }).addTo(map);
-
-          const customIcon = L.divIcon({
-            className: "custom-marker",
-            html: '<div style="background: var(--accent); width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px var(--accent);"></div>',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15],
-          });
-
-          L.marker([6.9271, 79.8612], { icon: customIcon })
-            .addTo(map)
-            .bindPopup("<b>Colombo, Sri Lanka</b><br>Available for opportunities");
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
+          const customIcon = L.divIcon({ className: 'custom-marker', html: '<div style="background: var(--accent); width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 25px var(--accent);"></div>', iconSize: [30, 30], iconAnchor: [15, 15] });
+          L.marker([6.9271, 79.8612], { icon: customIcon }).addTo(map).bindPopup('<b>Colombo, Sri Lanka</b><br>Available for opportunities');
         }
       }, []);
-      const sectionStyle = {
-        padding: "8rem 2rem",
-        background: "var(--bg-secondary)",
-      };
-
-      const gridStyle = {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        gap: "2rem",
-        marginTop: "3rem",
-      };
-
-      const cardStyle = {
-        background: "var(--bg-card)",
-        border: "1px solid var(--border)",
-        borderRadius: "12px",
-        padding: "2rem",
-        backdropFilter: "blur(10px)",
-        textAlign: "center",
-        transition: "all 0.3s ease",
-      };
 
       return (
-        <section id="contact" style={{ padding: "8rem 2rem", background: "var(--bg-secondary)" }}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: "clamp(2.5rem, 6vw, 4rem)",
-                fontWeight: "700",
-                marginBottom: "1rem",
-                fontFamily: "Space Grotesk",
-                textAlign: "center",
-              }}>
-              Let's Work Together
-            </h2>
-            <p style={{
-              fontSize: "1.2rem",
-              color: "var(--text-secondary)",
-              lineHeight: "1.8",
-              marginBottom: "4rem",
-              textAlign: "center",
-              maxWidth: "700px",
-              margin: "0 auto 4rem",
-            }}>
-              I'm currently available for freelance work and full-time opportunities. Feel free to reach out!
-            </p>
+        <section id="contact" style={{ background: 'var(--bg-secondary)' }}>
+          <h2 className="gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', marginBottom: '18px', textAlign: 'center' }}>Let's Work Together</h2>
+          <p style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', lineHeight: '1.75', textAlign: 'center', maxWidth: '700px', margin: '0 auto 42px' }}>
+            I'm currently available for freelance work and full-time opportunities. Feel free to reach out!
+          </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginTop: "3rem" }}>
-              {[
-                { icon: "📧", title: "Email", content: "viraj.lakshitha.22222@gmail.com", link: "mailto:viraj.lakshitha.22222@gmail.com" },
-                { icon: "📱", title: "Phone", content: "+94 769 291 462", link: "tel:+94769291462" },
-                { icon: "📍", title: "Location", content: "Colombo, Sri Lanka" }
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  style={{
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    backdropFilter: "blur(10px)",
-                    textAlign: "center",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-5px)";
-                    e.currentTarget.style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                  }}
-                >
-                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>{item.icon}</div>
-                  <h4 style={{ marginBottom: "1rem" }}>{item.title}</h4>
-                  {item.link ? (
-                    <a href={item.link} style={{ color: "var(--accent)", textDecoration: "none", wordBreak: "break-word" }}>
-                      {item.content}
-                    </a>
-                  ) : (
-                    <p style={{ color: "var(--text-secondary)" }}>{item.content}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Map */}
-            <div style={{ marginTop: "4rem" }}>
-              <h3
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: "700",
-                  marginBottom: "2rem",
-                  fontFamily: "Space Grotesk",
-                }}
-              >
-                Find Me Here
-              </h3>
-              <div ref={mapRef} className="map-container"></div>
-            </div>
-
-            {/* Social Links */}
-            <div style={{ marginTop: "4rem", textAlign: "center" }}>
-              <h3
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: "700",
-                  marginBottom: "2rem",
-                  fontFamily: "Space Grotesk",
-                }}
-              >
-                Connect With Me
-              </h3>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "2rem",
-                  flexWrap: "wrap",
-                }}
-              >
-                <a
-                  href="https://github.com/Viraj-Lakshitha12"
-                  target="_blank"
-                  className="github-link"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                  GitHub
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/viraj-lakshitha01/"
-                  target="_blank"
-                  className="github-link"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  </svg>
-                  LinkedIn
-                </a>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '22px', marginBottom: '70px' }}>
+            {[
+              { icon: '📧', title: 'Email', content: 'viraj.lakshitha.22222@gmail.com', link: 'mailto:viraj.lakshitha.22222@gmail.com' },
+              { icon: '📱', title: 'Phone', content: '+94 769 291 462', link: 'tel:+94769291462' },
+              { icon: '📍', title: 'Location', content: 'Colombo, Sri Lanka' }
+            ].map((item, i) => (
+              <div key={i} className="modern-card" style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '3.2rem', marginBottom: '14px' }}>{item.icon}</div>
+                <h4 style={{ marginBottom: '10px', fontSize: '1.25rem', position: 'relative', zIndex: 1 }}>{item.title}</h4>
+                {item.link ? (
+                  <a href={item.link} style={{ color: 'var(--accent)', textDecoration: 'none', wordBreak: 'break-word', fontSize: '1.02rem', position: 'relative', zIndex: 1 }}>{item.content}</a>
+                ) : (
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', position: 'relative', zIndex: 1 }}>{item.content}</p>
+                )}
               </div>
+            ))}
+          </div>
+
+          <div style={{ marginBottom: '70px' }}>
+            <h3 style={{ fontSize: '2.1rem', fontWeight: '700', marginBottom: '28px' }}>Find Me Here</h3>
+            <div ref={mapRef} className="map-container"></div>
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <h3 style={{ fontSize: '2.1rem', fontWeight: '700', marginBottom: '28px' }}>Connect With Me</h3>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '18px', flexWrap: 'wrap' }}>
+              {[
+                { icon: 'github', url: 'https://github.com/Viraj-Lakshitha12', label: 'GitHub' },
+                { icon: 'linkedin', url: 'https://www.linkedin.com/in/viraj-lakshitha01/', label: 'LinkedIn' }
+              ].map((social, i) => (
+                <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', color: 'var(--accent)', textDecoration: 'none', padding: '13px 26px', border: '1.5px solid var(--accent)', borderRadius: '50px', fontSize: '1.02rem', fontWeight: '600', transition: 'all 0.3s ease' }} onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(135deg, var(--accent), var(--accent-secondary))'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 28px var(--glow)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                  <i className={`fab fa-${social.icon}`} style={{ fontSize: '1.25rem' }}></i> {social.label}
+                </a>
+              ))}
             </div>
           </div>
         </section>
       );
     };
 
-    // Footer Component
-    const Footer = () => {
-      return (
-        <footer style={{
-          padding: "3rem 2rem",
-          background: "var(--bg-primary)",
-          borderTop: "1px solid var(--border)",
-          textAlign: "center",
-        }}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}>
-              Built with React · Designed with passion for 2026
-            </p>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-              © 2026 Viraj Lakshitha Adhikari. All rights reserved.
-            </p>
-          </div>
-        </footer>
-      );
-    };
+    const Footer = () => (
+      <footer style={{ padding: '42px 24px', background: 'var(--bg-primary)', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '10px', fontSize: '1.02rem' }}>
+            Built with React · Designed with passion for 2026
+          </p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem' }}>
+            © 2026 Viraj Lakshitha Adhikari. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    );
 
-    // Main App Component
-    const App = () => {
-      return (
-        <ThemeProvider>
-          <div className="main-content">
-            <Navigation />
-            <Hero />
-            <About />
-            <Experience />
-            <Projects />
-            <Skills />
-            <Contact />
-            <Footer />
-            <ThemeToggleButton />
-          </div>
-        </ThemeProvider>
-      );
-    };
+    const App = () => (
+      <ThemeProvider>
+        <ModernNavbar />
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Contact />
+        <Footer />
+      </ThemeProvider>
+    );
 
-    // Render App
-    const root = ReactDOM.createRoot(document.getElementById("root"));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
 </body>
