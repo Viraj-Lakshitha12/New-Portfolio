@@ -1,5 +1,6 @@
 const { useState, useEffect, useRef } = React;
 
+// THEME CONTEXT
 const ThemeContext = React.createContext();
 
 const ThemeProvider = ({ children }) => {
@@ -460,9 +461,70 @@ const Footer = () => (
   </footer>
 );
 
+// SCROLL PROGRESS BAR - Ultra Modern
+const ScrollProgress = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return <div className="scroll-progress" style={{ width: `${scrollProgress}%` }}></div>;
+};
+
+// SCROLL TO TOP BUTTON - Modern FAB
+const ScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <>
+      {isVisible && (
+        <div className="fab-container">
+          <button 
+            className="fab-button" 
+            onClick={scrollToTop}
+            data-tooltip="Back to top"
+            aria-label="Scroll to top"
+          >
+            <i className="fas fa-arrow-up"></i>
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
+
 // MAIN APP COMPONENT
 const App = () => (
   <ThemeProvider>
+    <ScrollProgress />
     <ModernNavbar />
     <Hero />
     <About />
@@ -471,6 +533,7 @@ const App = () => (
     <Skills />
     <Contact />
     <Footer />
+    <ScrollToTop />
   </ThemeProvider>
 );
 
