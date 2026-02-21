@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState, useCallback } from "react";
+import { Suspense, lazy, useState, useCallback, useEffect } from "react";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -6,7 +6,6 @@ import ScrollProgress from "./components/ui/ScrollProgress";
 import ScrollToTop from "./components/ui/ScrollToTop";
 import ThreeAnimation from "./components/ui/ThreeAnimation";
 
-// ── Lazy-load heavy sections so they are code-split into separate chunks ──
 const Hero = lazy(() => import("./components/sections/Hero"));
 const About = lazy(() => import("./components/sections/About"));
 const Experience = lazy(() => import("./components/sections/Experience"));
@@ -43,9 +42,17 @@ function SectionLoader() {
 export default function App() {
   const [showPortfolio, setShowPortfolio] = useState(false);
 
-  // Called by ThreeAnimation when its fade-out finishes
   const handleAnimationComplete = useCallback(() => {
     setShowPortfolio(true);
+  }, []);
+
+  // ── Safety net: if Three.js fails or hangs on production, show portfolio
+  // after 6 seconds so the page never stays white forever
+  useEffect(() => {
+    const fallback = setTimeout(() => {
+      setShowPortfolio(true);
+    }, 6000);
+    return () => clearTimeout(fallback);
   }, []);
 
   return (
