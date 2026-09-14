@@ -87,31 +87,32 @@ export default function Contact() {
         </motion.form>
 
         <motion.div
-          className="glass rounded-3xl relative h-[420px] overflow-hidden flex flex-col items-center justify-center"
+          className="glass rounded-3xl overflow-hidden"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="radar-ping" />
-            <span className="radar-ping" style={{ animationDelay: '1s' }} />
-            <span className="radar-ping" style={{ animationDelay: '2s' }} />
-          </div>
-          <div className="relative z-10 flex flex-col items-center text-center">
-            <div className="relative">
-              <div
-                className="absolute -inset-5 rounded-full blur-2xl glow-pulse"
-                style={{ background: 'var(--glow)' }}
-              />
-              <MapPin className="w-24 h-24 relative" style={{ color: 'var(--accent)' }} strokeWidth={1.2} />
-              <span className="particle p1" />
-              <span className="particle p2" />
-              <span className="particle p3" />
-              <span className="particle p4" />
-            </div>
-            <h3 className="mt-7 text-xl font-bold glow-text">Based in Bandaragama</h3>
-            <p className="text-muted-foreground mt-1 font-mono text-sm glow-text">Sri Lanka</p>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31699.989790721247!2d79.96687584142953!3d6.708823020350504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2496ac4ce5535%3A0xd2ed928760ec3c50!2sBandaragama!5e0!3m2!1sen!2slk!4v1789400399477!5m2!1sen!2slk"
+            width="100%"
+            height="420"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+          <div className="p-4 text-center">
+            <a
+              href="https://www.google.com/maps/place/Bandaragama/@6.708823,79.966876,13z/data=!3m1!4b1!4m6!3m5!1s0x3ae2496ac4ce5535:0xd2ed928760ec3c50!8m2!3d6.708823!4d79.966876!16s%2Fg%2F1225884f?entry=ttu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass inline-flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              style={{ color: 'var(--accent)' }}
+            >
+              <MapPin className="w-4 h-4" />
+              Get Directions
+            </a>
           </div>
         </motion.div>
       </div>
