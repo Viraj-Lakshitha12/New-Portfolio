@@ -1,7 +1,7 @@
 # Portfolio Website — Viraj Lakshitha Adhikari
 
 ## 📌 Overview
-A modern, responsive portfolio website built with **React + Vite** that showcases my skills, projects, and experience as a Full Stack Software Engineer. Clean, lightweight, and optimized for performance.
+A modern portfolio website for Viraj Lakshitha Adhikari — Full Stack Software Engineer. Built with React and Vite, featuring smooth animations, dark/light themes, and a clean glassmorphism design.
 
 ## 🚀 Features
 - **Responsive Design** — Works seamlessly on mobile, tablet, and desktop
