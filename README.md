@@ -1,80 +1,83 @@
 # Portfolio Website — Viraj Lakshitha Adhikari
 
 ## 📌 Overview
-A modern, responsive portfolio website built with **React + Vite** that showcases my skills, projects, and experience as a Full Stack Software Engineer. Migrated from a single-file CDN approach to a fully component-based Vite project for optimal performance and maintainability.
+A modern, responsive portfolio website built with **React + Vite** that showcases my skills, projects, and experience as a Full Stack Software Engineer. Clean, lightweight, and optimized for performance.
 
 ## 🚀 Features
 - **Responsive Design** — Works seamlessly on mobile, tablet, and desktop
-- **3D Intro Animation** — Three.js powered intro with nebula, torus, and vortex particles
-- **Smooth Animations** — CSS animations, fade-ins, and interactive hover effects
-- **Interactive Navigation** — Fixed navbar with scroll-spy active section highlighting
-- **Theme System** — Dark, Light, Auto, and Colorful 2026 modes with persistent preference
-- **Project Showcase** — GitHub-integrated project cards with language indicators
-- **Interactive Map** — Leaflet.js location display (Colombo, Sri Lanka)
-- **Contact Form** — FormSubmit-powered email form with status feedback
-- **Scroll Progress Bar** — Top-of-page reading progress indicator
-- **Code Splitting** — React lazy loading for all sections (fast initial load)
+- **Smooth Animations** — Framer Motion powered animations and interactive hover effects
+- **Interactive Navigation** — Fixed navbar with smooth scroll to sections
+- **Theme System** — Dark and Light modes with persistent preference
+- **Project Showcase** — Project cards with technology tags
+- **Contact Form** — Client-side contact form with visual feedback
+- **3D Background** — Three.js powered mesh background
+- **Glassmorphism UI** — Modern glass-effect cards with subtle borders
 
 ## 🛠️ Tech Stack
-- **Framework**: React 18 + Vite 5
-- **3D Graphics**: Three.js 0.169 (dynamic import — never blocks render)
-- **Map**: Leaflet.js 1.9.4 (npm package)
-- **Styling**: CSS3 with custom properties (CSS variables for theming)
-- **Icons**: Font Awesome 6.4 (CDN)
-- **Fonts**: Google Fonts — Inter & Space Grotesk
-- **Form**: FormSubmit (no backend needed)
-- **Build Tool**: Vite with manual chunk splitting
+- **Framework**: React 18 + Vite 8
+- **Animations**: Framer Motion 11
+- **3D Graphics**: Three.js 0.171
+- **Styling**: Tailwind CSS 3.4
+- **Icons**: Lucide React
+- **Routing**: React Router DOM 6
+- **Theme**: next-themes
+- **Build Tool**: Vite
 
 ## 📁 Project Structure
 
 ```
 portfolio/
-├── index.html                        # Vite entry HTML (fonts, Font Awesome CDN)
-├── vite.config.js                    # Vite config with React plugin & chunk splitting
-├── package.json                      # Dependencies (react, three, leaflet)
+├── index.html                        # Vite entry HTML
+├── vite.config.js                    # Vite config with React plugin & path alias
+├── package.json                      # Dependencies
 ├── README.md                         # This file
 └── src/
     ├── main.jsx                      # App entry point
-    ├── App.jsx                       # Root component with lazy-loaded sections
-    ├── index.css                     # Global styles & CSS variables (all themes)
+    ├── App.jsx                       # Root component with Router
+    ├── index.css                     # Global styles & CSS variables
     ├── data/
     │   └── portfolioData.js          # All static content (edit here to update site)
-    ├── context/
-    │   └── ThemeContext.jsx          # Theme state & mode-selection modal
+    ├── lib/
+    │   ├── theme-context.jsx        # Theme state management
+    │   └── utils.js                 # Utility functions
     ├── hooks/
-    │   └── useScrollSpy.js           # useScrolled, useScrollProgress, useScrollSpy
+    │   ├── use-mobile.jsx           # Mobile breakpoint hook
+    │   └── use-size.jsx             # Element size hook
+    ├── pages/
+    │   └── Home.jsx                 # Main page with all sections
     └── components/
-        ├── layout/
-        │   ├── Navbar.jsx            # Fixed pill navbar with scroll-spy
-        │   └── Footer.jsx            # Footer with quick links & social icons
-        ├── sections/
-        │   ├── Hero.jsx              # Intro + orbiting tech stack animation
-        │   ├── About.jsx             # Bio + stats grid
-        │   ├── Experience.jsx        # Work history + education cards
-        │   ├── Projects.jsx          # GitHub project cards
-        │   ├── Skills.jsx            # Skill categories + certifications
-        │   └── Contact.jsx           # Form + contact cards + Leaflet map
+        ├── Hero.jsx                 # Hero section with profile and animations
+        ├── TechStack.jsx            # Technology stack display
+        ├── Experience.jsx           # Work experience timeline
+        ├── Projects.jsx             # Project showcase cards
+        ├── Education.jsx            # Education history
+        ├── Contact.jsx              # Contact form and info
+        ├── Footer.jsx               # Footer with social links
+        ├── Navbar.jsx               # Navigation bar
+        ├── Preloader.jsx            # Loading animation
+        ├── MeshBackground.jsx       # Three.js background
+        ├── WireframeOrb.jsx         # 3D orb component
+        ├── GoogleIcon.jsx           # Google icon component
+        ├── ScrollToTop.jsx          # Scroll to top button
         └── ui/
-            ├── ThreeAnimation.jsx    # Full-screen Three.js intro (lazy loaded)
-            ├── ScrollProgress.jsx    # Top progress bar
-            └── ScrollToTop.jsx       # Floating scroll-to-top button
+            └── image.jsx            # Simple image component
 ```
 
 ## 🎨 Design Elements
-- **Color Scheme**: Dark theme with neon accents (`#00f5ff`, `#ff00ff`, `#00ff88`)
-- **Typography**: Inter (body) & Space Grotesk (headings)
+- **Color Scheme**: Dark theme with neon accents (CSS variables for easy customization)
+- **Typography**: Inter Tight & JetBrains Mono
 - **Glassmorphism**: Backdrop-blur cards with subtle borders
-- **Themes**: 4 modes — Dark (default), Light, Auto (system), Colorful 2026
-- **Animations**: Mesh gradient background, orbit system, particle floats, gradient text
+- **Themes**: Dark (default) and Light modes
+- **Animations**: Mesh gradient background, floating elements, gradient text, hover effects
 
 ## 📱 Sections
-1. **Hero** — Name, title, CTA buttons, social links, orbiting tech stack visualization
-2. **About** — Personal overview with 4 key statistics
-3. **Experience** — 3 professional roles + 2 education entries
-4. **Projects** — 6 projects with tags, language indicators, and GitHub links
-5. **Skills** — 6 skill categories + 4 KodeKloud certifications
-6. **Contact** — Contact form, info cards (email/phone/location), Leaflet map
-7. **Footer** — Quick links, tech stack list, social icons
+1. **Hero** — Name, title, profile image, CTA buttons
+2. **TechStack** — Technology skills display
+3. **Experience** — Work experience timeline
+4. **Projects** — Project showcase with technology tags
+5. **Education** — Education history cards
+6. **Contact** — Contact form and location info
+7. **Footer** — Social links and copyright
 
 ## 🏁 Getting Started
 
@@ -94,18 +97,17 @@ npm run preview
 
 ## ✏️ Updating Content
 
-All site content lives in **one file**: `src/data/portfolioData.js`
+Edit content in the component files or `src/data/portfolioData.js`:
 
-| Export | What it controls |
+| File/Component | What it controls |
 |---|---|
-| `experiences` | Work history cards |
-| `education` | Education cards |
-| `projects` | Project cards + GitHub links |
-| `skillCategories` | Skill badge groups |
-| `certifications` | Certification list |
-| `contactInfo` | Email, phone, location cards |
-| `techStack` | Orbiting icons in Hero |
-| `socialLinks` | GitHub / LinkedIn / Email links |
+| `Hero.jsx` | Profile image, name, title, intro text |
+| `Experience.jsx` | Work history cards |
+| `Education.jsx` | Education cards |
+| `Projects.jsx` | Project cards with images and tags |
+| `Contact.jsx` | Contact form and location info |
+| `Footer.jsx` | Social links |
+| `portfolioData.js` | Additional data exports |
 
 ## 📄 License
 © 2026 Viraj Lakshitha Adhikari. All rights reserved.
