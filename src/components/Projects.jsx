@@ -4,7 +4,11 @@ import { Image } from '@/components/ui/image';
 import { ArrowUpRight } from 'lucide-react';
 
 const PROJECT1 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/36cff83c8_generated_e864fc7a.jpg';
-const PROJECT2 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/5dc217e29_generated_f71d9d3b.jpg';
+
+const PROJECT2 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/4263eb89b_generated_image.png';
+const PROJECT3 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/0d528147c_generated_image.png';
+const PROJECT4 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/ceeda6524_generated_image.png';
+const PROJECT5 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/3a77b3232_generated_image.png';
 
 const projects = [
   {
@@ -15,11 +19,32 @@ const projects = [
     image: PROJECT1,
   },
   {
-    title: 'Intelligent Log Monitoring & Notification System',
+    title: 'Food Ordering System',
     description:
-      'An intelligent log aggregation and anomaly-detection engine that streams microservice logs, detects patterns in real time, and dispatches contextual alerts across multiple channels.',
-    tags: ['Node.js', 'Microservices', 'Prometheus', 'Docker', 'RESTful APIs'],
+      'A user-friendly ordering app letting customers browse menus, place orders, and manage accounts — with real-time order updates, Express APIs, and a scalable foundation for growth.',
+    tags: ['React', 'Node.js', 'Express.js', 'MongoDB'],
     image: PROJECT2,
+  },
+  {
+    title: 'SC Graphic Store',
+    description:
+      'An e-commerce site with an admin product dashboard, synced with the client Daraz store so customers view on-site and purchase via Daraz — serving 100+ daily visits with on-site payments planned next.',
+    tags: ['React', 'Spring Boot', 'MySQL'],
+    image: PROJECT3,
+  },
+  {
+    title: 'E-Commerce Backend API',
+    description:
+      'A microservices-style backend powering core e-commerce operations — REST APIs over PostgreSQL, with Docker Compose setup that cut local onboarding time by ~25% for the team.',
+    tags: ['Spring Boot', 'PostgreSQL', 'Docker'],
+    image: PROJECT4,
+  },
+  {
+    title: 'Travel Planning System',
+    description:
+      'A dynamic travel itinerary planning app built on Spring Boot and Hibernate — designed to scale into larger travel platforms with flexible, data-driven trip scheduling.',
+    tags: ['Spring Boot', 'MySQL', 'Hibernate'],
+    image: PROJECT5,
   },
 ];
 
@@ -60,7 +85,7 @@ function ProjectCard({ project, index }) {
               <span className="w-3 h-3 rounded-full bg-green-400/80" />
             </div>
             <div className="relative rounded-xl overflow-hidden aspect-video">
-              <Image src={project.image} alt={project.title} className="w-full h-full object-cover" />
+              <Image src={project.image} alt={project.title} fittingType="fill" className="w-full h-full" />
             </div>
           </div>
         </div>
