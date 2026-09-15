@@ -6,7 +6,6 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
 
-  /** @param {React.FormEvent<HTMLFormElement>} e */
   const handleSubmit = (e) => {
     e.preventDefault();
     setSent(true);
@@ -15,6 +14,9 @@ export default function Contact() {
       setForm({ name: '', email: '', message: '' });
     }, 3000);
   };
+
+  const inputClasses =
+    'w-full rounded-xl px-4 py-3 outline-none glass-input bg-white/50 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-white/40 transition-colors duration-300';
 
   return (
     <section id="contact" className="relative py-28 px-6">
@@ -25,56 +27,57 @@ export default function Contact() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Get in Touch</h2>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Get in Touch
+        </h2>
         <p className="mt-3 text-muted-foreground">Let&apos;s build something together.</p>
       </motion.div>
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 items-stretch">
-        <motion.form
-          onSubmit={handleSubmit}
-          className="glass rounded-3xl p-7 space-y-5"
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+      <motion.div
+        className="max-w-6xl mx-auto grid md:grid-cols-2 rounded-2xl overflow-hidden border border-white/20 dark:border-white/10 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-2xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+      >
+        {/* Form side */}
+        <form onSubmit={handleSubmit} className="p-8 md:p-10 space-y-5">
           <div>
-            <label className="block text-sm font-mono mb-2 text-muted-foreground">Name</label>
+            <label className="block text-sm font-mono mb-2 text-gray-700 dark:text-white/70">Name</label>
             <input
               type="text"
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full glass rounded-xl px-4 py-3 outline-none glass-input"
+              className={inputClasses}
               placeholder="Your name"
             />
           </div>
           <div>
-            <label className="block text-sm font-mono mb-2 text-muted-foreground">Email</label>
+            <label className="block text-sm font-mono mb-2 text-gray-700 dark:text-white/70">Email</label>
             <input
               type="email"
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full glass rounded-xl px-4 py-3 outline-none glass-input"
+              className={inputClasses}
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <label className="block text-sm font-mono mb-2 text-muted-foreground">Message</label>
+            <label className="block text-sm font-mono mb-2 text-gray-700 dark:text-white/70">Message</label>
             <textarea
               required
               rows={4}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full glass rounded-xl px-4 py-3 outline-none glass-input resize-none"
+              className={`${inputClasses} resize-none`}
               placeholder="Your message"
             />
           </div>
           <button
             type="submit"
-            className="w-full glass btn-glow rounded-xl py-3 font-medium flex items-center justify-center gap-2"
-            style={{ color: 'var(--accent)' }}
+            className="w-full rounded-xl py-3 font-medium flex items-center justify-center gap-2 btn-glow bg-white/70 dark:bg-white/10 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white"
           >
             {sent ? (
               'Sent ✓'
@@ -85,38 +88,24 @@ export default function Contact() {
               </>
             )}
           </button>
-        </motion.form>
+        </form>
 
-        <motion.div
-          className="glass rounded-3xl overflow-hidden"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31699.989790721247!2d79.96687584142953!3d6.708823020350504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2496ac4ce5535%3A0xd2ed928760ec3c50!2sBandaragama!5e0!3m2!1sen!2slk!4v1789400399477!5m2!1sen!2slk"
-            width="100%"
-            height="420"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-          <div className="p-4 text-center">
-            <a
-              href="https://www.google.com/maps/place/Bandaragama/@6.708823,79.966876,13z/data=!3m1!4b1!4m6!3m5!1s0x3ae2496ac4ce5535:0xd2ed928760ec3c50!8m2!3d6.708823!4d79.966876!16s%2Fg%2F1225884f?entry=ttu"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass inline-flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
-              style={{ color: 'var(--accent)' }}
-            >
-              <MapPin className="w-4 h-4" />
-              Get Directions
-            </a>
+        {/* Map side */}
+        <div className="relative min-h-[320px] md:min-h-full border-t md:border-t-0 md:border-l border-white/20 dark:border-white/10">
+          <div className="absolute top-4 left-4 z-10 rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-mono bg-white/70 dark:bg-black/40 backdrop-blur-md border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white pointer-events-none">
+            <MapPin className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+            Bandaragama, Sri Lanka
           </div>
-        </motion.div>
-      </div>
+          <iframe
+            title="Bandaragama, Sri Lanka"
+            src="https://www.google.com/maps?q=Bandaragama,Sri%20Lanka&output=embed"
+            className="absolute inset-0 w-full h-full dark:[filter:invert(90%)_hue-rotate(180deg)]"
+            style={{ border: 0 }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </motion.div>
     </section>
   );
 }
