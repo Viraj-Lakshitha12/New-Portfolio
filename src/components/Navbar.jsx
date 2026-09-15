@@ -8,6 +8,7 @@ const links = [
   { label: 'About', href: '#home' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
+  { label: 'Education', href: '#education' },
   { label: 'Skills', href: '#stack' },
   { label: 'Contact', href: '#contact' },
 ];
@@ -39,7 +40,7 @@ export default function Navbar() {
               <a
                 key={l.href + l.label}
                 href={l.href}
-                className="px-3 py-2 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                className="nav-link px-3 py-2 rounded-xl text-sm text-muted-foreground"
               >
                 {l.label}
               </a>

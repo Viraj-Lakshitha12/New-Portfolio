@@ -78,7 +78,7 @@ export default function TechStack() {
         {categories.map((cat, i) => (
           <motion.div
             key={cat.name}
-            className="glass rounded-3xl p-7"
+            className="glass tech-card rounded-3xl p-7"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
@@ -92,7 +92,7 @@ export default function TechStack() {
             </div>
             <div className="space-y-3">
               {cat.skills.map((skill) => (
-                <div key={skill.name} className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <div key={skill.name} className="flex items-center justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-3 last:border-0 last:pb-0">
                   <span className="flex items-center gap-2 text-sm">
                     <Check size={14} style={{ color: 'var(--accent)' }} />
                     {skill.name}
