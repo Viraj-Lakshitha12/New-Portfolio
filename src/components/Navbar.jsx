@@ -33,7 +33,7 @@ export default function Navbar() {
         <div className="glass rounded-2xl px-4 py-3 flex items-center justify-between">
           <a href="#home" className="flex items-center gap-2 font-mono font-bold text-sm tracking-tight">
             <Code2 className="w-5 h-5" style={{ color: 'var(--accent)' }} />
-            VLA.dev
+            VL.dev
           </a>
           <div className="hidden md:flex items-center gap-1">
             {links.map((l) => (

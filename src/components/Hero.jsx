@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
-import { Sparkles } from 'lucide-react';
+import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 
 const PROFILE_URL = '/profile.png';
 
@@ -97,13 +97,14 @@ export default function Hero() {
       >
         <a
           href="#projects"
-          className="glass btn-glow px-6 py-3 rounded-xl font-medium"
-          style={{ color: 'var(--accent)' }}
+          className="hero-cta hero-cta-primary"
         >
-          View Projects
+          <span>View Projects</span>
+          <ArrowRight className="hero-cta-icon" size={17} />
         </a>
-        <a href="#contact" className="glass btn-glow px-6 py-3 rounded-xl font-medium">
-          Get in Touch
+        <a href="#contact" className="hero-cta hero-cta-secondary">
+          <Mail size={16} />
+          <span>Get in Touch</span>
         </a>
       </motion.div>
     </section>
