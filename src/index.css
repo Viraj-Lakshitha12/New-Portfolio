@@ -220,6 +220,116 @@
     opacity: 0.5;
     box-shadow: none;
   }
+  .contact-shell {
+    box-shadow: var(--glass-shadow), 0 24px 80px rgba(0, 0, 0, 0.08);
+  }
+  .dark .contact-shell {
+    box-shadow: var(--glass-shadow), 0 24px 80px rgba(0, 0, 0, 0.28);
+  }
+  .contact-intro {
+    background: linear-gradient(145deg, var(--glass-bg), transparent 75%);
+  }
+  .contact-form {
+    background: rgba(255, 255, 255, 0.28);
+  }
+  .dark .contact-form {
+    background: rgba(255, 255, 255, 0.025);
+  }
+  .contact-map {
+    background: #dce8ec;
+  }
+  .dark .contact-map {
+    background: #111b20;
+  }
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 2.8rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid transparent;
+    border-radius: 0.8rem;
+    color: var(--foreground);
+    font-size: 0.82rem;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .contact-detail:hover {
+    color: var(--accent);
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    transform: translateX(4px);
+  }
+  .contact-open-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.8rem;
+    color: var(--accent);
+    background: var(--glass-bg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 0 20px transparent;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  }
+  .contact-open-form:hover {
+    transform: translateY(-3px);
+    background: var(--glow);
+    box-shadow: 0 10px 26px var(--glow);
+  }
+  .contact-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(3, 8, 12, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .contact-modal {
+    position: relative;
+    width: min(100%, 34rem);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    background: var(--glass-bg);
+    box-shadow: 0 24px 90px rgba(0, 0, 0, 0.45), 0 0 40px var(--glow);
+  }
+  .contact-modal-close {
+    position: absolute;
+    z-index: 2;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 0.65rem;
+    color: var(--muted-foreground);
+    background: var(--glass-bg);
+    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .contact-modal-close:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: rotate(90deg);
+  }
+  .contact-submit {
+    color: #04111a;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    box-shadow: 0 8px 24px var(--glow);
+  }
+  .contact-submit:hover {
+    color: #04111a;
+    box-shadow: 0 12px 30px var(--glow), 0 0 0 1px var(--accent);
+  }
   .hero-cta {
     position: relative;
     isolation: isolate;
