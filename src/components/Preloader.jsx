@@ -18,18 +18,23 @@ export default function Preloader() {
         fade ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      <div className="relative">
-        <div
-          className="absolute -inset-6 rounded-[2rem] blur-2xl glow-pulse"
-          style={{ background: 'var(--glow)' }}
-        />
-        <div className="glass relative w-28 h-28 rounded-[1.75rem] flex items-center justify-center float-anim">
-          <span className="font-mono text-4xl font-extrabold gradient-text">&lt;/&gt;</span>
+      <div className="preloader-core" aria-hidden="true">
+        <div className="preloader-ring preloader-ring-outer" />
+        <div className="preloader-ring preloader-ring-inner" />
+        <div className="preloader-orbit preloader-orbit-one"><span /></div>
+        <div className="preloader-orbit preloader-orbit-two"><span /></div>
+        <div className="preloader-node preloader-node-one" />
+        <div className="preloader-node preloader-node-two" />
+        <div className="preloader-node preloader-node-three" />
+        <div className="preloader-center">
+          <span className="font-mono text-3xl font-extrabold gradient-text">&lt;/&gt;</span>
         </div>
       </div>
-      <p className="mt-8 font-mono text-[11px] tracking-[0.35em] text-muted-foreground uppercase">
-        Initializing System
-      </p>
+      <div className="preloader-status mt-8">
+        <span className="preloader-status-dot" />
+        <span className="font-mono text-[11px] tracking-[0.35em] text-muted-foreground uppercase">Initializing System</span>
+        <span className="preloader-progress"><span /></span>
+      </div>
     </div>
   );
 }
