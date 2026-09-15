@@ -5,7 +5,6 @@ import { useTheme } from '@/lib/theme-context';
 
 const links = [
   { label: 'Home', href: '#home' },
-  { label: 'About', href: '#home' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
   { label: 'Education', href: '#education' },

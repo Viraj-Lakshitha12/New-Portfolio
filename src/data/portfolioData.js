@@ -2,7 +2,7 @@
 //  PORTFOLIO DATA — edit this file to update content
 // ============================================================
 
-export const navItems = ['Home', 'About', 'Experience', 'Projects', 'Skills', 'Contact'];
+export const navItems = ['Home', 'Experience', 'Projects', 'Skills', 'Contact'];
 
 export const socialLinks = [
   { icon: 'github',   url: 'https://github.com/Viraj-Lakshitha12',            fab: true },

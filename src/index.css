@@ -170,6 +170,56 @@
     border-color: var(--accent);
     box-shadow: var(--glass-shadow), 0 0 26px var(--glow);
   }
+  .tech-overview {
+    position: relative;
+    overflow: hidden;
+  }
+  .tech-overview::after {
+    content: '';
+    position: absolute;
+    width: 11rem;
+    height: 11rem;
+    right: -4rem;
+    top: -5rem;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.18;
+    box-shadow: 0 0 0 2rem rgba(100, 210, 255, 0.06);
+    pointer-events: none;
+  }
+  .tech-chip {
+    position: relative;
+    z-index: 1;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 0.65rem;
+    color: var(--foreground);
+    background: var(--glass-bg);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+  }
+  .tech-category-icon {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--glass-border);
+    border-radius: 0.65rem;
+    color: var(--accent);
+    background: var(--glow);
+  }
+  .skill-level {
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--glow);
+  }
+  .skill-level-working {
+    opacity: 0.5;
+    box-shadow: none;
+  }
   .hero-cta {
     position: relative;
     isolation: isolate;
