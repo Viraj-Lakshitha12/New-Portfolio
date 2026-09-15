@@ -15,8 +15,10 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "types": [],
-    "ignoreDeprecations": "6.0"
+    "noEmit": true,
+    "strict": false,
+    "noImplicitAny": false
   },
-  "include": ["src/components/**/*.js", "src/pages/**/*.jsx", "src/Layout.jsx"],
-  "exclude": ["node_modules", "dist", "src/vite-plugins", "src/components/ui", "src/api", "src/lib"]
+  "include": ["src/**/*.js", "src/**/*.jsx"],
+  "exclude": ["node_modules", "dist"]
 } 

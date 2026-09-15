@@ -85,7 +85,7 @@ function ProjectCard({ project, index }) {
               <span className="w-3 h-3 rounded-full bg-green-400/80" />
             </div>
             <div className="relative rounded-xl overflow-hidden aspect-video">
-              <Image src={project.image} alt={project.title} fittingType="fill" className="w-full h-full" />
+              <Image src={project.image} alt={project.title} className="w-full h-full" />
             </div>
           </div>
         </div>

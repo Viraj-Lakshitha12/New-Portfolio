@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { modeOptions } from "../data/portfolioData";
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("dark");
