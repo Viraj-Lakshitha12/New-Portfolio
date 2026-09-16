@@ -50,6 +50,30 @@ export default function WireframeOrb() {
     const orb3 = new THREE.Mesh(geo3, mat3);
     scene.add(orb3);
 
+    const applyTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      const palette = isDark
+        ? [
+            { material: mat1, color: 0x64d2ff, opacity: 0.7 },
+            { material: mat2, color: 0xa855f7, opacity: 0.5 },
+            { material: mat3, color: 0xec4899, opacity: 0.6 },
+          ]
+        : [
+            { material: mat1, color: 0x0e7490, opacity: 0.88 },
+            { material: mat2, color: 0x4338ca, opacity: 0.72 },
+            { material: mat3, color: 0xbe185d, opacity: 0.78 },
+          ];
+
+      palette.forEach(({ material, color, opacity }) => {
+        material.color.setHex(color);
+        material.opacity = opacity;
+      });
+    };
+
+    applyTheme();
+    const themeObserver = new MutationObserver(applyTheme);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
     let frameId;
     const animate = () => {
       frameId = requestAnimationFrame(animate);
@@ -75,6 +99,7 @@ export default function WireframeOrb() {
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener('resize', handleResize);
+      themeObserver.disconnect();
       if (renderer.domElement.parentNode === mount) {
         mount.removeChild(renderer.domElement);
       }
