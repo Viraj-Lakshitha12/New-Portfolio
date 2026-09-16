@@ -29,7 +29,7 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 2.3 }}
       >
-        <div className="glass rounded-2xl px-4 py-3 flex items-center justify-between">
+        <div className={`site-navbar glass rounded-2xl px-4 py-3 flex items-center justify-between ${scrolled ? 'site-navbar-scrolled' : ''}`}>
           <a href="#home" className="flex items-center gap-2 font-mono font-bold text-sm tracking-tight">
             <Code2 className="w-5 h-5" style={{ color: 'var(--accent)' }} />
             VL.dev
