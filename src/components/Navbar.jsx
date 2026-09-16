@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Sun, Moon, Code2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Sun, Moon, Code2, Menu, X, Home, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
 
 const links = [
-  { label: 'Home', href: '#home' },
-  { label: 'Skills', href: '#stack' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Education', href: '#education' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '#home', icon: Home },
+  { label: 'Skills', href: '#stack', icon: Layers3 },
+  { label: 'Experience', href: '#experience', icon: BriefcaseBusiness },
+  { label: 'Projects', href: '#projects', icon: FolderKanban },
+  { label: 'Education', href: '#education', icon: GraduationCap },
+  { label: 'Contact', href: '#contact', icon: Mail },
 ];
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
   }, []);
 
   useEffect(() => {
@@ -47,7 +56,8 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] w-[92%] max-w-3xl">
+    <>
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] w-[92%] max-w-3xl">
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -70,19 +80,77 @@ export default function Navbar() {
               </a>
             ))}
           </div>
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="glass rounded-xl w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform"
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-5 h-5" style={{ color: 'var(--accent)' }} />
-            ) : (
-              <Moon className="w-5 h-5" style={{ color: 'var(--accent)' }} />
-            )}
-          </button>
+          <div className="navbar-actions flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setMobileOpen((open) => !open)}
+              aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileOpen}
+              className="mobile-menu-toggle glass rounded-xl w-10 h-10 items-center justify-center"
+            >
+              {mobileOpen ? <X size={19} /> : <Menu size={19} />}
+            </button>
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="glass rounded-xl w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5" style={{ color: 'var(--accent)' }} />
+              ) : (
+                <Moon className="w-5 h-5" style={{ color: 'var(--accent)' }} />
+              )}
+            </button>
+          </div>
         </div>
       </motion.nav>
-    </div>
+      </div>
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close navigation menu"
+              className="mobile-nav-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.aside
+              className="mobile-nav-panel glass md:hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+            >
+              <div className="mobile-nav-panel-head">
+                <span className="font-mono text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--accent)' }}>Navigation</span>
+                <button type="button" onClick={() => setMobileOpen(false)} aria-label="Close navigation menu" className="mobile-nav-close"><X size={18} /></button>
+              </div>
+              <div className="mobile-nav-links">
+                {links.map((link) => {
+                  const LinkIcon = link.icon;
+                  return (
+                    <a
+                      key={link.href + link.label}
+                      href={link.href}
+                      onClick={() => {
+                        setActiveSection(link.href.slice(1));
+                        setMobileOpen(false);
+                      }}
+                      className={`mobile-nav-link ${activeSection === link.href.slice(1) ? 'mobile-nav-link-active' : ''}`}
+                    >
+                      <span className="flex items-center gap-3"><LinkIcon size={17} /> {link.label}</span>
+                      <span className="font-mono text-[10px] opacity-50">{link.href.slice(1).toUpperCase()}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
