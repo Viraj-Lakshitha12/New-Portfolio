@@ -1,53 +1,73 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Check, Code2, Database, PanelsTopLeft, Server, Wrench } from 'lucide-react';
+import { ArrowUpRight, Blocks, Code2, Database, Layers3, Server, Wrench } from 'lucide-react';
+import {
+  siDocker,
+  siExpress,
+  siOpenjdk,
+  siNodedotjs,
+  siPostgresql,
+  siReact,
+  siSpring,
+  siTailwindcss,
+  siTypescript,
+} from 'simple-icons';
 
 const categories = [
   {
-    name: 'Backend Engineering',
-    number: '01',
-    icon: Server,
+    name: 'Backend Engineering', number: '01', icon: Server, span: 'md:col-span-7',
     skills: [
-      { name: 'Java & Spring Boot', level: 'Core' },
-      { name: 'Node.js & Express.js', level: 'Core' },
-      { name: 'RESTful APIs', level: 'Core' },
-      { name: 'Microservices', level: 'Working' },
+      { name: 'Java', icon: siOpenjdk, color: '#f89820', level: 'Core' },
+      { name: 'Spring Boot', icon: siSpring, color: '#6db33f', level: 'Core' },
+      { name: 'Node.js', icon: siNodedotjs, color: '#83cd29', level: 'Core' },
+      { name: 'Express.js', icon: siExpress, color: '#b8c1c8', level: 'Core' },
     ],
   },
   {
-    name: 'Frontend Systems',
-    number: '02',
-    icon: PanelsTopLeft,
+    name: 'Frontend Systems', number: '02', icon: Layers3, span: 'md:col-span-5',
     skills: [
-      { name: 'React', level: 'Core' },
-      { name: 'JavaScript & TypeScript', level: 'Core' },
-      { name: 'Tailwind CSS', level: 'Core' },
-      { name: 'Responsive UI', level: 'Working' },
+      { name: 'React', icon: siReact, color: '#61dafb', level: 'Core' },
+      { name: 'TypeScript', icon: siTypescript, color: '#3178c6', level: 'Core' },
+      { name: 'Tailwind CSS', icon: siTailwindcss, color: '#38bdf8', level: 'Core' },
     ],
   },
   {
-    name: 'Data & Delivery',
-    number: '03',
-    icon: Database,
+    name: 'Data & Delivery', number: '03', icon: Database, span: 'md:col-span-5',
     skills: [
-      { name: 'PostgreSQL & MySQL', level: 'Core' },
-      { name: 'MongoDB & Redis', level: 'Working' },
-      { name: 'Docker', level: 'Working' },
-      { name: 'Query Optimisation', level: 'Core' },
+      { name: 'PostgreSQL', icon: siPostgresql, color: '#4169e1', level: 'Core' },
+      { name: 'Docker', icon: siDocker, color: '#2496ed', level: 'Working' },
+      { name: 'Query Optimisation', icon: Database, color: '#64d2ff', level: 'Core' },
     ],
   },
   {
-    name: 'Tools & Workflow',
-    number: '04',
-    icon: Wrench,
+    name: 'Architecture & Workflow', number: '04', icon: Wrench, span: 'md:col-span-7',
     skills: [
-      { name: 'Git & GitHub', level: 'Core' },
-      { name: 'Swagger & Postman', level: 'Core' },
-      { name: 'Jira & Agile', level: 'Working' },
-      { name: 'VS Code & IntelliJ IDEA', level: 'Working' },
+      { name: 'Microservices', icon: Blocks, color: '#a78bfa', level: 'Working' },
+      { name: 'RESTful APIs', icon: Code2, color: '#64d2ff', level: 'Core' },
+      { name: 'Git & Agile', icon: Wrench, color: '#f97316', level: 'Working' },
     ],
   },
 ];
+
+function BrandIcon({ icon, color }) {
+  if (icon.path) {
+    return (
+      <svg viewBox="0 0 24 24" role="img" aria-hidden="true" className="tech-brand-icon" style={{ color }}>
+        <path d={icon.path} fill="currentColor" />
+      </svg>
+    );
+  }
+  const Icon = icon;
+  return <Icon aria-hidden="true" className="tech-brand-icon" style={{ color }} />;
+}
+
+function StatusChip({ level }) {
+  return (
+    <span className={`tech-status tech-status-${level.toLowerCase()}`}>
+      <span /> {level}
+    </span>
+  );
+}
 
 export default function TechStack() {
   return (
@@ -59,65 +79,69 @@ export default function TechStack() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Tech Stack</h2>
-        <p className="mt-3 text-muted-foreground">A practical toolkit shaped by real production work.</p>
+        <p className="font-mono text-xs uppercase tracking-[0.22em]" style={{ color: 'var(--accent)' }}>Capabilities / 02</p>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mt-3">Tech Stack</h2>
+        <p className="mt-3 text-muted-foreground">The tools behind production-ready systems.</p>
       </motion.div>
 
-      <div className="max-w-5xl mx-auto mb-8 glass tech-overview rounded-3xl p-6 md:p-7 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div>
-          <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em]" style={{ color: 'var(--accent)' }}>
-            <Code2 size={14} /> Core stack
-          </p>
-          <h3 className="text-xl md:text-2xl font-bold mt-2">Building reliable full-stack systems</h3>
-          <p className="text-sm text-muted-foreground mt-1">From data models and APIs to polished client experiences.</p>
+      <motion.div
+        className="tech-overview max-w-6xl mx-auto mb-6 glass rounded-3xl p-6 md:p-7"
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.55 }}
+      >
+        <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+          <div>
+            <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em]" style={{ color: 'var(--accent)' }}>
+              <Code2 size={14} /> Core stack
+            </p>
+            <h3 className="text-xl md:text-2xl font-bold mt-2">Building reliable full-stack systems</h3>
+            <p className="text-sm text-muted-foreground mt-1">A focused toolkit shaped by real production work.</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {[{ name: 'Java', icon: siOpenjdk, color: '#f89820' }, { name: 'React', icon: siReact, color: '#61dafb' }, { name: 'Node.js', icon: siNodedotjs, color: '#83cd29' }, { name: 'PostgreSQL', icon: siPostgresql, color: '#4169e1' }].map((skill) => (
+              <span key={skill.name} className="tech-core-pill">
+                <BrandIcon icon={skill.icon} color={skill.color} /> {skill.name}
+              </span>
+            ))}
+          </div>
+          <span className="tech-open-badge"><i /> OPEN TO BUILD <ArrowUpRight size={15} /></span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {['Java', 'React', 'Node.js', 'PostgreSQL'].map((skill) => (
-            <span key={skill} className="tech-chip">{skill}</span>
-          ))}
-        </div>
-        <div className="flex items-center gap-2 font-mono text-xs whitespace-nowrap" style={{ color: 'var(--accent)' }}>
-          <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
-          OPEN TO BUILD
-          <ArrowUpRight size={16} />
-        </div>
-      </div>
+      </motion.div>
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
-        {categories.map((cat, i) => (
-          <motion.div
-            key={cat.name}
-            className="glass tech-card rounded-3xl p-7"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-          >
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-3">
-                <div className="tech-category-icon"><cat.icon size={17} /></div>
-                <h3 className="font-mono text-sm tracking-[0.16em] uppercase" style={{ color: 'var(--accent)' }}>
-                  {cat.name}
-                </h3>
-              </div>
-              <span className="font-mono text-xs text-muted-foreground">{cat.number}</span>
-            </div>
-            <div className="space-y-3">
-              {cat.skills.map((skill) => (
-                <div key={skill.name} className="flex items-center justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-3 last:border-0 last:pb-0">
-                  <span className="flex items-center gap-2 text-sm">
-                    <Check size={14} style={{ color: 'var(--accent)' }} />
-                    {skill.name}
-                  </span>
-                  <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                    <span className={`skill-level skill-level-${skill.level.toLowerCase()}`} />
-                    {skill.level}
-                  </span>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5">
+        {categories.map((category, index) => {
+          const CategoryIcon = category.icon;
+          return (
+            <motion.article
+              key={category.name}
+              className={`tech-bento-card glass ${category.span}`}
+              initial={{ opacity: 0, y: 28, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -4 }}
+              viewport={{ once: true, margin: '-70px' }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+            >
+              <div className="relative z-10 flex items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="tech-category-icon"><CategoryIcon size={17} /></div>
+                  <h3 className="font-mono text-xs md:text-sm tracking-[0.13em] uppercase" style={{ color: 'var(--accent)' }}>{category.name}</h3>
                 </div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+                <span className="font-mono text-xs text-muted-foreground">{category.number}</span>
+              </div>
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {category.skills.map((skill) => (
+                  <div key={skill.name} className="tech-skill-tile">
+                    <BrandIcon icon={skill.icon} color={skill.color} />
+                    <span className="min-w-0 flex-1 text-sm font-medium truncate">{skill.name}</span>
+                    <StatusChip level={skill.level} />
+                  </div>
+                ))}
+              </div>
+            </motion.article>
+          );
+        })}
       </div>
     </section>
   );
