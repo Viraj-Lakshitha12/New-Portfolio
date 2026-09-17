@@ -71,7 +71,7 @@ function StatusChip({ level }) {
 
 export default function TechStack() {
   return (
-    <section id="stack" className="relative py-28 px-6">
+    <section id="stack" className="relative py-16 md:py-28 px-6">
       <motion.div
         className="text-center mb-14"
         initial={{ opacity: 0, y: 30 }}
@@ -79,7 +79,6 @@ export default function TechStack() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <p className="font-mono text-xs uppercase tracking-[0.22em]" style={{ color: 'var(--accent)' }}>Capabilities / 02</p>
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight mt-3">Tech Stack</h2>
         <p className="mt-3 text-muted-foreground">The tools behind production-ready systems.</p>
       </motion.div>
