@@ -42,6 +42,10 @@ function DockIcon({ href, label, children }) {
       >
         {children}
       </span>
+      {/* Tooltip */}
+      <span className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none text-xs font-mono px-3 py-1.5 rounded-lg bg-foreground text-background shadow-xl whitespace-nowrap translate-y-2 group-hover:translate-y-0">
+        {label}
+      </span>
     </motion.a>
   );
 }
@@ -90,7 +94,7 @@ export default function Footer() {
           <DockIcon href="mailto:virajadhikari@gmail.com" label="Email">
             <Mail className="w-6 h-6 md:w-7 md:h-7" />
           </DockIcon>
-          <DockIcon href="#" label="Resume">
+          <DockIcon href="/Viraj_Lakshitha_CV.pdf" label="Resume">
             <FileText className="w-6 h-6 md:w-7 md:h-7" />
           </DockIcon>
         </motion.div>
