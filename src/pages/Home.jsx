@@ -4,7 +4,9 @@ import MeshBackground from '@/components/MeshBackground';
 import Preloader from '@/components/Preloader';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import About from '@/components/About';
 import TechStack from '@/components/TechStack';
+import GithubStats from '@/components/GithubStats';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import Education from '@/components/Education';
@@ -19,7 +21,9 @@ export default function Home() {
       <Navbar />
       <main className="relative">
         <Hero />
+        <About />
         <TechStack />
+        <GithubStats />
         <Experience />
         <Projects />
         <Education />
