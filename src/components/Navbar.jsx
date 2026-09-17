@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Sun, Moon, Code2, Menu, X, Home, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail } from 'lucide-react';
+import { Sun, Moon, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
 
 const links = [
   { label: 'Home', href: '#home', icon: Home },
+  { label: 'About', href: '#about', icon: User },
   { label: 'Skills', href: '#stack', icon: Layers3 },
   { label: 'Experience', href: '#experience', icon: BriefcaseBusiness },
   { label: 'Projects', href: '#projects', icon: FolderKanban },
@@ -40,6 +41,7 @@ export default function Navbar() {
     const updateActiveSection = () => {
       const marker = window.scrollY + 160;
       const currentSection = sections.reduce((active, section) => {
+        if (!(section instanceof HTMLElement)) return active;
         return section.offsetTop <= marker ? section : active;
       }, sections[0]);
 
