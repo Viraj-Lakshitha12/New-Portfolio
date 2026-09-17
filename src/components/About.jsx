@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Terminal } from 'lucide-react';
+import { Terminal as TerminalIcon } from 'lucide-react';
 
 const terminalLines = [
   '> Initializing system...',
@@ -37,7 +37,7 @@ function AnimatedTerminal() {
           <div className="w-3 h-3 rounded-full bg-green-400" />
         </div>
         <div className="mx-auto flex items-center gap-2 text-xs font-mono text-muted-foreground">
-          <Terminal size={14} />
+          <TerminalIcon size={14} />
           <span>viraj@portfolio:~</span>
         </div>
       </div>
