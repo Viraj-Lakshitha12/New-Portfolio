@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
+import Magnetic from '@/components/ui/Magnetic';
 
 const PROFILE_URL = '/profile.png';
 
@@ -95,17 +96,21 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.9, duration: 0.6 }}
       >
-        <a
-          href="#projects"
-          className="hero-cta hero-cta-primary"
-        >
-          <span>View Projects</span>
-          <ArrowRight className="hero-cta-icon" size={17} />
-        </a>
-        <a href="#contact" className="hero-cta hero-cta-secondary">
-          <Mail size={16} />
-          <span>Get in Touch</span>
-        </a>
+        <Magnetic>
+          <a
+            href="#projects"
+            className="hero-cta hero-cta-primary"
+          >
+            <span>View Projects</span>
+            <ArrowRight className="hero-cta-icon" size={17} />
+          </a>
+        </Magnetic>
+        <Magnetic>
+          <a href="#contact" className="hero-cta hero-cta-secondary">
+            <Mail size={16} />
+            <span>Get in Touch</span>
+          </a>
+        </Magnetic>
       </motion.div>
     </section>
   );
