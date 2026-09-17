@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Github, ExternalLink } from 'lucide-react';
 
 const PROJECT1 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/36cff83c8_generated_e864fc7a.jpg';
 
@@ -113,12 +113,25 @@ function ProjectCard({ project, index }) {
               </span>
             ))}
           </div>
-          <div
-            className="mt-6 inline-flex items-center gap-2 font-mono text-sm"
-            style={{ color: 'var(--accent)' }}
-          >
-            <span>explore</span>
-            <ArrowUpRight className="w-4 h-4" />
+          <div className="mt-6 flex items-center gap-4">
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-sm hover:text-[var(--accent)] transition-colors"
+            >
+              <Github className="w-4 h-4" />
+              <span>Source Code</span>
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-sm text-[var(--accent)] hover:opacity-80 transition-opacity"
+            >
+              <span>Live Demo</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
           </div>
         </motion.div>
       </div>
@@ -128,7 +141,7 @@ function ProjectCard({ project, index }) {
 
 export default function Projects() {
   return (
-    <section id="projects" className="relative py-28 px-6">
+    <section id="projects" className="relative py-16 md:py-28 px-6">
       <motion.div
         className="text-center mb-16"
         initial={{ opacity: 0, y: 30 }}
