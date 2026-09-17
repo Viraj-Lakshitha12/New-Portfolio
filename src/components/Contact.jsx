@@ -23,7 +23,7 @@ export default function Contact() {
     'w-full rounded-xl px-4 py-3 outline-none glass-input bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground placeholder:text-muted-foreground transition-colors duration-300';
 
   return (
-    <section id="contact" className="relative py-28 px-6">
+    <section id="contact" className="relative py-16 md:py-28 px-6">
       <motion.div
         className="text-center mb-14"
         initial={{ opacity: 0, y: 30 }}
@@ -31,7 +31,6 @@ export default function Contact() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <p className="font-mono text-xs uppercase tracking-[0.22em]" style={{ color: 'var(--accent)' }}>Contact / 01</p>
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mt-3">
           Get in Touch
         </h2>
@@ -119,7 +118,6 @@ export default function Contact() {
                   <p className="font-mono text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--accent)' }}>Start a conversation</p>
                   <h3 id="contact-form-title" className="text-xl font-bold mt-2">Tell me what you&apos;re building.</h3>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">01—03</span>
               </div>
               <div>
                 <label className="block text-sm font-mono mb-2 text-foreground/70">Name</label>
