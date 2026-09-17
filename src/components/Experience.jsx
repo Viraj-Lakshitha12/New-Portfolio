@@ -67,7 +67,7 @@ function RoleCard({ r, align }) {
 
 export default function Experience() {
   return (
-    <section id="experience" className="relative py-28 px-6">
+    <section id="experience" className="relative py-16 md:py-28 px-6">
       <motion.div
         className="text-center mb-16"
         initial={{ opacity: 0, y: 30 }}
