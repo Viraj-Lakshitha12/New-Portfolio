@@ -85,13 +85,13 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.25 }}
         >
-          <DockIcon href="https://github.com" label="GitHub">
+          <DockIcon href="https://github.com/Viraj-Lakshitha12" label="GitHub">
             <Github className="w-6 h-6 md:w-7 md:h-7" />
           </DockIcon>
-          <DockIcon href="https://linkedin.com" label="LinkedIn">
+          <DockIcon href="https://www.linkedin.com/in/viraj-lakshitha01/" label="LinkedIn">
             <Linkedin className="w-6 h-6 md:w-7 md:h-7" />
           </DockIcon>
-          <DockIcon href="mailto:virajadhikari@gmail.com" label="Email">
+          <DockIcon href="mailto:viraj.lakshitha.22222@gmail.com" label="Email">
             <Mail className="w-6 h-6 md:w-7 md:h-7" />
           </DockIcon>
           <DockIcon href="/Viraj_Lakshitha_CV.pdf" label="Resume">
