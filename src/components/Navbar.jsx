@@ -78,7 +78,12 @@ export default function Navbar() {
               <a
                 key={l.href + l.label}
                 href={l.href}
-                onClick={() => setActiveSection(l.href.slice(1))}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveSection(l.href.slice(1));
+                  document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+                  window.history.pushState(null, '', l.href);
+                }}
                 className={`nav-link px-3 py-2 rounded-xl text-sm ${activeSection === l.href.slice(1) ? 'nav-link-active' : 'text-muted-foreground'}`}
               >
                 {l.label}
@@ -142,8 +147,11 @@ export default function Navbar() {
                     <a
                       key={link.href + link.label}
                       href={link.href}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         setActiveSection(link.href.slice(1));
+                        document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+                        window.history.pushState(null, '', link.href);
                         setMobileOpen(false);
                       }}
                       className={`mobile-nav-link ${activeSection === link.href.slice(1) ? 'mobile-nav-link-active' : ''}`}
