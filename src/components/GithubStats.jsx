@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Github, BookOpen, Star, Activity } from 'lucide-react';
 
@@ -12,6 +12,8 @@ export default function GithubStats() {
   });
 
   const username = "Viraj-Lakshitha12";
+
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     async function fetchGitHubData() {
@@ -39,6 +41,18 @@ export default function GithubStats() {
     
     fetchGitHubData();
   }, [username]);
+
+  // Auto-scroll to the right side (most recent) on mobile
+  useEffect(() => {
+    if (!data.loading && scrollContainerRef.current) {
+      // Small delay to ensure render is complete
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
+        }
+      }, 100);
+    }
+  }, [data.loading]);
   
   const getLevelColor = (level) => {
     switch (String(level)) {
@@ -96,8 +110,11 @@ export default function GithubStats() {
             </div>
           </div>
 
-          <div className="relative z-10 w-full overflow-x-auto pb-6 custom-scrollbar">
-            <div className="min-w-[750px] flex gap-1 items-end p-2 rounded-xl bg-black/5 dark:bg-black/20 border border-black/5 dark:border-white/5">
+          <div 
+            ref={scrollContainerRef}
+            className="relative z-10 w-full overflow-x-auto pb-6 custom-scrollbar"
+          >
+            <div className="min-w-[750px] flex justify-end gap-1 items-end p-2 rounded-xl bg-black/5 dark:bg-black/20 border border-black/5 dark:border-white/5">
               {data.loading ? (
                 <div className="w-full h-[120px] flex items-center justify-center text-muted-foreground font-mono text-sm animate-pulse">
                   Fetching GitHub Data...
