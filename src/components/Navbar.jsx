@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Sun, Moon, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail } from 'lucide-react';
+import { Sun, Moon, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail, Settings } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
 import Magnetic from '@/components/ui/Magnetic';
 
@@ -111,6 +111,15 @@ export default function Navbar() {
                 ) : (
                   <Moon className="w-5 h-5" style={{ color: 'var(--accent)' }} />
                 )}
+              </button>
+            </Magnetic>
+            <Magnetic>
+              <button
+                onClick={() => window.dispatchEvent(new Event('open-theme-customizer'))}
+                aria-label="Open Theme Customizer"
+                className="glass rounded-xl w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform"
+              >
+                <Settings className="w-5 h-5" style={{ color: 'var(--accent)' }} />
               </button>
             </Magnetic>
           </div>
