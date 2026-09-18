@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal as TerminalIcon, ChevronRight } from 'lucide-react';
+import { uiAudio } from '@/lib/audio';
 
 export default function Terminal() {
   const [input, setInput] = useState('');
@@ -129,8 +130,14 @@ export default function Terminal() {
                 ref={inputRef}
                 type="text"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleCommand}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  uiAudio.playTyping();
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') uiAudio.playClick();
+                  handleCommand(e);
+                }}
                 className="flex-1 bg-transparent outline-none border-none text-zinc-800 dark:text-zinc-100 caret-emerald-500 text-[16px] md:text-sm"
                 spellCheck="false"
                 autoComplete="off"

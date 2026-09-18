@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { uiAudio } from '@/lib/audio';
 
 export default function Magnetic({ children }) {
   const ref = useRef(null);
@@ -22,6 +23,8 @@ export default function Magnetic({ children }) {
       ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
+      onMouseEnter={() => uiAudio.playHover()}
+      onMouseDown={() => uiAudio.playClick()}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
       className="inline-block"
