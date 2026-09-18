@@ -48,8 +48,12 @@ export default function Terminal() {
     }
   };
 
+  const containerRef = useRef(null);
+
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
   }, [history]);
 
   return (
@@ -95,6 +99,7 @@ export default function Terminal() {
           
           {/* Terminal Body */}
           <div 
+            ref={containerRef}
             className="p-4 md:p-6 h-[300px] md:h-[360px] overflow-y-auto font-mono text-xs md:text-sm bg-zinc-50/50 dark:bg-zinc-950/60 cursor-text custom-scrollbar"
             onClick={() => inputRef.current?.focus()}
           >
@@ -115,7 +120,7 @@ export default function Terminal() {
                 {line.content}
               </div>
             ))}
-            <div className="flex items-center gap-2 mt-3">
+            <div className="flex items-center gap-2 mt-3 text-[16px] md:text-sm">
               <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
                 <ChevronRight size={14} />
                 <span className="hidden sm:inline">vl@guest</span><span className="sm:hidden">$</span><span className="hidden sm:inline">:~$</span>
@@ -126,7 +131,7 @@ export default function Terminal() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleCommand}
-                className="flex-1 bg-transparent outline-none border-none text-zinc-800 dark:text-zinc-100 caret-emerald-500"
+                className="flex-1 bg-transparent outline-none border-none text-zinc-800 dark:text-zinc-100 caret-emerald-500 text-[16px] md:text-sm"
                 spellCheck="false"
                 autoComplete="off"
                 placeholder="type a command..."
