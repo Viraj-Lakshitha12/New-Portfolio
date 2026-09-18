@@ -16,6 +16,8 @@ import Footer from '@/components/Footer';
 import Terminal from '@/components/Terminal';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
+import ThemeCustomizer from '@/components/ThemeCustomizer';
+import AIChatbot from '@/components/AIChatbot';
 
 export default function Home() {
   return (
@@ -23,6 +25,8 @@ export default function Home() {
       <Preloader />
       <CustomCursor />
       <ScrollProgress />
+      <ThemeCustomizer />
+      <AIChatbot />
       <MeshBackground />
       <Navbar />
       <main className="relative">
