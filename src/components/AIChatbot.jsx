@@ -115,6 +115,10 @@ export default function AIChatbot() {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+  
+  // Tooltip state
+  const [isHovered, setIsHovered] = useState(false);
+  const [isAutoShowing, setIsAutoShowing] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -124,6 +128,21 @@ export default function AIChatbot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    // Auto show tooltip after 2 seconds for 5 seconds to grab attention
+    const showTimer = setTimeout(() => {
+      setIsAutoShowing(true);
+      
+      const hideTimer = setTimeout(() => {
+        setIsAutoShowing(false);
+      }, 5000); // Keep it visible for 5s
+      
+      return () => clearTimeout(hideTimer);
+    }, 2000); // 2s after initial load
+
+    return () => clearTimeout(showTimer);
+  }, []);
 
   const generateResponse = (text) => {
     // 1. Tokenize and clean the input
@@ -217,17 +236,53 @@ export default function AIChatbot() {
     }, 500 + Math.random() * 500);
   };
 
+  const shouldShowTooltip = (isHovered || isAutoShowing) && !isOpen;
+
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-[100]">
+      <div 
+        className="fixed bottom-6 right-6 z-[100] flex items-center justify-end gap-3"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <AnimatePresence>
+          {shouldShowTooltip && (
+            <motion.div
+              initial={{ opacity: 0, x: 20, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 10, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="pointer-events-none"
+            >
+              <div className="whitespace-nowrap px-4 py-2.5 rounded-2xl glass bg-white/90 dark:bg-zinc-950/90 border border-[var(--accent)]/30 shadow-xl text-sm font-medium text-foreground flex items-center gap-3 backdrop-blur-xl relative">
+                <span>Ask me anything!</span>
+                <div className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]"></span>
+                </div>
+                {/* Small triangle pointer */}
+                <div className="absolute top-1/2 -right-2 -translate-y-1/2 border-y-8 border-y-transparent border-l-8 border-l-[var(--accent)]/20"></div>
+                <div className="absolute top-1/2 -right-[7px] -translate-y-1/2 border-y-[7px] border-y-transparent border-l-[7px] border-l-white dark:border-l-zinc-950"></div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent)] shadow-lg hover:shadow-[0_0_15px_var(--glow)] transition-shadow backdrop-blur-xl border border-[var(--accent)]/20"
+          onClick={() => {
+            setIsOpen(!isOpen);
+            setIsHovered(false);
+            setIsAutoShowing(false);
+          }}
+          className="w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent)] shadow-lg hover:shadow-[0_0_15px_var(--glow)] transition-shadow backdrop-blur-xl border border-[var(--accent)]/20 relative"
           aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
         >
           {isOpen ? <X size={22} /> : <Bot size={22} />}
+          {!isOpen && (
+             <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-950" />
+          )}
         </motion.button>
       </div>
 
