@@ -1,18 +1,18 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'framer-motion';
-import { Code2, Server, Database, Layers, Layout, Cpu } from 'lucide-react';
+import { Code2, Server, Database, Layers, Layout, Cpu, Workflow } from 'lucide-react';
 
-const SpotlightCard = ({ title, description, icon: Icon, tags, delay }) => {
+const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge }) => {
   const ref = useRef(null);
   
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 40 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 40 });
+  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 50 });
+  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 50 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
 
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
@@ -44,38 +44,38 @@ const SpotlightCard = ({ title, description, icon: Icon, tags, delay }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay }}
-      className="group relative w-full rounded-3xl p-[1px] cursor-pointer shadow-xl shadow-black/5 dark:shadow-none"
+      transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={`group relative rounded-[2rem] p-[1px] cursor-pointer shadow-2xl shadow-black/10 dark:shadow-none ${isLarge ? 'md:col-span-2' : ''}`}
     >
       {/* Animated Border Gradient Spotlight */}
       <motion.div
-        className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute inset-0 rounded-[2rem] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`
             radial-gradient(
-              400px circle at ${mouseX}px ${mouseY}px,
+              600px circle at ${mouseX}px ${mouseY}px,
               var(--accent),
               transparent 40%
             )
           `,
         }}
       />
-      {/* Default Subtle Border (when not hovered) */}
-      <div className="absolute inset-0 rounded-3xl bg-black/10 dark:bg-white/10 group-hover:opacity-0 transition-opacity duration-500" />
+      {/* Default Subtle Border */}
+      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-b from-black/10 to-black/5 dark:from-white/15 dark:to-white/5 group-hover:opacity-0 transition-opacity duration-500" />
 
       {/* Card Content Container */}
-      <div className="relative h-full min-h-[380px] rounded-[23px] bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl p-8 flex flex-col justify-between overflow-hidden">
+      <div className="relative h-full min-h-[400px] rounded-[31px] bg-white/60 dark:bg-zinc-950/60 backdrop-blur-2xl p-8 md:p-10 flex flex-col justify-between overflow-hidden">
         
-        {/* Inner Spotlight Glow (subtle) */}
+        {/* Inner Glow */}
         <motion.div
-          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-10"
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-20"
           style={{
             background: useMotionTemplate`
               radial-gradient(
-                350px circle at ${mouseX}px ${mouseY}px,
+                400px circle at ${mouseX}px ${mouseY}px,
                 var(--accent),
                 transparent 50%
               )
@@ -83,27 +83,34 @@ const SpotlightCard = ({ title, description, icon: Icon, tags, delay }) => {
           }}
         />
 
-        <div style={{ transform: "translateZ(40px)" }} className="relative z-10">
-          <div className="w-14 h-14 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] mb-6 ring-1 ring-[var(--accent)]/30 group-hover:ring-[var(--accent)]/60 transition-all duration-300 group-hover:shadow-[0_0_20px_var(--glow)]">
-            <Icon size={26} strokeWidth={2.2} />
+        <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
+          <div className="flex items-center justify-between mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)]/20 to-transparent flex items-center justify-center text-[var(--accent)] ring-1 ring-[var(--accent)]/30 group-hover:ring-[var(--accent)]/60 transition-all duration-500 group-hover:shadow-[0_0_30px_var(--glow)] group-hover:-translate-y-1">
+              <Icon size={28} strokeWidth={2} />
+            </div>
+            <div className="text-[var(--accent)]/30 font-mono text-xs tracking-widest uppercase">
+              Service 0{delay / 0.15 + 1}
+            </div>
           </div>
-          <h3 className="text-2xl font-bold mb-4 tracking-tight group-hover:text-[var(--accent)] transition-colors duration-300">{title}</h3>
-          <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+          <h3 className="text-3xl font-extrabold mb-4 tracking-tight text-foreground/90 group-hover:text-[var(--accent)] transition-colors duration-300">
+            {title}
+          </h3>
+          <p className="text-muted-foreground leading-relaxed text-base md:text-lg max-w-md">
             {description}
           </p>
         </div>
 
-        <div style={{ transform: "translateZ(30px)" }} className="relative z-10 flex flex-wrap gap-2 mt-8">
+        <div style={{ transform: "translateZ(40px)" }} className="relative z-10 flex flex-wrap gap-2 mt-10">
           {tags.map((tag, i) => (
-            <span key={i} className="px-3 py-1.5 text-xs font-mono font-medium rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-foreground/70 group-hover:border-[var(--accent)]/20 transition-colors duration-300">
+            <span key={i} className="px-4 py-2 text-xs font-mono font-medium rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground/80 group-hover:border-[var(--accent)]/30 group-hover:bg-[var(--accent)]/5 transition-all duration-300 hover:scale-105">
               {tag}
             </span>
           ))}
         </div>
 
-        {/* Huge Decorative Background Icon */}
-        <div className="absolute -bottom-8 -right-8 text-[var(--accent)] opacity-0 group-hover:opacity-[0.05] transition-all duration-700 transform group-hover:scale-110 group-hover:-rotate-12 pointer-events-none">
-           <Icon size={180} />
+        {/* Decorative Background Element */}
+        <div className="absolute -bottom-10 -right-10 text-[var(--accent)] opacity-[0.02] group-hover:opacity-[0.08] transition-all duration-1000 transform group-hover:scale-125 group-hover:-rotate-12 pointer-events-none blur-[2px] group-hover:blur-none">
+           <Icon size={240} strokeWidth={1} />
         </div>
       </div>
     </motion.div>
@@ -114,50 +121,72 @@ export default function Services() {
   const services = [
     {
       title: "Frontend Engineering",
-      description: "Crafting beautiful, responsive, and highly interactive user interfaces with a focus on seamless user experiences and modern aesthetics.",
+      description: "Crafting beautiful, responsive, and highly interactive user interfaces. I build performant web applications focusing on seamless user experiences, micro-interactions, and modern aesthetics.",
       icon: Layout,
-      tags: ["React", "Tailwind CSS", "Framer Motion", "UI/UX"]
+      tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "UI/UX"],
+      isLarge: true // Makes this card span 2 columns on desktop
     },
     {
       title: "Backend Architecture",
-      description: "Building robust, scalable, and secure APIs and microservices that power complex business logic and ensure high availability.",
+      description: "Building robust, scalable APIs and microservices that power complex business logic with high availability.",
       icon: Server,
-      tags: ["Java Spring Boot", "Node.js", "Express", "REST APIs"]
+      tags: ["Java Spring Boot", "Node.js", "Express"],
+      isLarge: false
     },
     {
       title: "Database Management",
       description: "Designing efficient schemas, optimizing complex queries, and managing data integrity for high-performance applications.",
       icon: Database,
-      tags: ["PostgreSQL", "MongoDB", "Redis", "Prisma"]
+      tags: ["PostgreSQL", "MongoDB", "Redis"],
+      isLarge: false
+    },
+    {
+      title: "System Integration",
+      description: "Seamlessly connecting third-party APIs, payment gateways, and cloud services to create unified, end-to-end digital solutions.",
+      icon: Workflow,
+      tags: ["AWS", "REST APIs", "Stripe", "OAuth"],
+      isLarge: true
     }
   ];
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-[400px] bg-[var(--accent)]/5 blur-[120px] rounded-full pointer-events-none" />
+    <section id="services" className="relative py-32 px-6 overflow-hidden">
+      {/* Background Decor - Modern Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+      
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[500px] bg-[var(--accent)]/10 blur-[150px] rounded-[100%] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-20">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 text-xs font-mono tracking-widest uppercase mb-6"
+            >
+              <Cpu size={14} /> Technical Expertise
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
+            >
+              Specialized <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Services</span>
+            </motion.h2>
+          </div>
+          <motion.p 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 text-sm font-mono tracking-widest uppercase mb-4"
+            className="text-muted-foreground text-lg max-w-sm"
           >
-            <Cpu size={14} /> Expertise
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-extrabold tracking-tight"
-          >
-            Specialized Services
-          </motion.h2>
+            Delivering end-to-end solutions from pixel-perfect interfaces to robust scalable architectures.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 perspective-[1200px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 perspective-[1200px]">
           {services.map((service, index) => (
             <SpotlightCard 
               key={index}
@@ -166,6 +195,7 @@ export default function Services() {
               icon={service.icon}
               tags={service.tags}
               delay={index * 0.15}
+              isLarge={service.isLarge}
             />
           ))}
         </div>
