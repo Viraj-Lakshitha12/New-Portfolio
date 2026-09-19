@@ -6,49 +6,106 @@ import Fuse from 'fuse.js';
 
 const KNOWLEDGE_BASE = [
   {
-    keywords: ['hi', 'hello', 'hey', 'who'],
-    response: "Hi there! I'm Viraj's AI clone. I can answer questions about his skills, experience, projects, or education. What would you like to know?"
+    intent: 'greeting',
+    keywords: ['hi', 'hello', 'hey', 'who are you', 'what is this', 'greetings'],
+    response: "Hi there! I'm Viraj's AI Assistant. I can answer questions about his skills, experience, projects, education, and personal details. What would you like to know?"
   },
   {
-    keywords: ['skills', 'react', 'frontend', 'tailwind', 'ui'],
-    response: "Viraj is highly proficient in Frontend engineering. He builds immersive, responsive UIs using React, Tailwind CSS, and Framer Motion (just like this portfolio!)."
+    intent: 'skills',
+    keywords: ['skills', 'tech', 'stack', 'technologies', 'react', 'java', 'node', 'express', 'frontend', 'backend', 'database'],
+    response: "Viraj is a Full Stack Engineer. His core expertise lies in Java Spring Boot, Node.js (Express), and React. He is also highly skilled in TypeScript, PostgreSQL, MongoDB, Redis, Tailwind CSS, Docker, and Microservices.",
+    prompt: "Would you like me to scroll down to his Skills section to see the full list?",
+    action: 'stack'
   },
   {
-    keywords: ['backend', 'java', 'spring', 'node', 'express', 'api'],
-    response: "On the backend, Viraj specializes in Java with Spring Boot and Node.js with Express. He builds scalable microservices and RESTful APIs."
+    intent: 'experience',
+    keywords: ['experience', 'work', 'job', 'intelleon', 'company', 'history', 'intern'],
+    response: "Viraj is currently a Software Engineer at INTELLEON, where he previously worked as an Associate SE and Intern. He builds scalable web applications and manages robust backend architectures.",
+    prompt: "Would you like me to scroll to his Experience section for more details?",
+    action: 'experience'
   },
   {
-    keywords: ['database', 'sql', 'postgresql', 'mongo'],
-    response: "Viraj is experienced with relational databases like PostgreSQL and MySQL, as well as NoSQL databases like MongoDB. He focuses on efficient schema design and query optimization."
+    intent: 'education',
+    keywords: ['education', 'degree', 'sliit', 'university', 'study', 'studied', 'ijse', 'wrexham', 'londontec'],
+    response: "Viraj holds a BSc (Hons) in Computing from Wrexham University (UK) and a Graduate Diploma in Software Engineering from IJSE.",
+    prompt: "Shall I navigate to the Education section so you can see more?",
+    action: 'education'
   },
   {
-    keywords: ['experience', 'work', 'job', 'intelleon'],
-    response: "Viraj is currently working as a Full Stack Software Engineer at INTELLEON (since 2024). He handles both frontend and backend development for production systems."
+    intent: 'projects',
+    keywords: ['projects', 'portfolio', 'query', 'built', 'made'],
+    response: "Viraj has built several impressive full-stack projects, including a comprehensive Service Management Platform, a Property Booking System, and this Next-Gen Portfolio.",
+    prompt: "Would you like to head over to the Projects section to see them?",
+    action: 'projects'
   },
   {
-    keywords: ['education', 'degree', 'sliit', 'university'],
-    response: "Viraj holds a BSc (Hons) in Information Technology from the Sri Lanka Institute of Information Technology (SLIIT)."
+    intent: 'contact',
+    keywords: ['contact', 'hire', 'email', 'reach', 'number', 'phone'],
+    response: "You can reach Viraj via email at viraj.lakshitha.22222@gmail.com, or connect with him on LinkedIn.",
+    prompt: "Do you want me to scroll to the Contact form?",
+    action: 'contact'
   },
   {
-    keywords: ['projects', 'portfolio', 'query'],
-    response: "Some of Viraj's featured projects include this Next-Gen Portfolio (built with React + Tailwind + Framer Motion) and a Query-Analyzer tool. You can check the Projects section for more details!"
+    intent: 'personal_age',
+    keywords: ['age', 'old', 'born', 'birthday'],
+    response: "Viraj was born in 2001, making him in his early twenties. He's young, energetic, and highly passionate about modern software engineering!"
   },
   {
-    keywords: ['contact', 'hire', 'email', 'reach'],
-    response: "You can reach Viraj via email at virajalakshitha.lakshitha.77@gmail.com, or connect with him on LinkedIn. There's also a contact form at the bottom of the page!"
+    intent: 'personal_location',
+    keywords: ['where', 'live', 'location', 'country', 'city', 'from', 'sri', 'lanka'],
+    response: "Viraj is based in Sri Lanka. He is open to remote work and collaborating with teams worldwide."
   },
   {
-    keywords: ['thanks', 'thank you', 'bye'],
+    intent: 'thanks',
+    keywords: ['thanks', 'thank you', 'bye', 'goodbye', 'ok', 'okay', 'cool'],
     response: "You're welcome! Feel free to ask if you have any more questions. Enjoy exploring the portfolio!"
   }
 ];
 
+const FALLBACK_RESPONSES = [
+  "I'm not quite sure about that! Try asking about his 'skills', 'experience', 'age', or 'education'.",
+  "Hmm, my knowledge base doesn't have the exact answer for that. You can ask me about his tech stack or projects instead!",
+  "I'm still learning! Could you rephrase that? Or you can try asking 'What are your skills?'",
+  "Interesting question! While I don't know the answer, I can definitely tell you about his work experience or education."
+];
+
+// Common words to ignore so the bot focuses on the actual intent
+const STOP_WORDS = new Set([
+  'what', 'about', 'his', 'her', 'he', 'she', 'is', 'a', 'an', 'the', 'i', 
+  'ask', 'tell', 'me', 'can', 'you', 'do', 'does', 'did', 'will', 'would', 'could', 
+  'should', 'to', 'for', 'of', 'in', 'on', 'at', 'by', 'with', 'and', 'or', 'but', 'so', 
+  'because', 'this', 'that', 'these', 'those', 'are', 'was', 'were', 'be', 'been', 'being',
+  'have', 'has', 'had', 'know', 'want', 'like', 'just', 'pleas', 'please', 'give'
+]);
+
 const fuse = new Fuse(KNOWLEDGE_BASE, {
   keys: ['keywords'],
-  threshold: 0.4, // Allows for fuzzy matching (typos)
+  threshold: 0.3, 
   ignoreLocation: true,
-  includeScore: true
+  includeScore: true,
+  distance: 100
 });
+
+// Typewriter effect component for bot messages
+const TypewriterText = ({ text, onComplete }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayedText(text.slice(0, i + 1));
+      i++;
+      if (i > text.length) {
+        clearInterval(interval);
+        if (onComplete) onComplete();
+      }
+    }, 15); // typing speed
+    
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <span>{displayedText}</span>;
+};
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,6 +113,8 @@ export default function AIChatbot() {
   const [messages, setMessages] = useState([
     { type: 'bot', text: "Hello! I'm Viraj's AI Assistant. Ask me anything about his tech stack, experience, or projects." }
   ]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -64,48 +123,98 @@ export default function AIChatbot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
   const generateResponse = (text) => {
-    // Split the user text into words and search each word to find the best match
-    const words = text.toLowerCase().split(/\s+/);
-    let bestResult = null;
-    let highestScore = 1; // Lower score is better in Fuse (0 is exact match)
+    // 1. Tokenize and clean the input
+    const words = text.toLowerCase().split(/[^a-z0-9]+/);
+    
+    // 2. Remove stop words to extract the core intent/keywords
+    const importantWords = words.filter(word => word.length > 2 && !STOP_WORDS.has(word));
+    
+    // 3. Search the knowledge base using the important words
+    let bestResultItem = null;
+    let highestScore = 1; // 0 is a perfect match in fuse
 
-    for (const word of words) {
-      if (word.length < 2) continue; // Skip single letter words
+    const getFallback = () => ({ text: FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)] });
+
+    // If no important words found, fallback immediately
+    if (importantWords.length === 0) {
+       return getFallback();
+    }
+
+    // Try matching the combined phrase first (e.g., "frontend skills")
+    const phraseResults = fuse.search(importantWords.join(' '));
+    if (phraseResults.length > 0 && phraseResults[0].score < 0.4) {
+      return { text: phraseResults[0].item.response, prompt: phraseResults[0].item.prompt, action: phraseResults[0].item.action };
+    }
+
+    // Fallback to word-by-word intent extraction
+    for (const word of importantWords) {
       const results = fuse.search(word);
       if (results.length > 0) {
-        // Find the best match across all words
         if (results[0].score < highestScore) {
           highestScore = results[0].score;
-          bestResult = results[0].item.response;
+          bestResultItem = results[0].item;
         }
       }
     }
 
-    if (bestResult) {
-      return bestResult;
+    if (bestResultItem) {
+      return { text: bestResultItem.response, prompt: bestResultItem.prompt, action: bestResultItem.action };
     }
     
-    return "I'm still learning! While I might not know the exact answer to that, you can try asking about Viraj's 'skills', 'experience', 'projects', or 'education'.";
+    return getFallback();
   };
 
   const handleSend = (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     uiAudio.playClick();
-    const userText = input.trim();
-    setMessages(prev => [...prev, { type: 'user', text: userText }]);
+    const userText = input.trim().toLowerCase();
+    setMessages(prev => [...prev, { type: 'user', text: input.trim() }]);
     setInput('');
+    setIsTyping(true);
 
     // Simulate network delay for realism
     setTimeout(() => {
-      const response = generateResponse(userText);
-      setMessages(prev => [...prev, { type: 'bot', text: response }]);
+      // Check if we are waiting for a yes/no permission to navigate
+      if (pendingAction) {
+        const yesWords = ['yes', 'yeah', 'yup', 'sure', 'ok', 'okay', 'scroll', 'take me', 'please', 'ow', 'yep'];
+        const noWords = ['no', 'nope', 'nah', 'stop', 'epaa', 'naa'];
+        
+        const isYes = yesWords.some(w => userText.includes(w));
+        const isNo = noWords.some(w => userText.includes(w));
+
+        if (isYes) {
+          setMessages(prev => [...prev, { type: 'bot', text: "Scrolling there now!" }]);
+          setTimeout(() => {
+            const element = document.getElementById(pendingAction);
+            if (element) element.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+          setPendingAction(null);
+          uiAudio.playHover();
+          return;
+        } else if (isNo || userText.length <= 4) {
+          setMessages(prev => [...prev, { type: 'bot', text: "Alright! What else would you like to know?" }]);
+          setPendingAction(null);
+          uiAudio.playHover();
+          return;
+        }
+        // If it's a completely new sentence and not a simple yes/no, we just clear pending action and process it normally
+        setPendingAction(null);
+      }
+
+      const responseData = generateResponse(userText);
+      setMessages(prev => [...prev, { type: 'bot', text: responseData.text, prompt: responseData.prompt }]);
       uiAudio.playHover(); // Soft pop for message receive
-    }, 600 + Math.random() * 800);
+      
+      // If there is an action, save it to pendingAction so we can ask for permission next turn
+      if (responseData.action) {
+        setPendingAction(responseData.action);
+      }
+    }, 500 + Math.random() * 500);
   };
 
   return (
@@ -153,25 +262,54 @@ export default function AIChatbot() {
 
               {/* Chat Area */}
               <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 custom-scrollbar">
-                {messages.map((msg, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`flex gap-2 max-w-[85%] ${msg.type === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
-                  >
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${msg.type === 'user' ? 'bg-zinc-200 dark:bg-zinc-800' : 'bg-[var(--accent)]/20 text-[var(--accent)]'}`}>
-                      {msg.type === 'user' ? <User size={12} /> : <Bot size={12} />}
+                {messages.map((msg, idx) => {
+                  const isLastBotMsg = idx === messages.length - 1 && msg.type === 'bot' && isTyping;
+                  return (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex gap-2 max-w-[85%] ${msg.type === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
+                    >
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${msg.type === 'user' ? 'bg-zinc-200 dark:bg-zinc-800' : 'bg-[var(--accent)]/20 text-[var(--accent)]'}`}>
+                        {msg.type === 'user' ? <User size={12} /> : <Bot size={12} />}
+                      </div>
+                      <div className={`px-3 py-2 rounded-2xl text-sm leading-relaxed ${
+                        msg.type === 'user' 
+                          ? 'bg-zinc-100 dark:bg-zinc-800 text-foreground rounded-tr-sm' 
+                          : 'bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-foreground rounded-tl-sm'
+                      }`}>
+                        {isLastBotMsg ? (
+                          <TypewriterText text={msg.text} onComplete={() => setIsTyping(false)} />
+                        ) : (
+                          msg.text
+                        )}
+                        {msg.prompt && !isLastBotMsg && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 5 }} 
+                            animate={{ opacity: 1, y: 0 }} 
+                            transition={{ duration: 0.4 }}
+                            className="mt-3 pt-3 border-t border-[var(--accent)]/10 font-semibold text-[var(--accent)]"
+                          >
+                            {msg.prompt}
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+                {isTyping && messages[messages.length - 1].type === 'user' && (
+                  <div className="flex gap-2 max-w-[85%]">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 bg-[var(--accent)]/20 text-[var(--accent)]">
+                      <Bot size={12} />
                     </div>
-                    <div className={`px-3 py-2 rounded-2xl text-sm leading-relaxed ${
-                      msg.type === 'user' 
-                        ? 'bg-zinc-100 dark:bg-zinc-800 text-foreground rounded-tr-sm' 
-                        : 'bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-foreground rounded-tl-sm'
-                    }`}>
-                      {msg.text}
+                    <div className="px-4 py-3 rounded-2xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-tl-sm flex items-center gap-1">
+                      <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.4 }} className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                      <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.4, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                      <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.4, delay: 0.4 }} className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
                     </div>
-                  </motion.div>
-                ))}
+                  </div>
+                )}
                 <div ref={messagesEndRef} />
               </div>
 
