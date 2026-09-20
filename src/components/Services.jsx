@@ -67,7 +67,7 @@ const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge })
       <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-b from-black/10 to-black/5 dark:from-white/15 dark:to-white/5 group-hover:opacity-0 transition-opacity duration-500" />
 
       {/* Card Content Container */}
-      <div className="relative h-full min-h-[400px] rounded-[31px] bg-white/60 dark:bg-zinc-950/60 backdrop-blur-2xl p-8 md:p-10 flex flex-col justify-between overflow-hidden">
+      <div className="relative h-full min-h-[280px] md:min-h-[380px] rounded-[31px] bg-white/60 dark:bg-zinc-950/60 backdrop-blur-2xl p-6 md:p-10 flex flex-col justify-between overflow-hidden">
         
         {/* Inner Glow */}
         <motion.div
@@ -84,23 +84,24 @@ const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge })
         />
 
         <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
-          <div className="flex items-center justify-between mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)]/20 to-transparent flex items-center justify-center text-[var(--accent)] ring-1 ring-[var(--accent)]/30 group-hover:ring-[var(--accent)]/60 transition-all duration-500 group-hover:shadow-[0_0_30px_var(--glow)] group-hover:-translate-y-1">
-              <Icon size={28} strokeWidth={2} />
+          <div className="flex items-center justify-between mb-5 md:mb-8">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)]/20 to-transparent flex items-center justify-center text-[var(--accent)] ring-1 ring-[var(--accent)]/30 group-hover:ring-[var(--accent)]/60 transition-all duration-500 group-hover:shadow-[0_0_30px_var(--glow)] group-hover:-translate-y-1">
+              <Icon size={22} strokeWidth={2} className="md:hidden" />
+              <Icon size={28} strokeWidth={2} className="hidden md:block" />
             </div>
             <div className="text-[var(--accent)]/30 font-mono text-xs tracking-widest uppercase">
               Service 0{delay / 0.15 + 1}
             </div>
           </div>
-          <h3 className="text-3xl font-extrabold mb-4 tracking-tight text-foreground/90 group-hover:text-[var(--accent)] transition-colors duration-300">
+          <h3 className="text-xl md:text-3xl font-extrabold mb-3 md:mb-4 tracking-tight text-foreground/90 group-hover:text-[var(--accent)] transition-colors duration-300">
             {title}
           </h3>
-          <p className="text-muted-foreground leading-relaxed text-base md:text-lg max-w-md">
+          <p className="text-muted-foreground leading-relaxed text-sm md:text-base max-w-md">
             {description}
           </p>
         </div>
 
-        <div style={{ transform: "translateZ(40px)" }} className="relative z-10 flex flex-wrap gap-2 mt-10">
+        <div style={{ transform: "translateZ(40px)" }} className="relative z-10 flex flex-wrap gap-2 mt-5 md:mt-10">
           {tags.map((tag, i) => (
             <span key={i} className="px-4 py-2 text-xs font-mono font-medium rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground/80 group-hover:border-[var(--accent)]/30 group-hover:bg-[var(--accent)]/5 transition-all duration-300 hover:scale-105">
               {tag}
@@ -157,7 +158,7 @@ export default function Services() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[500px] bg-[var(--accent)]/10 blur-[150px] rounded-[100%] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-8 mb-12 md:mb-20">
           <div className="max-w-2xl">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -171,8 +172,7 @@ export default function Services() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
-            >
+              className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"            >
               Specialized <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Services</span>
             </motion.h2>
           </div>
