@@ -119,6 +119,8 @@ export default function AIChatbot() {
   // Tooltip state
   const [isHovered, setIsHovered] = useState(false);
   const [isAutoShowing, setIsAutoShowing] = useState(false);
+  // Track scroll position to swap with scroll-to-top on mobile
+  const [scrolledPast, setScrolledPast] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -128,6 +130,13 @@ export default function AIChatbot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolledPast(window.scrollY > 420);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     // Auto show tooltip after 2 seconds for 5 seconds to grab attention
@@ -240,11 +249,17 @@ export default function AIChatbot() {
 
   return (
     <>
+      {/* Chatbot FAB — on mobile, fades out when scrolled past hero (scroll-to-top takes over) */}
       <div 
-        className="fixed bottom-6 right-6 z-[100] flex items-center justify-end gap-3"
+        className={`fixed bottom-6 right-6 z-[100] flex items-center justify-end gap-3 transition-all duration-300 ${
+          scrolledPast && !isOpen
+            ? 'opacity-0 pointer-events-none translate-y-4 md:opacity-100 md:pointer-events-auto md:translate-y-0'
+            : 'opacity-100 pointer-events-auto translate-y-0'
+        }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Tooltip — hidden on mobile (touch has no hover) */}
         <AnimatePresence>
           {shouldShowTooltip && (
             <motion.div
@@ -252,7 +267,7 @@ export default function AIChatbot() {
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 10, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="pointer-events-none"
+              className="pointer-events-none hidden md:block"
             >
               <div className="whitespace-nowrap px-4 py-2.5 rounded-2xl glass bg-white/90 dark:bg-zinc-950/90 border border-[var(--accent)]/30 shadow-xl text-sm font-medium text-foreground flex items-center gap-3 backdrop-blur-xl relative">
                 <span>Ask me anything!</span>
