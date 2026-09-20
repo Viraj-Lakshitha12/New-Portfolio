@@ -32,7 +32,7 @@ export default function Contact() {
         transition={{ duration: 0.6 }}
       >
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mt-3">
-          Get in Touch
+          Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Touch</span>
         </h2>
         <p className="mt-3 text-muted-foreground">Have a project, idea, or opportunity? Let&apos;s make it useful.</p>
       </motion.div>

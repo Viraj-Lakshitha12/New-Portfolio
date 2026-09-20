@@ -5,13 +5,13 @@ class UIAudioManager {
     
     // Listen for changes from ThemeCustomizer
     window.addEventListener('sound-preference-changed', (e) => {
-      this.enabled = e.detail.enabled;
+      this.enabled = e['detail']?.enabled;
     });
   }
 
   initContext() {
     if (!this.audioCtx) {
-      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      this.audioCtx = new (window.AudioContext || window['webkitAudioContext'])();
     }
     if (this.audioCtx.state === 'suspended') {
       this.audioCtx.resume();

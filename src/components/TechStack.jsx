@@ -79,7 +79,7 @@ export default function TechStack() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mt-3">Tech Stack</h2>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mt-3">Tech <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Stack</span></h2>
         <p className="mt-3 text-muted-foreground">The tools behind production-ready systems.</p>
       </motion.div>
 

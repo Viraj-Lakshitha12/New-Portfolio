@@ -75,7 +75,7 @@ export default function Experience() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Professional Experience</h2>
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Experience</span></h2>
         <p className="mt-3 text-muted-foreground">Career progression, versioned as commits.</p>
       </motion.div>
 

@@ -279,7 +279,7 @@ export default function Projects() {
         transition={{ duration: 0.6 }}
       >
         <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">Case Studies</span>
-        <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight">The Perspective Gallery</h2>
+        <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight">The Perspective <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Gallery</span></h2>
         <p className="mt-4 text-muted-foreground max-w-xl mx-auto">Engineering scalable systems with depth, dimension, and performance in mind.</p>
       </motion.div>
       
