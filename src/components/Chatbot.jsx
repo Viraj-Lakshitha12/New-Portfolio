@@ -8,7 +8,7 @@ const KNOWLEDGE_BASE = [
   {
     intent: 'greeting',
     keywords: ['hi', 'hello', 'hey', 'who are you', 'what is this', 'greetings'],
-    response: "Hi there! I'm Viraj's AI Assistant. I can answer questions about his skills, experience, projects, education, and personal details. What would you like to know?"
+    response: "Hi there! I'm Viraj's Chat Assistant. I can answer questions about his skills, experience, projects, education, and personal details. What would you like to know?"
   },
   {
     intent: 'skills',
@@ -107,11 +107,11 @@ const TypewriterText = ({ text, onComplete }) => {
   return <span>{displayedText}</span>;
 };
 
-export default function AIChatbot() {
+export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { type: 'bot', text: "Hello! I'm Viraj's AI Assistant. Ask me anything about his tech stack, experience, or projects." }
+    { type: 'bot', text: "Hello! I'm Viraj's Chat Assistant. Ask me anything about his tech stack, experience, or projects." }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
@@ -292,7 +292,7 @@ export default function AIChatbot() {
             setIsAutoShowing(false);
           }}
           className="w-12 h-12 rounded-full glass flex items-center justify-center text-[var(--accent)] shadow-lg hover:shadow-[0_0_15px_var(--glow)] transition-shadow backdrop-blur-xl border border-[var(--accent)]/20 relative"
-          aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
+          aria-label={isOpen ? "Close Chat Assistant" : "Open Chat Assistant"}
         >
           {isOpen ? <X size={22} /> : <Bot size={22} />}
           {!isOpen && (
@@ -318,7 +318,7 @@ export default function AIChatbot() {
                     <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-950" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm leading-none">Viraj.AI</h3>
+                    <h3 className="font-bold text-sm leading-none">Viraj.Chat</h3>
                     <span className="text-[10px] text-muted-foreground">Always online</span>
                   </div>
                 </div>

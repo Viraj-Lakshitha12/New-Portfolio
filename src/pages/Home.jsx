@@ -17,7 +17,7 @@ import Terminal from '@/components/Terminal';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import ThemeCustomizer from '@/components/ThemeCustomizer';
-import AIChatbot from '@/components/AIChatbot';
+import Chatbot from '@/components/Chatbot';
 
 export default function Home() {
   return (
@@ -26,7 +26,7 @@ export default function Home() {
       <CustomCursor />
       <ScrollProgress />
       <ThemeCustomizer />
-      <AIChatbot />
+      <Chatbot />
       <MeshBackground />
       <Navbar />
       <main className="relative">
@@ -44,4 +44,4 @@ export default function Home() {
       </main>
     </ThemeProvider>
   );
-}
+}
