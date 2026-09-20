@@ -393,8 +393,14 @@ export default function AIChatbot() {
                       setInput(e.target.value);
                       uiAudio.playTyping();
                     }}
+                    onBlur={(e) => {
+                      // Force zoom-out on iOS after keyboard closes
+                      if (window.innerWidth < 768) {
+                        e.target.style.fontSize = '16px';
+                      }
+                    }}
                     placeholder="Ask about Viraj..."
-                    className="w-full bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-full pl-4 pr-10 py-2 text-sm outline-none focus:border-[var(--accent)] transition-colors shadow-inner"
+                    className="w-full bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-full pl-4 pr-10 py-2 text-base outline-none focus:border-[var(--accent)] transition-colors shadow-inner"
                   />
                   <button
                     type="submit"

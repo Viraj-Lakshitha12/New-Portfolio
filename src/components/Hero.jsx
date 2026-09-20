@@ -27,7 +27,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative h-screen flex flex-col items-center justify-center px-6 pt-20 pb-8 overflow-hidden text-center"
+      className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-4 md:pb-8 overflow-hidden text-center"
     >
 
       <motion.div
@@ -91,7 +91,7 @@ export default function Hero() {
       </motion.p>
 
       <motion.div
-        className="flex gap-4 justify-center"
+        className="flex flex-wrap gap-3 md:gap-4 justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.9, duration: 0.6 }}
