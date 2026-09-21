@@ -29,7 +29,7 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-4 md:pb-8 overflow-hidden text-center"
     >
-
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <motion.div
         ref={ref}
         onMouseMove={handleMove}
