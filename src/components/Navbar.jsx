@@ -35,18 +35,27 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = links
-      .map((link) => document.querySelector(link.href))
+    const allSectionIds = ['home', 'about', 'services', 'stack', 'githubstats', 'terminal', 'experience', 'projects', 'education', 'contact'];
+    const highlightMap = {
+      'services': 'about',
+      'githubstats': 'stack',
+      'terminal': 'stack'
+    };
+
+    const sections = allSectionIds
+      .map((id) => document.getElementById(id))
       .filter(Boolean);
 
     const updateActiveSection = () => {
       const marker = window.scrollY + 160;
       const currentSection = sections.reduce((active, section) => {
-        if (!(section instanceof HTMLElement)) return active;
         return section.offsetTop <= marker ? section : active;
       }, sections[0]);
 
-      if (currentSection) setActiveSection(currentSection.id);
+      if (currentSection) {
+        const activeId = currentSection.id;
+        setActiveSection(highlightMap[activeId] || activeId);
+      }
     };
 
     updateActiveSection();
