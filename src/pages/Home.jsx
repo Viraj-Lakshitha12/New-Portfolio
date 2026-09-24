@@ -18,6 +18,7 @@ import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import ThemeCustomizer from '@/components/ThemeCustomizer';
 import Chatbot from '@/components/Chatbot';
+import CommandPalette from '@/components/CommandPalette';
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
       <CustomCursor />
       <ScrollProgress />
       <ThemeCustomizer />
+      <CommandPalette />
       <Chatbot />
       <MeshBackground />
       <Navbar />
@@ -35,10 +37,10 @@ export default function Home() {
         <Services />
         <TechStack />
         <GithubStats />
+        <Terminal />
         <Experience />
         <Projects />
         <Education />
-        <Terminal />
         <Contact />
         <Footer />
       </main>

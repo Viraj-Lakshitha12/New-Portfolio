@@ -91,7 +91,7 @@ export default function Terminal() {
   }, [history]);
 
   return (
-    <section className="relative py-16 md:py-24 px-6">
+    <section id="terminal" className="relative py-16 md:py-24 px-6">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
