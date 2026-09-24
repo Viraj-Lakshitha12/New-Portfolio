@@ -12,42 +12,75 @@ export default function Terminal() {
   const bottomRef = useRef(null);
 
   const commands = {
-    help: '📋 Available commands:\n   whoami    → About me\n   skills    → My tech stack\n   experience → Work history\n   education → Academic background\n   contact   → How to reach me\n   projects  → Featured projects\n   echo [text] → Repeat your text\n   clear     → Clear terminal',
-    whoami: '👋 Viraj Lakshitha\n   Full Stack Software Engineer @ INTELLEON\n   Sri Lanka 🇱🇰\n   2+ years building production web systems.',
-    skills: '⚡ Core Stack:\n   → Java / Spring Boot\n   → React / TypeScript\n   → Node.js / Express\n   → PostgreSQL / Docker\n   → RESTful APIs / Microservices',
-    experience: '💼 Software Engineer @ INTELLEON (2024 - Present)\n   Building production web systems, optimizing\n   database queries, and designing microservices.',
-    education: '🎓 BSc (Hons) in Information Technology\n   Sri Lanka Institute of Information Technology',
-    contact: '📬 Get in touch:\n   → Email: virajalakshitha.lakshitha.77@gmail.com\n   → LinkedIn: linkedin.com/in/viraj-lakshitha\n   → GitHub: github.com/Viraj-Lakshitha12',
-    projects: '🚀 Featured Projects:\n   → New-Portfolio (This site!)\n   → Query-Analyzer\n   → Visit #projects section for more!',
+    help: '📋 Available commands:\n   whoami     → About Viraj\n   skills     → Tech stack\n   experience → Work history\n   education  → Academic background\n   projects   → Featured projects\n   contact    → Contact details\n   ls         → List sections\n   open       → open [linkedin|github|cv]\n   hire       → Let\'s work together!\n   date       → Current date & time\n   echo [txt] → Repeat your text\n   clear      → Clear terminal\n   neofetch   → System info\n   sudo       → 😏 Try it...',
+    whoami: '👋 Viraj Lakshitha Adhikari\n   Role   : Full Stack Software Engineer\n   Company: INTELLEON (2024 - Present)\n   Country: Sri Lanka 🇱🇰\n   Focus  : Scalable web systems, clean code, great UX\n   Fun    : Building things that make people say "wow"',
+    skills: '⚡ Core Tech Stack:\n   ┌─ Frontend  : React, TypeScript, Next.js, Tailwind CSS\n   ├─ Backend   : Java Spring Boot, Node.js, Express\n   ├─ Databases : PostgreSQL, MySQL, MongoDB, Redis\n   ├─ DevOps    : Docker, AWS, CI/CD\n   └─ Tools     : Git, Figma, Postman, IntelliJ',
+    experience: '💼 Career Timeline:\n   2024 - Now  → Software Engineer @ INTELLEON\n   2023 - 2024 → Associate SE @ INTELLEON\n   2023        → Intern SE @ INTELLEON\n   \n   Building production systems trusted by thousands of users.',
+    education: '🎓 Academic Background:\n   BSc (Hons) Computing\n   └─ Wrexham University (UK)\n   \n   Graduate Diploma in Software Engineering\n   └─ IJSE - Institute of Java & Software Engineering',
+    contact: '📬 Let\'s Connect:\n   Email    → viraj.lakshitha.22222@gmail.com\n   LinkedIn → linkedin.com/in/viraj-lakshitha01\n   GitHub   → github.com/Viraj-Lakshitha12\n   \n   Or type "hire" to start a conversation! 🚀',
+    projects: '🚀 Featured Projects:\n   1. This Portfolio  → React + Framer Motion + AI Chatbot\n   2. Service Mgmt    → Spring Boot + React + PostgreSQL\n   3. Property System → Node.js + MongoDB + JWT Auth\n   \n   → Scroll to #projects for full details',
+    ls: '📂 Portfolio Sections:\n   home/        → Hero & Introduction\n   about/       → About Viraj\n   services/    → What I offer\n   stack/       → Tech Stack\n   experience/  → Work History\n   projects/    → Featured Projects\n   education/   → Academic Background\n   contact/     → Get in Touch',
+    hire: '🎉 Great choice! Let\'s build something amazing together.\n   \n   📧 viraj.lakshitha.22222@gmail.com\n   💼 linkedin.com/in/viraj-lakshitha01\n   \n   Currently: ✅ Available for opportunities\n   Response time: < 24 hours',
+    date: `📅 ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n   🕐 ${new Date().toLocaleTimeString('en-US')} (Sri Lanka / GMT+5:30)`,
+    neofetch: '   viraj@vl.dev\n   ──────────────\n   OS     : Human Brain v25.0\n   Host   : Sri Lanka, Earth\n   Shell  : VSCode + IntelliJ\n   CPU    : Java Spring Boot @ 3.2GHz\n   GPU    : React + Framer Motion\n   RAM    : 8+ years of CS knowledge\n   Disk   : GitHub (∞ TB)\n   Status : Available for hire ✅',
+    sudo: '⚠️  sudo: permission denied\n   Nice try, but you\'ll have to hire Viraj the normal way 😄\n   Try: hire',
+    'sudo hire-me': '🚀 OVERRIDE ACCEPTED. Initiating hire sequence...\n   ████████████████████████████ 100%\n   ✅ Viraj successfully hired!\n   📧 Sending onboarding email to: viraj.lakshitha.22222@gmail.com\n   (just kidding — but seriously, reach out!) 😄',
     clear: 'CLEAR_COMMAND',
+    open: 'OPEN_COMMAND',
   };
+
 
   const handleCommand = (e) => {
     if (e.key === 'Enter') {
-      const cmd = input.trim().toLowerCase();
+      const raw = input.trim();
+      const cmd = raw.toLowerCase();
       const parts = cmd.split(' ');
       const baseCmd = parts[0];
 
       if (!cmd) return;
 
-      const newHistory = [...history, { type: 'user', content: `$ ${input}` }];
+      const newHistory = [...history, { type: 'user', content: `$ ${raw}` }];
 
       if (baseCmd === 'clear') {
         setHistory([]);
       } else if (baseCmd === 'echo') {
         newHistory.push({ type: 'system', content: parts.slice(1).join(' ') || '(empty)' });
         setHistory(newHistory);
+      } else if (cmd === 'sudo hire-me') {
+        newHistory.push({ type: 'success', content: commands['sudo hire-me'] });
+        setHistory(newHistory);
+      } else if (baseCmd === 'open') {
+        const target = parts[1];
+        const urls = {
+          linkedin: 'https://www.linkedin.com/in/viraj-lakshitha01/',
+          github: 'https://github.com/Viraj-Lakshitha12',
+          cv: '/Viraj_Lakshitha_CV.pdf',
+        };
+        if (urls[target]) {
+          window.open(urls[target], '_blank');
+          newHistory.push({ type: 'success', content: `🚀 Opening ${target}...` });
+        } else {
+          newHistory.push({ type: 'error', content: `Usage: open [linkedin|github|cv]` });
+        }
+        setHistory(newHistory);
+      } else if (baseCmd === 'date') {
+        newHistory.push({ type: 'system', content: `📅 ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n   🕐 ${new Date().toLocaleTimeString('en-US')} (Sri Lanka / GMT+5:30)` });
+        setHistory(newHistory);
+      } else if (commands[cmd]) {
+        newHistory.push({ type: 'system', content: commands[cmd] });
+        setHistory(newHistory);
       } else if (commands[baseCmd]) {
         newHistory.push({ type: 'system', content: commands[baseCmd] });
         setHistory(newHistory);
       } else {
-        newHistory.push({ type: 'error', content: `Command not found: ${baseCmd}. Type "help" for commands.` });
+        newHistory.push({ type: 'error', content: `Command not found: ${baseCmd}. Type "help" for available commands.` });
         setHistory(newHistory);
       }
 
       setInput('');
     }
   };
+
 
   const containerRef = useRef(null);
 
@@ -112,8 +145,10 @@ export default function Terminal() {
                   line.type === 'error' 
                     ? 'text-red-500' 
                     : line.type === 'user' 
-                      ? 'text-emerald-600 dark:text-emerald-400 font-semibold' 
-                      : 'text-zinc-600 dark:text-zinc-300'
+                      ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+                      : line.type === 'success'
+                        ? 'text-sky-500 dark:text-sky-400'
+                        : 'text-zinc-600 dark:text-zinc-300'
                 }`}
               >
                 {line.type === 'user' && (
