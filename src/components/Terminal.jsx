@@ -27,6 +27,9 @@ export default function Terminal() {
     'sudo hire-me': '🚀 OVERRIDE ACCEPTED. Initiating hire sequence...\n   ████████████████████████████ 100%\n   ✅ Viraj successfully hired!\n   📧 Sending onboarding email to: viraj.lakshitha.22222@gmail.com\n   (just kidding — but seriously, reach out!) 😄',
     clear: 'CLEAR_COMMAND',
     open: 'OPEN_COMMAND',
+    matrix: 'Wake up, Neo...\n   The Matrix has you...\n   Follow the white rabbit.\n   Knock, knock, Neo.',
+    'rm -rf /': '😱 WARNING: SYSTEM COMPROMISED.\n   Just kidding! You don\'t have root privileges here.\n   Nice try though! 😉',
+    hack: 'Initiating hack sequence...\n   Bypassing mainframe... [OK]\n   Cracking encryption... [OK]\n   Accessing secret files... [FAILED]\n   \n   Ah ah ah! You didn\'t say the magic word! 🦖',
   };
 
 
