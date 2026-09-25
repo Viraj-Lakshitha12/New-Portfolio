@@ -121,7 +121,7 @@ export default function CommandPalette() {
     <>
       {/* Trigger hint — Draggable floating button inside a scroll-animated wrapper */}
       <motion.div
-        className="hidden md:flex fixed bottom-6 left-6 z-[90]"
+        className="flex fixed bottom-6 left-6 z-[90]"
         animate={{ y: scrolled ? -65 : 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       >
@@ -131,14 +131,14 @@ export default function CommandPalette() {
           drag
           dragMomentum={false}
           style={{ x: dragX, y: dragY }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full glass border border-[var(--accent)]/30 shadow-xl text-xs font-medium text-foreground hover:border-[var(--accent)]/60 cursor-grab active:cursor-grabbing transition-colors"
+          className="flex items-center justify-center gap-2 w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2.5 rounded-full glass border border-[var(--accent)]/30 shadow-xl text-xs font-medium text-foreground hover:border-[var(--accent)]/60 cursor-grab active:cursor-grabbing transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           aria-label="Open Command Palette"
         >
-          <Search size={14} className="text-[var(--accent)]" />
-          <span>Quick Search</span>
-          <kbd className="ml-1 px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 text-[10px] font-mono text-muted-foreground">⌘K</kbd>
+          <Search size={16} className="text-[var(--accent)]" />
+          <span className="hidden md:inline">Quick Search</span>
+          <kbd className="hidden md:inline-block ml-1 px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 text-[10px] font-mono text-muted-foreground">⌘K</kbd>
         </motion.button>
       </motion.div>
 
