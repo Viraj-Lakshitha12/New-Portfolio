@@ -1,22 +1,64 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, CheckCircle2, Clock3, Mail, MapPin, Phone, Send, X } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import toast from 'react-hot-toast';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`);
-    const body = encodeURIComponent(`${form.message}\n\nReply to: ${form.email}`);
-    window.location.href = `mailto:viraj.lakshitha.22222@gmail.com?subject=${subject}&body=${body}`;
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
-      setForm({ name: '', email: '', message: '' });
-    }, 3000);
+    if (!form.name || !form.email || !form.message) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const loadingToast = toast.loading('Sending your message...');
+
+    // Securely pull credentials from environment variables
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceID || !templateID || !publicKey) {
+      toast.error('Email service is not configured yet.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    const templateParams = {
+      from_name: form.name,
+      from_email: form.email,
+      message: form.message,
+      to_name: 'Viraj',
+    };
+
+    emailjs.send(serviceID, templateID, templateParams, publicKey)
+      .then((response) => {
+        toast.success('Message sent successfully!', { id: loadingToast });
+        setSent(true);
+        setForm({ name: '', email: '', message: '' });
+        setTimeout(() => {
+          setSent(false);
+          setShowForm(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error('FAILED...', err);
+        // Fallback to mailto if EmailJS fails or isn't configured
+        const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`);
+        const body = encodeURIComponent(`${form.message}\n\nReply to: ${form.email}`);
+        window.location.href = `mailto:viraj.lakshitha.22222@gmail.com?subject=${subject}&body=${body}`;
+        toast.success('Opened in mail client!', { id: loadingToast });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const inputClasses =

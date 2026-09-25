@@ -13,11 +13,11 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": [],
+    "types": ["vite/client"],
     "noEmit": true,
     "strict": false,
     "noImplicitAny": false
   },
-  "include": ["src/**/*.js", "src/**/*.jsx"],
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist"]
 } 
