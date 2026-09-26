@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 import Magnetic from '@/components/ui/Magnetic';
+import { TypeAnimation } from 'react-type-animation';
 
 const PROFILE_URL = '/profile.png';
 
@@ -68,7 +69,19 @@ export default function Hero() {
         transition={{ delay: 2.4, duration: 0.6 }}
       >
         <Sparkles className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-        Full Stack Software Engineer
+        <TypeAnimation
+          sequence={[
+            'Full Stack Software Engineer',
+            2000,
+            'Problem Solver',
+            2000,
+            'Tech Enthusiast',
+            2000,
+          ]}
+          wrapper="span"
+          speed={50}
+          repeat={Infinity}
+        />
       </motion.span>
 
       <motion.h1
