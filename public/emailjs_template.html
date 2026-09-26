@@ -1,81 +1,85 @@
 <div
-  style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f3f4f6; padding: 40px 15px; margin: 0; color: #1f2937;">
+  style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #0f172a; padding: 50px 16px; margin: 0;">
 
-  <!-- Main Card -->
   <div
-    style="max-width: 580px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); overflow: hidden;">
+    style="max-width: 580px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
 
-    <!-- Center Aligned Header -->
-    <div
-      style="background-color: #ffffff; padding: 35px 35px 20px; border-bottom: 1px solid #f3f4f6; text-align: center;">
+    <!-- Top accent bar -->
+    <div style="height: 6px; background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);"></div>
+
+    <!-- Header -->
+    <div style="padding: 40px 36px 28px; text-align: center;">
       <div
-        style="display: inline-block; background-color: #eef2ff; color: #4338ca; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; padding: 6px 14px; border-radius: 20px; margin-bottom: 16px;">
-        ✦ New Portfolio Inquiry
+        style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 18px; margin-bottom: 20px; box-shadow: 0 12px 24px -6px rgba(99, 102, 241, 0.5);">
+        <span style="font-size: 26px; color: white; line-height: 1;">✦</span>
       </div>
-      <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #111827; letter-spacing: -0.5px;">Message Received
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #0f172a; letter-spacing: -0.7px;">New Connection
       </h1>
-      <p style="margin: 8px 0 0; font-size: 14px; color: #6b7280;">
-        Sent securely via <a href="https://new-portfolio-pi-gules.vercel.app/" target="_blank"
-          style="color: #4f46e5; text-decoration: none; font-weight: 600;">your website</a>
+      <p style="margin: 8px 0 0; font-size: 15px; color: #64748b; font-weight: 500;">
+        Someone just reached out from your portfolio
       </p>
     </div>
 
-    <!-- Content Body -->
-    <div style="padding: 35px;">
+    <!-- Content -->
+    <div style="padding: 0 36px 40px;">
 
-      <!-- Sender Info Grid -->
+      <!-- Sender Info -->
       <div
-        style="background-color: #fafafa; border: 1px solid #f4f4f5; border-radius: 10px; padding: 20px; margin-bottom: 30px;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="border: none;">
+        style="background: #f8fafc; border-radius: 16px; padding: 24px 26px; margin-bottom: 28px; border: 1px solid #e2e8f0;">
+        <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
-            <td style="padding-bottom: 14px; border-bottom: 1px solid #e5e7eb;">
+            <td style="padding-bottom: 18px; border-bottom: 1px solid #e2e8f0;">
               <p
-                style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.8px;">
-                Sender Name</p>
-              <p style="margin: 0; font-size: 16px; font-weight: 600; color: #111827;">{{from_name}}</p>
+                style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px;">
+                Name</p>
+              <p style="margin: 0; font-size: 19px; font-weight: 700; color: #0f172a;">{{from_name}}</p>
             </td>
           </tr>
           <tr>
-            <td style="padding-top: 14px;">
+            <td style="padding-top: 18px;">
               <p
-                style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.8px;">
-                Email Address</p>
+                style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px;">
+                Email</p>
               <a href="mailto:{{from_email}}"
-                style="margin: 0; font-size: 15px; font-weight: 500; color: #2563eb; text-decoration: none;">{{from_email}}</a>
+                style="font-size: 16px; font-weight: 600; color: #6366f1; text-decoration: none;">{{from_email}}</a>
             </td>
           </tr>
         </table>
       </div>
 
-      <!-- Message Area -->
-      <div style="margin-bottom: 35px;">
+      <!-- Message -->
+      <div style="margin-bottom: 36px;">
         <p
-          style="margin: 0 0 10px; font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.8px;">
-          Message Content</p>
+          style="margin: 0 0 12px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px;">
+          Message</p>
         <div
-          style="background-color: #ffffff; border: 1px solid #e5e7eb; border-left: 4px solid #4338ca; border-radius: 8px; padding: 20px;">
-          <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #374151; white-space: pre-wrap;">{{message}}
-          </p>
+          style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 24px; position: relative;">
+          <div
+            style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, #6366f1, #a855f7); border-radius: 14px 0 0 14px;">
+          </div>
+          <p
+            style="margin: 0; font-size: 16px; line-height: 1.7; color: #334155; white-space: pre-wrap; padding-left: 8px;">
+            {{message}}</p>
         </div>
       </div>
 
-      <!-- Action Button -->
+      <!-- CTA -->
       <div style="text-align: center;">
-        <a href="mailto:{{from_email}}?subject=Re: Portfolio Inquiry"
-          style="display: inline-block; background-color: #111827; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 15px 35px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); letter-spacing: 0.5px;">
-          Reply to {{from_name}} &rarr;
+        <a href="mailto:{{from_email}}?subject=Re:%20Portfolio%20Inquiry"
+          style="display: inline-block; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 16px 40px; border-radius: 14px; box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.45); letter-spacing: 0.2px;">
+          Reply to {{from_name}} →
         </a>
       </div>
 
     </div>
-  </div>
 
-  <!-- Footer -->
-  <div style="max-width: 580px; margin: 0 auto; text-align: center; padding-top: 24px;">
-    <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-      Automated email from <a href="https://new-portfolio-pi-gules.vercel.app/" target="_blank"
-        style="color: #9ca3af; text-decoration: underline;">new-portfolio-pi-gules.vercel.app</a>
-    </p>
-  </div>
+    <!-- Footer -->
+    <div style="background: #f8fafc; padding: 20px 36px; text-align: center; border-top: 1px solid #e2e8f0;">
+      <p style="margin: 0; font-size: 13px; color: #94a3b8;">
+        Sent securely via <a href="https://new-portfolio-pi-gules.vercel.app/"
+          style="color: #6366f1; text-decoration: none; font-weight: 600;">your website</a>
+      </p>
+    </div>
 
+  </div>
 </div>
