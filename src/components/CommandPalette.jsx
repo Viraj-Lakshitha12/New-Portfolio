@@ -121,7 +121,7 @@ export default function CommandPalette() {
     <>
       {/* Trigger hint — Draggable floating button inside a scroll-animated wrapper */}
       <motion.div
-        className="flex fixed bottom-6 left-6 z-[90]"
+        className="hidden md:flex fixed bottom-6 left-6 z-[90]"
         animate={{ y: scrolled ? -65 : 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       >
