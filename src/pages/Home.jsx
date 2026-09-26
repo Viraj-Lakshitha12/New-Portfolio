@@ -21,6 +21,7 @@ import ScrollProgress from '@/components/ui/ScrollProgress';
 import ThemeCustomizer from '@/components/ThemeCustomizer';
 import Chatbot from '@/components/Chatbot';
 import CommandPalette from '@/components/CommandPalette';
+import ContextMenu from '@/components/ui/ContextMenu';
 
 export default function Home() {
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function Home() {
       <ThemeCustomizer />
       <CommandPalette />
       <Chatbot />
+      <ContextMenu />
       <MeshBackground />
       <Navbar />
       <main className="relative">
