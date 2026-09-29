@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User, Mic, Volume2, VolumeX } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
 import Fuse from 'fuse.js';
 
@@ -116,6 +116,12 @@ export default function Chatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
   
+  // Voice AI States
+  const [isListening, setIsListening] = useState(false);
+  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
+  const recognitionRef = useRef(null);
+  const transcriptRef = useRef('');
+
   // Tooltip state
   const [isHovered, setIsHovered] = useState(false);
   const [isAutoShowing, setIsAutoShowing] = useState(false);
@@ -145,39 +151,87 @@ export default function Chatbot() {
       
       const hideTimer = setTimeout(() => {
         setIsAutoShowing(false);
-      }, 5000); // Keep it visible for 5s
+      }, 5000); 
       
       return () => clearTimeout(hideTimer);
-    }, 2000); // 2s after initial load
+    }, 2000); 
+
+    // Initialize Web Speech API
+    const SpeechRecognition = window.SpeechRecognition || window['webkitSpeechRecognition'];
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false; // Stop listening after the user pauses
+      recognitionRef.current.interimResults = true; // Show words as they speak
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event) => {
+        let currentTranscript = '';
+        for (let i = 0; i < event.results.length; i++) {
+          currentTranscript += event.results[i][0].transcript;
+        }
+        setInput(currentTranscript);
+        transcriptRef.current = currentTranscript; // Save to ref for onend
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+        // Only send if there is recognized text
+        if (transcriptRef.current.trim()) {
+          const finalMessage = transcriptRef.current;
+          transcriptRef.current = ''; // Clear ref
+          setTimeout(() => processUserInput(finalMessage), 100);
+        }
+      };
+      
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        setIsListening(false);
+      };
+    }
 
     return () => clearTimeout(showTimer);
   }, []);
 
+  const speakText = (text) => {
+    if (!voiceOutputEnabled || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel(); 
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.1;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      setInput('');
+      transcriptRef.current = '';
+      recognitionRef.current?.start();
+      setIsListening(true);
+      // Auto enable voice output when user uses microphone
+      if (!voiceOutputEnabled) setVoiceOutputEnabled(true); 
+    }
+  };
+
   const generateResponse = (text) => {
-    // 1. Tokenize and clean the input
     const words = text.toLowerCase().split(/[^a-z0-9]+/);
-    
-    // 2. Remove stop words to extract the core intent/keywords
     const importantWords = words.filter(word => word.length > 2 && !STOP_WORDS.has(word));
     
-    // 3. Search the knowledge base using the important words
     let bestResultItem = null;
-    let highestScore = 1; // 0 is a perfect match in fuse
+    let highestScore = 1; 
 
     const getFallback = () => ({ text: FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)] });
 
-    // If no important words found, fallback immediately
     if (importantWords.length === 0) {
        return getFallback();
     }
 
-    // Try matching the combined phrase first (e.g., "frontend skills")
     const phraseResults = fuse.search(importantWords.join(' '));
     if (phraseResults.length > 0 && phraseResults[0].score < 0.4) {
       return { text: phraseResults[0].item.response, prompt: phraseResults[0].item.prompt, action: phraseResults[0].item.action };
     }
 
-    // Fallback to word-by-word intent extraction
     for (const word of importantWords) {
       const results = fuse.search(word);
       if (results.length > 0) {
@@ -195,28 +249,33 @@ export default function Chatbot() {
     return getFallback();
   };
 
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (!input.trim() || isTyping) return;
+  const processUserInput = (userText) => {
+    const textToProcess = userText.trim().toLowerCase();
+    if (!textToProcess || isTyping) return;
+
+    // Force stop microphone so it doesn't hear the bot's response
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    }
 
     uiAudio.playClick();
-    const userText = input.trim().toLowerCase();
-    setMessages(prev => [...prev, { type: 'user', text: input.trim() }]);
+    setMessages(prev => [...prev, { type: 'user', text: userText.trim() }]);
     setInput('');
     setIsTyping(true);
 
-    // Simulate network delay for realism
     setTimeout(() => {
-      // Check if we are waiting for a yes/no permission to navigate
       if (pendingAction) {
         const yesWords = ['yes', 'yeah', 'yup', 'sure', 'ok', 'okay', 'scroll', 'take me', 'please', 'ow', 'yep'];
         const noWords = ['no', 'nope', 'nah', 'stop', 'epaa', 'naa'];
         
-        const isYes = yesWords.some(w => userText.includes(w));
-        const isNo = noWords.some(w => userText.includes(w));
+        const isYes = yesWords.some(w => textToProcess.includes(w));
+        const isNo = noWords.some(w => textToProcess.includes(w));
 
         if (isYes) {
-          setMessages(prev => [...prev, { type: 'bot', text: "Scrolling there now!" }]);
+          const resp = "Scrolling there now!";
+          setMessages(prev => [...prev, { type: 'bot', text: resp }]);
+          speakText(resp);
           setTimeout(() => {
             const element = document.getElementById(pendingAction);
             if (element) element.scrollIntoView({ behavior: 'smooth' });
@@ -224,32 +283,37 @@ export default function Chatbot() {
           setPendingAction(null);
           uiAudio.playHover();
           return;
-        } else if (isNo || userText.length <= 4) {
-          setMessages(prev => [...prev, { type: 'bot', text: "Alright! What else would you like to know?" }]);
+        } else if (isNo || textToProcess.length <= 4) {
+          const resp = "Alright! What else would you like to know?";
+          setMessages(prev => [...prev, { type: 'bot', text: resp }]);
+          speakText(resp);
           setPendingAction(null);
           uiAudio.playHover();
           return;
         }
-        // If it's a completely new sentence and not a simple yes/no, we just clear pending action and process it normally
         setPendingAction(null);
       }
 
-      const responseData = generateResponse(userText);
+      const responseData = generateResponse(textToProcess);
       setMessages(prev => [...prev, { type: 'bot', text: responseData.text, prompt: responseData.prompt }]);
-      uiAudio.playHover(); // Soft pop for message receive
+      speakText(responseData.text + (responseData.prompt ? " " + responseData.prompt : ""));
+      uiAudio.playHover(); 
       
-      // If there is an action, save it to pendingAction so we can ask for permission next turn
       if (responseData.action) {
         setPendingAction(responseData.action);
       }
     }, 500 + Math.random() * 500);
   };
 
+  const handleSend = (e) => {
+    e.preventDefault();
+    processUserInput(input);
+  };
+
   const shouldShowTooltip = (isHovered || isAutoShowing) && !isOpen;
 
   return (
     <>
-      {/* Chatbot FAB — on mobile, fades out when scrolled past hero (scroll-to-top takes over) */}
       <div 
         className={`fixed bottom-6 right-6 z-[100] flex items-center justify-end gap-3 transition-all duration-300 ${
           scrolledPast && !isOpen
@@ -259,7 +323,6 @@ export default function Chatbot() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Tooltip — hidden on mobile (touch has no hover) */}
         <AnimatePresence>
           {shouldShowTooltip && (
             <motion.div
@@ -275,7 +338,6 @@ export default function Chatbot() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]"></span>
                 </div>
-                {/* Small triangle pointer */}
                 <div className="absolute top-1/2 -right-2 -translate-y-1/2 border-y-8 border-y-transparent border-l-8 border-l-[var(--accent)]/20"></div>
                 <div className="absolute top-1/2 -right-[7px] -translate-y-1/2 border-y-[7px] border-y-transparent border-l-[7px] border-l-white dark:border-l-zinc-950"></div>
               </div>
@@ -322,12 +384,27 @@ export default function Chatbot() {
                     <span className="text-[10px] text-muted-foreground">Always online</span>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors p-1"
-                >
-                  <X size={18} />
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => {
+                      const newState = !voiceOutputEnabled;
+                      setVoiceOutputEnabled(newState);
+                      if (!newState && window.speechSynthesis) {
+                        window.speechSynthesis.cancel();
+                      }
+                    }}
+                    className={`p-1.5 rounded-full transition-colors ${voiceOutputEnabled ? 'bg-[var(--accent)]/20 text-[var(--accent)]' : 'text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
+                    title={voiceOutputEnabled ? "Mute Voice" : "Enable Voice Output"}
+                  >
+                    {voiceOutputEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-muted-foreground hover:text-foreground transition-colors p-1.5"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
               </div>
 
               {/* Chat Area */}
@@ -394,21 +471,32 @@ export default function Chatbot() {
                       uiAudio.playTyping();
                     }}
                     onBlur={(e) => {
-                      // Force zoom-out on iOS after keyboard closes
                       if (window.innerWidth < 768) {
                         e.target.style.fontSize = '16px';
                       }
                     }}
                     placeholder="Ask about Viraj..."
-                    className="w-full bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-full pl-4 pr-10 py-2 text-base outline-none focus:border-[var(--accent)] transition-colors shadow-inner"
+                    className="w-full bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-full pl-4 pr-16 py-2 text-base outline-none focus:border-[var(--accent)] transition-colors shadow-inner"
                   />
-                  <button
-                    type="submit"
-                    disabled={!input.trim()}
-                    className="absolute right-1.5 w-7 h-7 flex items-center justify-center rounded-full bg-[var(--accent)] text-white disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-                  >
-                    <Send size={12} className="ml-0.5" />
-                  </button>
+                  <div className="absolute right-1.5 flex items-center gap-1">
+                    {recognitionRef.current && (
+                      <button
+                        type="button"
+                        onClick={toggleListening}
+                        className={`w-7 h-7 flex items-center justify-center rounded-full transition-colors ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-zinc-200 dark:bg-zinc-800 text-foreground hover:bg-zinc-300 dark:hover:bg-zinc-700'}`}
+                        title="Voice Input"
+                      >
+                        <Mic size={12} />
+                      </button>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={!input.trim() && !isListening}
+                      className="w-7 h-7 flex items-center justify-center rounded-full bg-[var(--accent)] text-white disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+                    >
+                      <Send size={12} className="ml-0.5" />
+                    </button>
+                  </div>
                 </form>
               </div>
             </motion.div>
