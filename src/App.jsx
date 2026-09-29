@@ -1,12 +1,14 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import ScrollToTop from './components/ScrollToTop';
+import KonamiCode from './components/KonamiCode';
 import Home from '@/pages/Home';
 
 function App() {
   return (
     <Router>
       <ScrollToTop />
+      <KonamiCode />
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
