@@ -89,11 +89,30 @@ const projects = [
 ];
 
 function ProjectModal({ project, onClose }) {
-  // Prevent body scroll when modal is open
+  // Prevent ALL scrolling when modal is open
   React.useEffect(() => {
+    // Stop Lenis smooth scroll
+    const lenisInstance = document.querySelector('[data-lenis-prevent]');
+    document.documentElement.setAttribute('data-lenis-prevent', '');
+
+    // Also lock native scroll as fallback
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
     document.body.style.overflow = 'hidden';
-    return () => { 
-      document.body.style.overflow = ''; 
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.documentElement.removeAttribute('data-lenis-prevent');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.scrollTo(0, scrollY);
     }
   }, []);
 
@@ -105,14 +124,19 @@ function ProjectModal({ project, onClose }) {
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-xl"
         onClick={onClose}
+        onWheel={(e) => e.stopPropagation()}
       />
-      <div className="fixed inset-0 z-[111] flex items-center justify-center p-4 md:p-10 pointer-events-none">
+      <div
+        className="fixed inset-0 z-[111] flex items-center justify-center p-4 md:p-10 pointer-events-none"
+        onWheel={(e) => e.stopPropagation()}
+        data-lenis-prevent
+      >
         <motion.div
           layoutId={`project-container-${project.index}`}
           className="w-full h-[85vh] md:h-[90vh] max-w-5xl bg-background rounded-3xl overflow-hidden shadow-2xl relative flex flex-col pointer-events-auto border border-white/10"
         >
           {/* Close button */}
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-[var(--accent)] transition-colors z-20"
           >
@@ -126,8 +150,8 @@ function ProjectModal({ project, onClose }) {
               {/* Gradient overlay for text readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -145,11 +169,11 @@ function ProjectModal({ project, onClose }) {
               </div>
             </motion.div>
           </div>
-          
+
           {/* Deep Dive Content (Scrollable internally) */}
           <div className="flex-1 overflow-y-auto overscroll-contain custom-scrollbar p-6 md:p-10">
             <div className="grid md:grid-cols-3 gap-10">
-              
+
               {/* Left Column: Description & Links */}
               <div className="md:col-span-1 space-y-8">
                 <div>
@@ -197,11 +221,11 @@ function ProjectModal({ project, onClose }) {
                     {project.details.metrics.map((m, i) => {
                       const Icon = m.icon;
                       return (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 + (i * 0.1) }}
-                          key={i} 
+                          key={i}
                           className="flex flex-col items-center justify-center p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5"
                         >
                           <Icon size={24} className="text-[var(--accent)] mb-3" />
@@ -235,7 +259,7 @@ function ProjectCard({ project, index, onOpen }) {
     mx.set((e.clientX - rect.left) / rect.width - 0.5);
     my.set((e.clientY - rect.top) / rect.height - 0.5);
   };
-  
+
   const handleLeave = () => {
     mx.set(0);
     my.set(0);
@@ -253,7 +277,7 @@ function ProjectCard({ project, index, onOpen }) {
         className={flip ? 'md:order-2' : ''}
       >
         <div className="float-anim cursor-pointer" onClick={() => { uiAudio.playClick(); onOpen(); }}>
-          <motion.div 
+          <motion.div
             layoutId={`project-container-${index}`}
             className="glass rounded-3xl p-3 shadow-2xl transition-all duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/40 dark:bg-zinc-950/40"
           >
@@ -297,7 +321,7 @@ function ProjectCard({ project, index, onOpen }) {
             ))}
           </div>
           <div className="mt-8 flex items-center gap-4">
-             <button
+            <button
               onClick={() => { uiAudio.playClick(); onOpen(); }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-foreground text-background font-bold text-sm hover:scale-105 active:scale-95 transition-all shadow-xl"
             >
@@ -334,7 +358,7 @@ export default function Projects() {
         <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight">The Perspective <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Gallery</span></h2>
         <p className="mt-4 text-muted-foreground max-w-xl mx-auto">Engineering scalable systems with depth, dimension, and performance in mind.</p>
       </motion.div>
-      
+
       <div className="max-w-5xl mx-auto space-y-32">
         {projects.map((p, i) => (
           <ProjectCard key={i} project={p} index={i} onOpen={() => setActiveProject({ ...p, index: i })} />
