@@ -99,6 +99,33 @@ class UIAudioManager {
       osc.stop(t + 0.06);
     } catch (e) {}
   }
+
+  playSuccess() {
+    if (!this.enabled) return;
+    try {
+      this.initContext();
+      const t = this.audioCtx.currentTime;
+      
+      // Two quick ascending notes
+      const osc = this.audioCtx.createOscillator();
+      const gain = this.audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, t);
+      osc.frequency.setValueAtTime(600, t + 0.1);
+      
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.1, t + 0.05);
+      gain.gain.setValueAtTime(0.1, t + 0.1);
+      gain.gain.linearRampToValueAtTime(0, t + 0.3);
+      
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+      
+      osc.start(t);
+      osc.stop(t + 0.3);
+    } catch (e) {}
+  }
 }
 
 export const uiAudio = new UIAudioManager();

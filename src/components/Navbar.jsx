@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Sun, Moon, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail, Settings } from 'lucide-react';
+import { Moon, Sun, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail, Settings, Globe } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
+import { useI18n } from '@/lib/i18n-context';
 import Magnetic from '@/components/ui/Magnetic';
 
 const links = [
@@ -16,6 +17,7 @@ const links = [
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const { lang, toggleLang, t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -69,7 +71,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] w-[92%] max-w-3xl">
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] w-[96%] max-w-4xl">
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -109,6 +111,16 @@ export default function Navbar() {
             >
               {mobileOpen ? <X size={19} /> : <Menu size={19} />}
             </button>
+            <Magnetic>
+              <button
+                onClick={toggleLang}
+                aria-label="Toggle language"
+                className="glass rounded-xl px-2 h-10 flex items-center justify-center hover:scale-105 transition-transform font-mono text-xs font-bold gap-1"
+                style={{ color: 'var(--accent)' }}
+              >
+                <Globe size={14} /> {lang.toUpperCase()}
+              </button>
+            </Magnetic>
             <Magnetic>
               <button
                 onClick={toggleTheme}

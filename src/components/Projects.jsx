@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Image } from '@/components/ui/image';
-import { ArrowUpRight, Github, ExternalLink, X, Database, Shield, Zap } from 'lucide-react';
+import { ArrowUpRight, Github, ExternalLink, X, Database, Shield, Zap, Layout } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
 
 const PROJECT1 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/36cff83c8_generated_e864fc7a.jpg';
@@ -17,8 +17,8 @@ const projects = [
     tags: ['Spring Boot', 'PostgreSQL', 'Redis', 'WebSockets', 'Grafana'],
     image: PROJECT1,
     details: {
-      challenge: "Processing thousands of queries per second without adding significant overhead to the primary database.",
-      solution: "Implemented a non-blocking ingestion pipeline using WebSockets and buffered Redis streams before persisting metrics for Grafana visualization.",
+      challenge: "Processing thousands of queries per second without adding significant overhead to the primary database while maintaining real-time UI updates.",
+      solution: "Implemented a non-blocking ingestion pipeline using WebSockets and buffered Redis streams. The data is batched and asynchronously persisted, ensuring the core DB isn't taxed.",
       metrics: [
         { icon: Zap, label: "Throughput", value: "10k+ QPS" },
         { icon: Shield, label: "Overhead", value: "< 2%" },
@@ -32,7 +32,7 @@ const projects = [
     tags: ['React', 'Node.js', 'Express.js', 'MongoDB'],
     image: PROJECT2,
     details: {
-      challenge: "Handling real-time state synchronization between restaurant dashboards, delivery drivers, and customer apps.",
+      challenge: "Handling real-time state synchronization between restaurant dashboards, delivery drivers, and customer apps seamlessly.",
       solution: "Built a centralized event-driven architecture using Socket.io and Redis pub/sub to instantly fan-out status updates to all connected clients.",
       metrics: [
         { icon: Zap, label: "Latency", value: "< 50ms" },
@@ -51,7 +51,7 @@ const projects = [
       solution: "Implemented a background CRON sync job in Spring Boot with aggressive local caching using Redis for instant catalog browsing.",
       metrics: [
         { icon: Zap, label: "Load Time", value: "0.8s" },
-        { icon: Shield, label: "Sync", value: "Event-driven" },
+        { icon: Layout, label: "Sync", value: "Event-driven" },
         { icon: Database, label: "Cache", value: "Redis" }
       ]
     }
@@ -67,7 +67,7 @@ const projects = [
       metrics: [
         { icon: Zap, label: "Onboarding", value: "-25% Time" },
         { icon: Shield, label: "Coverage", value: "85% Tests" },
-        { icon: Database, label: "Scaling", value: "Docker Swarm" }
+        { icon: Layout, label: "Scaling", value: "Docker Swarm" }
       ]
     }
   },
@@ -89,82 +89,155 @@ const projects = [
 ];
 
 function ProjectModal({ project, onClose }) {
+  // Prevent ALL scrolling when modal is open
+  React.useEffect(() => {
+    // Stop Lenis smooth scroll
+    const lenisInstance = document.querySelector('[data-lenis-prevent]');
+    document.documentElement.setAttribute('data-lenis-prevent', '');
+
+    // Also lock native scroll as fallback
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.documentElement.removeAttribute('data-lenis-prevent');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.scrollTo(0, scrollY);
+    }
+  }, []);
+
   return (
     <>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-xl"
         onClick={onClose}
-        className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-md"
+        onWheel={(e) => e.stopPropagation()}
       />
-      <div className="fixed inset-0 z-[111] flex items-center justify-center p-4 pointer-events-none">
+      <div
+        className="fixed inset-0 z-[111] flex items-center justify-center p-4 md:p-10 pointer-events-none"
+        onWheel={(e) => e.stopPropagation()}
+        data-lenis-prevent
+      >
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="w-full max-w-4xl max-h-[90vh] glass bg-white/90 dark:bg-zinc-950/90 rounded-3xl overflow-hidden pointer-events-auto flex flex-col md:flex-row shadow-2xl border border-[var(--accent)]/20"
+          layoutId={`project-container-${project.index}`}
+          className="w-full h-[85vh] md:h-[90vh] max-w-5xl bg-background rounded-3xl overflow-hidden shadow-2xl relative flex flex-col pointer-events-auto border border-white/10"
         >
-          {/* Left: Image & Visuals */}
-          <div className="w-full md:w-1/2 h-64 md:h-auto relative bg-black/5 dark:bg-white/5">
-            <Image src={project.image} alt={project.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-               <h3 className="text-2xl font-bold text-white">{project.title}</h3>
-            </div>
-          </div>
-          
-          {/* Right: Deep Dive Details */}
-          <div className="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto custom-scrollbar flex flex-col">
-            <button 
-              onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-[var(--accent)] transition-colors z-10"
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-[var(--accent)] transition-colors z-20"
+          >
+            <X size={20} />
+          </button>
+
+          {/* Immersive Header (Fixed Height) */}
+          <div className="relative w-full h-[40vh] md:h-[45vh] shrink-0 overflow-hidden">
+            <motion.div layoutId={`project-image-${project.index}`} className="absolute inset-0">
+              <Image src={project.image} alt={project.title} className="w-full h-full object-cover" />
+              {/* Gradient overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="absolute bottom-0 left-0 w-full p-6 md:p-10"
             >
-              <X size={16} />
-            </button>
+              <h3 className="text-3xl md:text-5xl font-black text-foreground mb-4 leading-tight">
+                {project.title}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((t) => (
+                  <span key={t} className="px-3 py-1.5 rounded-lg bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 text-xs font-mono font-semibold">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
 
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[var(--accent)] mb-2">Deep Dive Architecture</span>
-            <p className="text-muted-foreground mb-8 text-sm leading-relaxed">{project.description}</p>
-            
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> The Challenge
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-black/5 dark:border-white/5">
-                  {project.details.challenge}
-                </p>
+          {/* Deep Dive Content (Scrollable internally) */}
+          <div className="flex-1 overflow-y-auto overscroll-contain custom-scrollbar p-6 md:p-10">
+            <div className="grid md:grid-cols-3 gap-10">
+
+              {/* Left Column: Description & Links */}
+              <div className="md:col-span-1 space-y-8">
+                <div>
+                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground block mb-3">Overview</span>
+                  <p className="text-foreground text-sm leading-relaxed">{project.description}</p>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <a href="#" className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[var(--accent)] text-white font-bold text-sm hover:shadow-[0_0_20px_var(--glow)] transition-all">
+                    <ExternalLink size={16} /> View Live App
+                  </a>
+                  <a href="#" className="flex items-center justify-center gap-2 py-3 rounded-xl glass border border-black/10 dark:border-white/10 hover:border-foreground/30 transition-all font-semibold text-sm">
+                    <Github size={16} /> Source Code
+                  </a>
+                </div>
               </div>
 
-              <div>
-                <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> The Solution
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-black/5 dark:border-white/5">
-                  {project.details.solution}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 grid grid-cols-3 gap-3">
-              {project.details.metrics.map((m, i) => {
-                const Icon = m.icon;
-                return (
-                  <div key={i} className="flex flex-col items-center text-center p-3 rounded-xl bg-[var(--accent)]/5 border border-[var(--accent)]/10">
-                    <Icon size={16} className="text-[var(--accent)] mb-2" />
-                    <span className="font-bold text-xs">{m.value}</span>
-                    <span className="text-[10px] text-muted-foreground font-mono uppercase mt-1">{m.label}</span>
+              {/* Right Column: Case Study */}
+              <div className="md:col-span-2 space-y-8">
+                <div>
+                  <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> The Challenge
+                  </h4>
+                  <div className="bg-black/5 dark:bg-white/5 p-5 rounded-2xl border border-black/5 dark:border-white/5">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {project.details.challenge}
+                    </p>
                   </div>
-                )
-              })}
-            </div>
+                </div>
 
-            <div className="mt-auto pt-8 flex gap-3">
-              <a href="#" className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[var(--accent)] text-white font-semibold text-sm hover:opacity-90 transition-opacity">
-                <ExternalLink size={16} /> Live Demo
-              </a>
-              <a href="#" className="w-12 h-10 flex items-center justify-center rounded-xl glass border border-black/10 dark:border-white/10 hover:border-[var(--accent)]/50 transition-colors">
-                <Github size={18} />
-              </a>
+                <div>
+                  <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> The Solution
+                  </h4>
+                  <div className="bg-black/5 dark:bg-white/5 p-5 rounded-2xl border border-black/5 dark:border-white/5">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {project.details.solution}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-lg mb-4">Key Metrics</h4>
+                  <div className="grid grid-cols-3 gap-4">
+                    {project.details.metrics.map((m, i) => {
+                      const Icon = m.icon;
+                      return (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + (i * 0.1) }}
+                          key={i}
+                          className="flex flex-col items-center justify-center p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5"
+                        >
+                          <Icon size={24} className="text-[var(--accent)] mb-3" />
+                          <span className="font-black text-sm md:text-base">{m.value}</span>
+                          <span className="text-[10px] text-muted-foreground font-mono uppercase mt-1 tracking-wider">{m.label}</span>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </motion.div>
@@ -186,7 +259,7 @@ function ProjectCard({ project, index, onOpen }) {
     mx.set((e.clientX - rect.left) / rect.width - 0.5);
     my.set((e.clientY - rect.top) / rect.height - 0.5);
   };
-  
+
   const handleLeave = () => {
     mx.set(0);
     my.set(0);
@@ -204,21 +277,24 @@ function ProjectCard({ project, index, onOpen }) {
         className={flip ? 'md:order-2' : ''}
       >
         <div className="float-anim cursor-pointer" onClick={() => { uiAudio.playClick(); onOpen(); }}>
-          <div className="glass rounded-3xl p-3 shadow-2xl transition-all duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30">
+          <motion.div
+            layoutId={`project-container-${index}`}
+            className="glass rounded-3xl p-3 shadow-2xl transition-all duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/40 dark:bg-zinc-950/40"
+          >
             <div className="flex gap-1.5 mb-3 px-3 pt-1">
               <span className="w-3 h-3 rounded-full bg-red-400/80" />
               <span className="w-3 h-3 rounded-full bg-yellow-400/80" />
               <span className="w-3 h-3 rounded-full bg-green-400/80" />
             </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-video">
-              <Image src={project.image} alt={project.title} className="w-full h-full transition-transform duration-700 group-hover:scale-105" />
+            <motion.div layoutId={`project-image-${index}`} className="relative rounded-2xl overflow-hidden aspect-video bg-black/10">
+              <Image src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                <span className="px-5 py-2.5 rounded-full bg-white/20 text-white font-semibold backdrop-blur-md border border-white/30 flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                  <ExternalLink size={16} /> Deep Dive
+                <span className="px-6 py-3 rounded-full bg-black/60 text-white font-semibold backdrop-blur-md border border-white/10 flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
+                  <ExternalLink size={16} /> Explore Case Study
                 </span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </motion.div>
 
@@ -245,17 +321,17 @@ function ProjectCard({ project, index, onOpen }) {
             ))}
           </div>
           <div className="mt-8 flex items-center gap-4">
-             <button
+            <button
               onClick={() => { uiAudio.playClick(); onOpen(); }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-foreground text-background font-semibold text-sm hover:opacity-90 transition-opacity shadow-xl"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-foreground text-background font-bold text-sm hover:scale-105 active:scale-95 transition-all shadow-xl"
             >
-              Deep Dive <ArrowUpRight className="w-4 h-4" />
+              Case Study <ArrowUpRight className="w-4 h-4" />
             </button>
             <a
               href="#"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 p-2.5 rounded-xl glass hover:border-[var(--accent)]/50 transition-colors text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-2 p-3 rounded-xl glass hover:border-[var(--accent)]/50 transition-colors text-muted-foreground hover:text-foreground hover:shadow-[0_0_15px_var(--glow)]"
             >
               <Github className="w-5 h-5" />
             </a>
@@ -282,16 +358,16 @@ export default function Projects() {
         <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight">The Perspective <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Gallery</span></h2>
         <p className="mt-4 text-muted-foreground max-w-xl mx-auto">Engineering scalable systems with depth, dimension, and performance in mind.</p>
       </motion.div>
-      
+
       <div className="max-w-5xl mx-auto space-y-32">
         {projects.map((p, i) => (
-          <ProjectCard key={i} project={p} index={i} onOpen={() => setActiveProject(p)} />
+          <ProjectCard key={i} project={p} index={i} onOpen={() => setActiveProject({ ...p, index: i })} />
         ))}
       </div>
 
       <AnimatePresence>
         {activeProject && (
-          <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
+          <ProjectModal project={activeProject} onClose={() => { uiAudio.playClick(); setActiveProject(null); }} />
         )}
       </AnimatePresence>
     </section>

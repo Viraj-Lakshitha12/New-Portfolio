@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Github, BookOpen, Star, Activity } from 'lucide-react';
+import { uiAudio } from '@/lib/audio';
 
 export default function GithubStats() {
+  const [viewMode, setViewMode] = useState('2d');
   const [data, setData] = useState({
     contributions: [],
     totalContributions: 0,
@@ -66,6 +68,35 @@ export default function GithubStats() {
 
   return (
     <section className="relative py-12 md:py-20 px-6">
+      <style>{`
+        .iso-bar {
+          transform-style: preserve-3d;
+        }
+        .iso-3d .iso-bar::before {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          height: var(--bar-height, 0px);
+          background: inherit;
+          filter: brightness(0.7) contrast(1.2);
+          transform-origin: top;
+          transform: rotateX(-90deg);
+        }
+        .iso-3d .iso-bar::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 100%;
+          width: var(--bar-height, 0px);
+          height: 100%;
+          background: inherit;
+          filter: brightness(0.4) contrast(1.2);
+          transform-origin: left;
+          transform: rotateY(90deg);
+        }
+      `}</style>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <div className="max-w-4xl mx-auto">
         <motion.div
@@ -111,34 +142,74 @@ export default function GithubStats() {
             </div>
           </div>
 
+          <div className="flex justify-between items-center mt-10 mb-4 px-2">
+            <h3 className="font-semibold text-lg">Contribution Matrix</h3>
+            <button 
+              onClick={() => { uiAudio.playClick(); setViewMode(prev => prev === '2d' ? '3d' : '2d') }}
+              className="px-4 py-1.5 rounded-full text-xs font-bold font-mono tracking-widest uppercase transition-all duration-300 border border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 text-[var(--accent)]"
+            >
+              Toggle {viewMode === '2d' ? '3D' : '2D'}
+            </button>
+          </div>
+
           <div 
             ref={scrollContainerRef}
-            className="relative z-10 w-full overflow-x-auto pb-6 custom-scrollbar"
+            className={`relative z-10 w-full overflow-x-auto pb-10 custom-scrollbar flex items-center justify-center transition-all duration-1000 ${viewMode === '3d' ? 'h-[400px]' : 'h-auto'}`}
+            style={{ perspective: viewMode === '3d' ? '1200px' : 'none' }}
           >
-            <div className="min-w-[750px] flex justify-end gap-1 items-end p-2 rounded-xl bg-black/5 dark:bg-black/20 border border-black/5 dark:border-white/5">
+            <motion.div 
+              className={`flex justify-end gap-1.5 p-4 rounded-xl transition-all duration-1000 origin-center ${viewMode === '3d' ? 'iso-3d' : ''}`}
+              animate={{
+                rotateX: viewMode === '3d' ? 60 : 0,
+                rotateZ: viewMode === '3d' ? -45 : 0,
+                scale: viewMode === '3d' ? 0.8 : 1,
+              }}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
               {data.loading ? (
-                <div className="w-full h-[120px] flex items-center justify-center text-muted-foreground font-mono text-sm animate-pulse">
+                <div className="w-[750px] h-[120px] flex items-center justify-center text-muted-foreground font-mono text-sm animate-pulse bg-black/5 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
                   Fetching GitHub Data...
                 </div>
               ) : (
                 data.contributions.map((week, wIndex) => (
-                  <div key={wIndex} className="flex flex-col gap-1">
-                    {week.map((day, dIndex) => (
-                      <motion.div
-                        key={dIndex}
-                        title={`${day.count} contributions on ${day.date}`}
-                        initial={{ scale: 0, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        whileHover={{ scale: 1.6, zIndex: 10, borderRadius: '4px' }}
-                        viewport={{ once: true, margin: '-20px' }}
-                        transition={{ delay: (wIndex * 0.005) + (dIndex * 0.005), duration: 0.2 }}
-                        className={`w-[12px] h-[12px] rounded-[3px] ${getLevelColor(day.intensity)} relative cursor-crosshair hover:shadow-lg hover:shadow-green-500/50`}
-                      />
-                    ))}
+                  <div key={wIndex} className="flex flex-col gap-1.5" style={{ transformStyle: 'preserve-3d' }}>
+                    {week.map((day, dIndex) => {
+                      const level = Number(day.intensity);
+                      const baseZ = viewMode === '3d' ? level * 15 : 0;
+                      
+                      return (
+                        <motion.div
+                          key={dIndex}
+                          title={`${day.count} contributions on ${day.date}`}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          whileHover={{ 
+                            scale: 1.2, 
+                            z: baseZ + 20,
+                            "--bar-height": `${baseZ + 20}px`,
+                            boxShadow: `0 0 20px ${level > 0 ? 'rgba(57,211,83,0.8)' : 'rgba(255,255,255,0.2)'}` 
+                          }}
+                          animate={{
+                            z: baseZ,
+                            "--bar-height": `${baseZ}px`
+                          }}
+                          viewport={{ once: true, margin: '-20px' }}
+                          transition={{ 
+                            opacity: { delay: (wIndex * 0.005) + (dIndex * 0.005), duration: 0.2 },
+                            z: { type: "spring", stiffness: 100, damping: 12, delay: (wIndex * 0.005) },
+                            "--bar-height": { type: "spring", stiffness: 100, damping: 12, delay: (wIndex * 0.005) }
+                          }}
+                          className={`w-[12px] h-[12px] rounded-sm ${getLevelColor(day.intensity)} relative cursor-crosshair transition-colors iso-bar`}
+                          style={{
+                            boxShadow: viewMode === '3d' && level > 0 ? `0 ${level * 4}px ${level * 4}px -2px rgba(0,0,0,0.5)` : 'none'
+                          }}
+                        />
+                      );
+                    })}
                   </div>
                 ))
               )}
-            </div>
+            </motion.div>
           </div>
           
         </motion.div>

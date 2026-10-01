@@ -13,6 +13,7 @@ import GithubStats from '@/components/GithubStats';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import Education from '@/components/Education';
+import Guestbook from '@/components/Guestbook';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Terminal from '@/components/Terminal';
@@ -22,6 +23,7 @@ import ThemeCustomizer from '@/components/ThemeCustomizer';
 import Chatbot from '@/components/Chatbot';
 import CommandPalette from '@/components/CommandPalette';
 import ContextMenu from '@/components/ui/ContextMenu';
+import SpotifyWidget from '@/components/SpotifyWidget';
 
 export default function Home() {
   useEffect(() => {
@@ -51,6 +53,7 @@ export default function Home() {
       <ThemeCustomizer />
       <CommandPalette />
       <Chatbot />
+      <SpotifyWidget />
       <ContextMenu />
       <MeshBackground />
       <Navbar />
@@ -64,6 +67,7 @@ export default function Home() {
         <Experience />
         <Projects />
         <Education />
+        <Guestbook />
         <Contact />
         <Footer />
       </main>
