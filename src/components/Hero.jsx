@@ -4,10 +4,12 @@ import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 import Magnetic from '@/components/ui/Magnetic';
 import { TypeAnimation } from 'react-type-animation';
+import { useI18n } from '@/lib/i18n-context';
 
 const PROFILE_URL = '/profile.png';
 
 export default function Hero() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -71,7 +73,7 @@ export default function Hero() {
         <Sparkles className="w-4 h-4" style={{ color: 'var(--accent)' }} />
         <TypeAnimation
           sequence={[
-            'Full Stack Software Engineer',
+            t('hero.title'),
             2000,
             'Problem Solver',
             2000,
@@ -99,8 +101,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.7, duration: 0.6 }}
       >
-        Full Stack Software Engineer. 2+ years of experience building scalable,
-        production-ready web systems from database to pixel.
+        {t('hero.subtitle')}
       </motion.p>
 
       <motion.div
