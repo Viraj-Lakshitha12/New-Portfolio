@@ -12,6 +12,7 @@ import {
   siTailwindcss,
   siTypescript,
 } from 'simple-icons';
+import SkillsRadar from './SkillsRadar';
 
 const categories = [
   {
@@ -111,6 +112,26 @@ export default function TechStack() {
       </motion.div>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5">
+        
+        {/* Radar Chart Card */}
+        <motion.div 
+          className="tech-bento-card glass md:col-span-12 lg:col-span-12 h-[350px] flex flex-col mb-4"
+          initial={{ opacity: 0, y: 28, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-70px' }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="relative z-10 flex justify-between items-center px-2 pt-2">
+             <div className="flex items-center gap-3">
+                <div className="tech-category-icon"><Layers3 size={17} /></div>
+                <h3 className="font-mono text-xs md:text-sm tracking-[0.13em] uppercase" style={{ color: 'var(--accent)' }}>Competency Map</h3>
+             </div>
+             <span className="font-mono text-xs text-muted-foreground">00</span>
+          </div>
+          <div className="flex-1 min-h-0 relative -mt-4">
+            <SkillsRadar />
+          </div>
+        </motion.div>
         {categories.map((category, index) => {
           const CategoryIcon = category.icon;
           return (
