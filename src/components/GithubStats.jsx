@@ -129,16 +129,16 @@ export default function GithubStats() {
           
           <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start justify-between mb-12">
             <div>
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--accent)' }}>
+              <div className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block flex items-center gap-2">
                 <Github size={16} className="animate-pulse" /> 
-                <span className="font-semibold">GitHub Activity</span>
+                <span>GitHub Activity</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-                <span className="bg-clip-text text-transparent bg-gradient-to-br from-green-500 to-emerald-300 dark:from-green-400 dark:to-emerald-200">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">
                   {data.loading ? "..." : data.totalContributions.toLocaleString()}
                 </span> Contributions
               </h2>
-              <p className="text-muted-foreground/80 font-medium">in the last year</p>
+              <p className="text-muted-foreground max-w-2xl text-lg">in the last year</p>
             </div>
             
             <div className="flex flex-wrap gap-6 md:gap-10 text-center md:text-left bg-black/5 dark:bg-white/5 p-5 rounded-2xl border border-black/5 dark:border-white/5 backdrop-blur-sm">
