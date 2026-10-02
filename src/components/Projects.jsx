@@ -354,9 +354,15 @@ export default function Projects() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">Case Studies</span>
-        <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight">The Perspective <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Gallery</span></h2>
-        <p className="mt-4 text-muted-foreground max-w-xl mx-auto">Engineering scalable systems with depth, dimension, and performance in mind.</p>
+        <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">
+          Case Studies
+        </span>
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          The Perspective <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">Gallery</span>
+        </h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          Engineering scalable systems with depth, dimension, and performance in mind.
+        </p>
       </motion.div>
 
       <div className="max-w-5xl mx-auto space-y-32">

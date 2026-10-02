@@ -74,9 +74,15 @@ export default function Guestbook() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">Community</span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">Visitor <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Guestbook</span></h2>
-          <p className="mt-4 text-muted-foreground max-w-xl mx-auto">Leave a mark! Say hello, share feedback, or just drop a random thought.</p>
+          <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">
+            Community
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            Visitor <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">Guestbook</span>
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+            Leave a mark! Say hello, share feedback, or just drop a random thought.
+          </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12">

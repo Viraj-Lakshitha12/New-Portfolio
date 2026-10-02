@@ -78,11 +78,14 @@ export default function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-3 mb-6">
-            Engineering robust solutions from backend to frontend.
+          <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">
+            About Me
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            Engineering robust solutions from <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">backend to frontend.</span>
           </h2>
           
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
+          <div className="space-y-4 text-muted-foreground leading-relaxed text-lg">
             <p>
               I am a Full Stack Software Engineer with over two years of professional experience designing and building scalable web applications. 
               My core expertise lies in Java Spring, Node.js, React, and PostgreSQL.

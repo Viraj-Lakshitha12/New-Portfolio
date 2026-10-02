@@ -5,6 +5,7 @@ import { uiAudio } from '@/lib/audio';
 
 export default function GithubStats() {
   const [viewMode, setViewMode] = useState('2d');
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
   const [data, setData] = useState({
     contributions: [],
     totalContributions: 0,
@@ -55,6 +56,12 @@ export default function GithubStats() {
       }, 100);
     }
   }, [data.loading]);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   const getLevelColor = (level) => {
     switch (String(level)) {
@@ -96,6 +103,16 @@ export default function GithubStats() {
           transform-origin: left;
           transform: rotateY(90deg);
         }
+        @media (max-width: 768px) {
+          .github-3d-grid {
+            gap: 1px !important;
+          }
+          .github-3d-grid .iso-bar {
+            width: 7px !important;
+            height: 7px !important;
+            border-radius: 1px !important;
+          }
+        }
       `}</style>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <div className="max-w-4xl mx-auto">
@@ -112,16 +129,16 @@ export default function GithubStats() {
           
           <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start justify-between mb-12">
             <div>
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--accent)' }}>
+              <div className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block flex items-center gap-2">
                 <Github size={16} className="animate-pulse" /> 
-                <span className="font-semibold">GitHub Activity</span>
+                <span>GitHub Activity</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-                <span className="bg-clip-text text-transparent bg-gradient-to-br from-green-500 to-emerald-300 dark:from-green-400 dark:to-emerald-200">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">
                   {data.loading ? "..." : data.totalContributions.toLocaleString()}
                 </span> Contributions
               </h2>
-              <p className="text-muted-foreground/80 font-medium">in the last year</p>
+              <p className="text-muted-foreground max-w-2xl text-lg">in the last year</p>
             </div>
             
             <div className="flex flex-wrap gap-6 md:gap-10 text-center md:text-left bg-black/5 dark:bg-white/5 p-5 rounded-2xl border border-black/5 dark:border-white/5 backdrop-blur-sm">
@@ -154,28 +171,27 @@ export default function GithubStats() {
 
           <div 
             ref={scrollContainerRef}
-            className={`relative z-10 w-full overflow-x-auto pb-10 custom-scrollbar flex items-center justify-center transition-all duration-1000 ${viewMode === '3d' ? 'h-[400px]' : 'h-auto'}`}
-            style={{ perspective: viewMode === '3d' ? '1200px' : 'none' }}
+            className={`github-3d-container relative z-10 w-full pb-6 custom-scrollbar flex items-center justify-center transition-all duration-1000 ${viewMode === '3d' ? 'h-[280px] md:h-[400px] overflow-hidden' : 'h-auto overflow-x-auto'}`}
+            style={{ perspective: viewMode === '3d' ? (isMobile ? '600px' : '1200px') : 'none' }}
           >
             <motion.div 
-              className={`flex justify-end gap-1.5 p-4 rounded-xl transition-all duration-1000 origin-center ${viewMode === '3d' ? 'iso-3d' : ''}`}
+              className={`github-3d-grid flex justify-end gap-[2px] md:gap-1.5 p-1 md:p-4 rounded-xl transition-all duration-1000 origin-center ${viewMode === '3d' ? 'iso-3d' : ''}`}
               animate={{
-                rotateX: viewMode === '3d' ? 60 : 0,
-                rotateZ: viewMode === '3d' ? -45 : 0,
-                scale: viewMode === '3d' ? 0.8 : 1,
+                rotateX: viewMode === '3d' ? (isMobile ? 50 : 60) : 0,
+                rotateZ: viewMode === '3d' ? (isMobile ? -30 : -45) : 0,
+                scale: viewMode === '3d' ? (isMobile ? 0.75 : 0.8) : 1,
               }}
-              style={{ transformStyle: 'preserve-3d' }}
-            >
+              style={{ transformStyle: 'preserve-3d' }}>
               {data.loading ? (
                 <div className="w-[750px] h-[120px] flex items-center justify-center text-muted-foreground font-mono text-sm animate-pulse bg-black/5 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
                   Fetching GitHub Data...
                 </div>
               ) : (
                 data.contributions.map((week, wIndex) => (
-                  <div key={wIndex} className="flex flex-col gap-1.5" style={{ transformStyle: 'preserve-3d' }}>
+                  <div key={wIndex} className="flex flex-col gap-[2px] md:gap-1.5" style={{ transformStyle: 'preserve-3d' }}>
                     {week.map((day, dIndex) => {
                       const level = Number(day.intensity);
-                      const baseZ = viewMode === '3d' ? level * 15 : 0;
+                      const baseZ = viewMode === '3d' ? level * (isMobile ? 8 : 15) : 0;
                       
                       return (
                         <motion.div

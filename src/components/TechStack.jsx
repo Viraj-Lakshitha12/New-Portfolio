@@ -75,14 +75,21 @@ export default function TechStack() {
     <section id="stack" className="relative py-16 md:py-28 px-6">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <motion.div
-        className="text-center mb-14"
+        className="text-center mb-16"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mt-3">Tech <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Stack</span></h2>
-        <p className="mt-3 text-muted-foreground">The tools behind production-ready systems.</p>
+        <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">
+          Expertise
+        </span>
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          Tech <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">Stack</span>
+        </h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          The tools behind production-ready systems.
+        </p>
       </motion.div>
 
       <motion.div
