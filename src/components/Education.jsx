@@ -40,8 +40,15 @@ export default function Education() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight"><span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-white/50 dark:to-white/80">Education</span></h2>
-        <p className="mt-3 text-muted-foreground">The academic foundation behind the work.</p>
+        <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">
+          Academic
+        </span>
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">Education</span> Background
+        </h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          The academic foundation behind the work.
+        </p>
       </motion.div>
 
       <div className="max-w-5xl mx-auto">
