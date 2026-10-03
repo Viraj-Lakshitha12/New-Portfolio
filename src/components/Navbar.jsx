@@ -37,11 +37,12 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const allSectionIds = ['home', 'about', 'services', 'stack', 'githubstats', 'terminal', 'experience', 'projects', 'education', 'contact'];
+    const allSectionIds = ['home', 'about', 'services', 'stack', 'githubstats', 'terminal', 'experience', 'projects', 'education', 'guestbook', 'contact'];
     const highlightMap = {
       'services': 'about',
       'githubstats': 'stack',
-      'terminal': 'stack'
+      'terminal': 'stack',
+      'guestbook': 'contact'
     };
 
     const sections = allSectionIds

@@ -140,13 +140,18 @@ npm run preview
 
 ## 🔐 Environment Variables
 
-For the Contact form and Analytics to work, create a `.env` file in the root directory:
+For the Contact form, Analytics, and Guestbook admin features to work, create a `.env` file in the root directory:
 
 ```env
 VITE_EMAILJS_SERVICE_ID=your_service_id
 VITE_EMAILJS_TEMPLATE_ID=your_template_id
 VITE_EMAILJS_PUBLIC_KEY=your_public_key
+
+VITE_GUESTBOOK_ADMIN_PASSWORD=your_admin_password
 ```
+
+*Note: The guestbook admin password is used to delete messages. If not set, it defaults to 'viraj123'. Set a secure password in production.*
+
 *(Ensure these exact variables are also configured in your Vercel Project Settings for production).*
 
 ## ✏️ Updating Content

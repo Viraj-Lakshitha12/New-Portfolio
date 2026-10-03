@@ -11,6 +11,31 @@ export default function Guestbook() {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
+  const [deletePassword, setDeletePassword] = useState('');
+
+  // Konami Code listener
+  useEffect(() => {
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    const handleKeyDown = (e) => {
+      if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          setIsAdmin(true);
+          toast.success('Admin Mode Unlocked 🔓', { icon: '🧑‍💻' });
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -35,7 +60,7 @@ export default function Guestbook() {
 
     uiAudio.playClick();
     setIsSubmitting(true);
-    
+
     // Simulate network request
     setTimeout(() => {
       const newMsg = {
@@ -44,11 +69,11 @@ export default function Guestbook() {
         message: message.trim(),
         date: new Date().toISOString()
       };
-      
+
       const updatedMessages = [newMsg, ...messages];
       setMessages(updatedMessages);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
-      
+
       setName('');
       setMessage('');
       setIsSubmitting(false);
@@ -57,11 +82,24 @@ export default function Guestbook() {
     }, 600);
   };
 
-  const handleDelete = (id) => {
-    const updatedMessages = messages.filter(msg => msg.id !== id);
-    setMessages(updatedMessages);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
-    toast.success('Message deleted');
+  const handleInitiateDelete = (id) => {
+    setDeletingId(id);
+    setDeletePassword('');
+  };
+
+  const confirmDelete = (e) => {
+    e.preventDefault();
+    const adminPassword = import.meta.env.VITE_GUESTBOOK_ADMIN_PASSWORD || 'your_admin_password';
+    if (deletePassword === adminPassword) {
+      const updatedMessages = messages.filter(msg => msg.id !== deletingId);
+      setMessages(updatedMessages);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
+      toast.success('Message deleted securely');
+      setDeletingId(null);
+    } else {
+      toast.error('Incorrect password');
+      setDeletePassword('');
+    }
   };
 
   return (
@@ -98,7 +136,7 @@ export default function Guestbook() {
               <MessageSquarePlus className="text-[var(--accent)]" size={24} />
               <h3 className="text-xl font-bold">Sign the Guestbook</h3>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1.5 ml-1">Your Name</label>
@@ -170,13 +208,15 @@ export default function Guestbook() {
                           <span className="text-[10px] text-muted-foreground font-mono">{new Date(msg.date).toLocaleDateString()}</span>
                         </div>
                       </div>
-                      <button 
-                        onClick={() => handleDelete(msg.id)}
-                        className="text-muted-foreground hover:text-red-500 transition-colors p-1"
-                        aria-label="Delete message"
-                      >
-                        <Trash2 size={14} />
-                      </button>
+                      {isAdmin && (
+                        <button
+                          onClick={() => handleInitiateDelete(msg.id)}
+                          className="text-muted-foreground hover:text-red-500 transition-colors p-1"
+                          aria-label="Delete message"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      )}
                     </div>
                     <p className="text-sm text-foreground/80 leading-relaxed pl-11">{msg.message}</p>
                   </motion.div>
@@ -192,6 +232,53 @@ export default function Guestbook() {
           </motion.div>
         </div>
       </div>
+
+      {/* Delete Password Modal */}
+      <AnimatePresence>
+        {deletingId && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-background border border-black/10 dark:border-white/10 p-6 rounded-2xl shadow-2xl max-w-sm w-full"
+            >
+              <h3 className="text-xl font-bold mb-2">Admin Authorization</h3>
+              <p className="text-sm text-muted-foreground mb-4">Please enter the admin password to delete this message.</p>
+              <form onSubmit={confirmDelete}>
+                <input
+                  type="password"
+                  value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  placeholder="Enter password..."
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-red-500 transition-colors mb-4"
+                  autoFocus
+                />
+                <div className="flex gap-3 justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setDeletingId(null)}
+                    className="px-4 py-2 rounded-xl text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-xl text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
