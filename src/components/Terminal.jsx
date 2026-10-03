@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal as TerminalIcon, ChevronRight } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
+import { unlockAchievement } from '@/lib/achievements';
 
 export default function Terminal() {
   const [input, setInput] = useState('');
@@ -43,6 +44,8 @@ export default function Terminal() {
       const baseCmd = parts[0];
 
       if (!cmd) return;
+      
+      unlockAchievement('hacker');
 
       const newHistory = [...history, { type: 'user', content: `$ ${raw}` }];
 
