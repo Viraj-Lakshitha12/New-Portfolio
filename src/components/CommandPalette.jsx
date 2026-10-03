@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion'
 import { 
   Search, Home, User, Briefcase, Code2, GraduationCap, 
   Mail, Github, Linkedin, Download, Terminal, Layers, 
-  ChevronRight, Cpu, Zap
+  ChevronRight, Cpu, Zap, Activity, MessageSquare
 } from 'lucide-react';
 
 const COMMANDS = [
@@ -11,9 +11,11 @@ const COMMANDS = [
   { id: 'nav-about',     group: 'Navigate', label: 'Go to About',          icon: User,          action: () => scrollTo('about') },
   { id: 'nav-services',  group: 'Navigate', label: 'Go to Services',       icon: Cpu,           action: () => scrollTo('services') },
   { id: 'nav-stack',     group: 'Navigate', label: 'Go to Tech Stack',     icon: Layers,        action: () => scrollTo('stack') },
+  { id: 'nav-github',    group: 'Navigate', label: 'Go to GitHub Stats',   icon: Activity,      action: () => scrollTo('githubstats') },
   { id: 'nav-exp',       group: 'Navigate', label: 'Go to Experience',     icon: Briefcase,     action: () => scrollTo('experience') },
   { id: 'nav-projects',  group: 'Navigate', label: 'Go to Projects',       icon: Code2,         action: () => scrollTo('projects') },
   { id: 'nav-education', group: 'Navigate', label: 'Go to Education',      icon: GraduationCap, action: () => scrollTo('education') },
+  { id: 'nav-guestbook', group: 'Navigate', label: 'Go to Guestbook',      icon: MessageSquare, action: () => scrollTo('guestbook') },
   { id: 'nav-contact',   group: 'Navigate', label: 'Go to Contact',        icon: Mail,          action: () => scrollTo('contact') },
   { id: 'ext-github',    group: 'External', label: 'Open GitHub',          icon: Github,        action: () => window.open('https://github.com/Viraj-Lakshitha12', '_blank'),              shortcut: '↗' },
   { id: 'ext-linkedin',  group: 'External', label: 'Open LinkedIn',        icon: Linkedin,      action: () => window.open('https://www.linkedin.com/in/viraj-lakshitha01/', '_blank'),   shortcut: '↗' },
