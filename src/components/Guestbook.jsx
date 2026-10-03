@@ -89,7 +89,8 @@ export default function Guestbook() {
 
   const confirmDelete = (e) => {
     e.preventDefault();
-    if (deletePassword === 'viraj123') { // Secret password
+    const adminPassword = import.meta.env.VITE_GUESTBOOK_ADMIN_PASSWORD || 'your_admin_password';
+    if (deletePassword === adminPassword) {
       const updatedMessages = messages.filter(msg => msg.id !== deletingId);
       setMessages(updatedMessages);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
