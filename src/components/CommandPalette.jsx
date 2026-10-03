@@ -5,6 +5,7 @@ import {
   Mail, Github, Linkedin, Download, Terminal, Layers, 
   ChevronRight, Cpu, Zap, Activity, MessageSquare
 } from 'lucide-react';
+import { uiAudio } from '@/lib/audio';
 
 const COMMANDS = [
   { id: 'nav-home',      group: 'Navigate', label: 'Go to Home',           icon: Home,          action: () => scrollTo('home') },
@@ -174,7 +175,10 @@ export default function CommandPalette() {
                       ref={inputRef}
                       type="text"
                       value={query}
-                      onChange={e => setQuery(e.target.value)}
+                      onChange={e => {
+                        setQuery(e.target.value);
+                        uiAudio.playTyping();
+                      }}
                       onKeyDown={handleKeyDown}
                       placeholder="Search commands, sections, actions..."
                       className="flex-1 bg-transparent outline-none text-base font-medium text-foreground placeholder:text-muted-foreground/60"

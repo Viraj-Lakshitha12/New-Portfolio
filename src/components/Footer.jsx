@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { Github, Linkedin, Mail, FileText } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring, useInView } from 'framer-motion';
+import { Github, Linkedin, Mail, FileText, Trophy } from 'lucide-react';
+import { unlockAchievement } from '@/lib/achievements';
+import AchievementsModal from '@/components/AchievementsModal';
 
-function DockIcon({ href, label, children }) {
+function DockIcon({ href = null, onClick = null, label, children }) {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -21,16 +23,14 @@ function DockIcon({ href, label, children }) {
   };
 
   return (
-    <motion.a
+    <motion.div
       ref={ref}
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={label}
+      onClick={href ? () => window.open(href, '_blank') : onClick}
       style={{ x: sx, y: sy }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:scale-125 hover:-translate-y-1.5 transition-transform duration-300 ease-out group"
+      aria-label={label}
+      className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:scale-125 hover:-translate-y-1.5 transition-transform duration-300 ease-out group cursor-pointer"
     >
       <span
         className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"
@@ -46,13 +46,23 @@ function DockIcon({ href, label, children }) {
       <span className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none text-xs font-mono px-3 py-1.5 rounded-lg bg-foreground text-background shadow-xl whitespace-nowrap translate-y-2 group-hover:translate-y-0">
         {label}
       </span>
-    </motion.a>
+    </motion.div>
   );
 }
 
 export default function Footer() {
+  const [achievementsOpen, setAchievementsOpen] = useState(false);
+  const footerRef = useRef(null);
+  const isInView = useInView(footerRef, { once: true, amount: 0.5 });
+
+  useEffect(() => {
+    if (isInView) {
+      unlockAchievement('explorer');
+    }
+  }, [isInView]);
+
   return (
-    <footer className="relative pt-24 pb-10 px-6 overflow-hidden">
+    <footer ref={footerRef} className="relative pt-24 pb-10 px-6 overflow-hidden">
       {/* Aurora ambient glow at bottom edge */}
       <div className="aurora" />
 
@@ -97,6 +107,12 @@ export default function Footer() {
           <DockIcon href="/Viraj_Lakshitha_CV.pdf" label="Resume">
             <FileText className="w-6 h-6 md:w-7 md:h-7" />
           </DockIcon>
+          {/* Divider */}
+          <div className="w-px h-8 bg-black/10 dark:bg-white/10 mx-2" />
+          {/* Achievements Trophy */}
+          <DockIcon onClick={() => setAchievementsOpen(true)} label="Achievements 🏆">
+            <Trophy className="w-6 h-6 md:w-7 md:h-7" />
+          </DockIcon>
         </motion.div>
       </div>
 
@@ -106,6 +122,7 @@ export default function Footer() {
           © 2026 Viraj Lakshitha Adhikari. All rights reserved.
         </p>
       </div>
+      <AchievementsModal isOpen={achievementsOpen} onClose={() => setAchievementsOpen(false)} />
     </footer>
   );
 }

@@ -44,6 +44,33 @@ export default function Home() {
     };
   }, []);
 
+  // Dynamic Title 
+  useEffect(() => {
+    let originalTitle = document.title;
+    let intervalId = null;
+    let isOriginal = false;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.title = "💔 Hey, come back!";
+        intervalId = setInterval(() => {
+          document.title = isOriginal ? "💔 Hey, come back!" : originalTitle;
+          isOriginal = !isOriginal;
+        }, 2000);
+      } else {
+        if (intervalId) clearInterval(intervalId);
+        document.title = originalTitle;
+        isOriginal = false;
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <ThemeProvider>
       <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff', borderRadius: '10px' } }} />

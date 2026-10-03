@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal as TerminalIcon, ChevronRight } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
+import { unlockAchievement } from '@/lib/achievements';
 
 export default function Terminal() {
   const [input, setInput] = useState('');
@@ -12,14 +13,16 @@ export default function Terminal() {
   const bottomRef = useRef(null);
 
   const commands = {
-    help: '📋 Available commands:\n   whoami     → About Viraj\n   skills     → Tech stack\n   experience → Work history\n   education  → Academic background\n   projects   → Featured projects\n   contact    → Contact details\n   ls         → List sections\n   open       → open [linkedin|github|cv]\n   hire       → Let\'s work together!\n   date       → Current date & time\n   echo [txt] → Repeat your text\n   clear      → Clear terminal\n   neofetch   → System info\n   sudo       → 😏 Try it...',
+    help: '📋 Available commands:\n   whoami     → About Viraj\n   skills     → Tech stack\n   experience → Work history\n   education  → Academic background\n   projects   → Featured projects\n   github     → GitHub statistics\n   guestbook  → Community messages\n   contact    → Contact details\n   ls         → List sections\n   open       → open [linkedin|github|cv]\n   hire       → Let\'s work together!\n   date       → Current date & time\n   echo [txt] → Repeat your text\n   clear      → Clear terminal\n   neofetch   → System info\n   sudo       → 😏 Try it...',
     whoami: '👋 Viraj Lakshitha Adhikari\n   Role   : Full Stack Software Engineer\n   Company: INTELLEON (2024 - Present)\n   Country: Sri Lanka 🇱🇰\n   Focus  : Scalable web systems, clean code, great UX\n   Fun    : Building things that make people say "wow"',
     skills: '⚡ Core Tech Stack:\n   ┌─ Frontend  : React, TypeScript, Next.js, Tailwind CSS\n   ├─ Backend   : Java Spring Boot, Node.js, Express\n   ├─ Databases : PostgreSQL, MySQL, MongoDB, Redis\n   ├─ DevOps    : Docker, AWS, CI/CD\n   └─ Tools     : Git, Figma, Postman, IntelliJ',
     experience: '💼 Career Timeline:\n   2024 - Now  → Software Engineer @ INTELLEON\n   2023 - 2024 → Associate SE @ INTELLEON\n   2023        → Intern SE @ INTELLEON\n   \n   Building production systems trusted by thousands of users.',
     education: '🎓 Academic Background:\n   BSc (Hons) Computing\n   └─ Wrexham University (UK)\n   \n   Graduate Diploma in Software Engineering\n   └─ IJSE - Institute of Java & Software Engineering',
     contact: '📬 Let\'s Connect:\n   Email    → viraj.lakshitha.22222@gmail.com\n   LinkedIn → linkedin.com/in/viraj-lakshitha01\n   GitHub   → github.com/Viraj-Lakshitha12\n   \n   Or type "hire" to start a conversation! 🚀',
     projects: '🚀 Featured Projects:\n   1. This Portfolio  → React + Framer Motion + AI Chatbot\n   2. Service Mgmt    → Spring Boot + React + PostgreSQL\n   3. Property System → Node.js + MongoDB + JWT Auth\n   \n   → Scroll to #projects for full details',
-    ls: '📂 Portfolio Sections:\n   home/        → Hero & Introduction\n   about/       → About Viraj\n   services/    → What I offer\n   stack/       → Tech Stack\n   experience/  → Work History\n   projects/    → Featured Projects\n   education/   → Academic Background\n   contact/     → Get in Touch',
+    github: '📊 GitHub Stats:\n   → GitHub Activity Matrix and live contribution counts.\n   → Type "open github" to visit my profile directly.',
+    guestbook: '📖 Visitor Guestbook:\n   → A place for visitors to leave their mark on my portfolio.\n   → Try finding the Konami code to unlock admin mode! 🤫',
+    ls: '📂 Portfolio Sections:\n   home/        → Hero & Introduction\n   about/       → About Viraj\n   services/    → What I offer\n   stack/       → Tech Stack\n   githubstats/ → GitHub Activity\n   terminal/    → You are here\n   experience/  → Work History\n   projects/    → Featured Projects\n   education/   → Academic Background\n   guestbook/   → Visitor Messages\n   contact/     → Get in Touch',
     hire: '🎉 Great choice! Let\'s build something amazing together.\n   \n   📧 viraj.lakshitha.22222@gmail.com\n   💼 linkedin.com/in/viraj-lakshitha01\n   \n   Currently: ✅ Available for opportunities\n   Response time: < 24 hours',
     date: `📅 ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n   🕐 ${new Date().toLocaleTimeString('en-US')} (Sri Lanka / GMT+5:30)`,
     neofetch: '   viraj@vl.dev\n   ──────────────\n   OS     : Human Brain v25.0\n   Host   : Sri Lanka, Earth\n   Shell  : VSCode + IntelliJ\n   CPU    : Java Spring Boot @ 3.2GHz\n   GPU    : React + Framer Motion\n   RAM    : 8+ years of CS knowledge\n   Disk   : GitHub (∞ TB)\n   Status : Available for hire ✅',
@@ -41,6 +44,8 @@ export default function Terminal() {
       const baseCmd = parts[0];
 
       if (!cmd) return;
+      
+      unlockAchievement('hacker');
 
       const newHistory = [...history, { type: 'user', content: `$ ${raw}` }];
 
