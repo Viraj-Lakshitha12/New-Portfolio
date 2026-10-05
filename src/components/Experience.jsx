@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView, useScroll } from 'framer-motion';
 import { Briefcase, Calendar, ChevronRight, Code2, GitBranch, Layers, Server, Cpu } from 'lucide-react';
+import FloatingElements from '@/components/FloatingElements';
 
 const roles = [
   {
@@ -264,6 +265,8 @@ export default function Experience() {
     <section id="experience" className="relative py-20 md:py-32 px-6">
       {/* Subtle grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+      
+      <FloatingElements count={5} />
 
       {/* Section header */}
       <motion.div

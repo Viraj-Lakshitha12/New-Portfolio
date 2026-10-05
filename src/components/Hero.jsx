@@ -3,6 +3,8 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 import Magnetic from '@/components/ui/Magnetic';
+import AnimatedGradientText from '@/components/AnimatedGradientText';
+import FloatingElements from '@/components/FloatingElements';
 import { TypeAnimation } from 'react-type-animation';
 import { useI18n } from '@/lib/i18n-context';
 
@@ -33,6 +35,7 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-4 md:pb-8 overflow-hidden text-center"
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+      <FloatingElements count={6} />
       <motion.div
         ref={ref}
         onMouseMove={handleMove}
@@ -92,7 +95,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.5, duration: 0.7 }}
       >
-        <span className="gradient-text-anim">Viraj Lakshitha</span>
+        <AnimatedGradientText>Viraj Lakshitha</AnimatedGradientText>
       </motion.h1>
 
       <motion.p
