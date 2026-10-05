@@ -23,6 +23,9 @@ A modern, feature-rich portfolio website for Viraj Lakshitha Adhikari — Full S
 - **Preloader** — Loading animation with technical aesthetic
 - **Web Analytics** — Integrated Vercel Analytics for tracking page views
 - **SEO & Social Sharing** — Full Open Graph and Twitter meta tags with custom premium preview images (for WhatsApp, LinkedIn, etc.)
+- **Animated Gradient Text** — Smooth animated gradient text effects on headings
+- **Floating Elements** — Decorative floating particles with smooth animations
+- **Section Reveal** — Smooth scroll-triggered reveal animations for sections
 
 ## 🛠️ Tech Stack
 - **Framework**: React 18 + Vite 6
@@ -87,6 +90,9 @@ portfolio/
         ├── CommandPalette.jsx        # Ctrl+K global search modal
         ├── ThemeCustomizer.jsx       # Theme customization panel
         ├── Chatbot.jsx               # Chatbot integration
+        ├── AnimatedGradientText.jsx  # Animated gradient text component
+        ├── FloatingElements.jsx      # Floating decorative particles
+        ├── SectionReveal.jsx        # Scroll-triggered reveal animations
         └── ui/
             ├── image.jsx             # Optimized image component
             ├── Magnetic.jsx          # Magnetic button effect
