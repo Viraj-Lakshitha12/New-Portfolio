@@ -346,7 +346,7 @@ export default function Projects() {
   const [activeProject, setActiveProject] = useState(null);
 
   return (
-    <section id="projects" className="relative py-24 md:py-32 px-6">
+    <section id="projects" className="relative py-20 md:py-32 px-6">
       <motion.div
         className="text-center mb-24"
         initial={{ opacity: 0, y: 30 }}
