@@ -3,6 +3,8 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { Image } from '@/components/ui/image';
 import { ArrowUpRight, Github, ExternalLink, X, Database, Shield, Zap, Layout } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
+import SectionReveal from '@/components/SectionReveal';
+import FloatingElements from '@/components/FloatingElements';
 
 const PROJECT1 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/36cff83c8_generated_e864fc7a.jpg';
 const PROJECT2 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/4263eb89b_generated_image.png';
@@ -346,7 +348,8 @@ export default function Projects() {
   const [activeProject, setActiveProject] = useState(null);
 
   return (
-    <section id="projects" className="relative py-24 md:py-32 px-6">
+    <section id="projects" className="relative py-20 md:py-32 px-6">
+      <FloatingElements count={6} />
       <motion.div
         className="text-center mb-24"
         initial={{ opacity: 0, y: 30 }}
@@ -367,7 +370,9 @@ export default function Projects() {
 
       <div className="max-w-5xl mx-auto space-y-32">
         {projects.map((p, i) => (
-          <ProjectCard key={i} project={p} index={i} onOpen={() => setActiveProject({ ...p, index: i })} />
+          <SectionReveal key={i} delay={i * 0.1}>
+            <ProjectCard project={p} index={i} onOpen={() => setActiveProject({ ...p, index: i })} />
+          </SectionReveal>
         ))}
       </div>
 

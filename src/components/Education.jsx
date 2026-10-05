@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import WireframeOrb from './WireframeOrb';
+
+const WireframeOrb = lazy(() => import('./WireframeOrb'));
 
 const education = [
   {
@@ -31,7 +32,7 @@ const education = [
 
 export default function Education() {
   return (
-    <section id="education" className="relative py-16 md:py-28 px-6">
+    <section id="education" className="relative py-20 md:py-32 px-6">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <motion.div
         className="text-center mb-16"
@@ -88,7 +89,9 @@ export default function Education() {
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-56 h-56 rounded-full blur-3xl glow-pulse" style={{ background: 'var(--glow)' }} />
             </div>
-            <WireframeOrb />
+            <Suspense fallback={null}>
+              <WireframeOrb />
+            </Suspense>
           </div>
         </div>
       </div>

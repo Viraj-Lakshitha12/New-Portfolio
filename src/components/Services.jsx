@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'framer-motion';
 import { Code2, Server, Database, Layers, Layout, Cpu, Workflow } from 'lucide-react';
+import FloatingElements from '@/components/FloatingElements';
 
 const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge }) => {
   const ref = useRef(null);
@@ -151,11 +152,13 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="relative py-32 px-6 overflow-hidden">
+    <section id="services" className="relative py-20 md:py-32 px-6 overflow-hidden">
       {/* Background Decor - Modern Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[500px] bg-[var(--accent)]/10 blur-[150px] rounded-[100%] pointer-events-none" />
+      
+      <FloatingElements count={8} />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-8 mb-12 md:mb-20">

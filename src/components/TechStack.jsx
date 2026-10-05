@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Blocks, Code2, Database, Layers3, Server, Wrench } from 'lucide-react';
 import {
@@ -12,7 +12,8 @@ import {
   siTailwindcss,
   siTypescript,
 } from 'simple-icons';
-import SkillsRadar from './SkillsRadar';
+
+const SkillsRadar = lazy(() => import('./SkillsRadar'));
 
 const categories = [
   {
@@ -72,7 +73,7 @@ function StatusChip({ level }) {
 
 export default function TechStack() {
   return (
-    <section id="stack" className="relative py-16 md:py-28 px-6">
+    <section id="stack" className="relative py-20 md:py-32 px-6">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <motion.div
         className="text-center mb-16"
@@ -136,7 +137,9 @@ export default function TechStack() {
              <span className="font-mono text-xs text-muted-foreground">00</span>
           </div>
           <div className="flex-1 min-h-0 relative -mt-4">
-            <SkillsRadar />
+            <Suspense fallback={null}>
+              <SkillsRadar />
+            </Suspense>
           </div>
         </motion.div>
         {categories.map((category, index) => {

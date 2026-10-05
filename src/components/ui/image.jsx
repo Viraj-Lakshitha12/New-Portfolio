@@ -7,7 +7,7 @@ import * as React from "react"
  * @type {React.ForwardRefExoticComponent<React.ImgHTMLAttributes<HTMLImageElement> & React.RefAttributes<HTMLImageElement>>}
  */
 const Image = React.forwardRef((props, ref) => {
-  return <img ref={ref} {...props} />
+  return <img ref={ref} loading="lazy" {...props} />
 })
 Image.displayName = "Image"
 
