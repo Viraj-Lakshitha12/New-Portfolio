@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Blocks, Code2, Database, Layers3, Server, Wrench } from 'lucide-react';
 import {
@@ -12,7 +12,8 @@ import {
   siTailwindcss,
   siTypescript,
 } from 'simple-icons';
-import SkillsRadar from './SkillsRadar';
+
+const SkillsRadar = lazy(() => import('./SkillsRadar'));
 
 const categories = [
   {
@@ -136,7 +137,9 @@ export default function TechStack() {
              <span className="font-mono text-xs text-muted-foreground">00</span>
           </div>
           <div className="flex-1 min-h-0 relative -mt-4">
-            <SkillsRadar />
+            <Suspense fallback={null}>
+              <SkillsRadar />
+            </Suspense>
           </div>
         </motion.div>
         {categories.map((category, index) => {

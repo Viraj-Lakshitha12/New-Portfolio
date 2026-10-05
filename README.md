@@ -26,6 +26,7 @@ A modern, feature-rich portfolio website for Viraj Lakshitha Adhikari — Full S
 - **Animated Gradient Text** — Smooth animated gradient text effects on headings
 - **Floating Elements** — Decorative floating particles with smooth animations
 - **Section Reveal** — Smooth scroll-triggered reveal animations for sections
+- **Performance Optimized** — Lazy loading for heavy components, code splitting, and lazy images for faster initial load
 
 ## 🛠️ Tech Stack
 - **Framework**: React 18 + Vite 6
@@ -155,6 +156,17 @@ VITE_EMAILJS_PUBLIC_KEY=your_public_key
 
 VITE_GUESTBOOK_ADMIN_PASSWORD=your_admin_password
 ```
+
+## ⚡ Performance Optimizations
+
+The portfolio includes several performance optimizations for faster loading:
+
+- **Lazy Loading**: Heavy components (MeshBackground, Terminal, Guestbook, Chatbot, SpotifyWidget, WireframeOrb, SkillsRadar) are loaded on-demand
+- **Code Splitting**: Dependencies are split into separate chunks (react-vendor, three-vendor, animation-vendor, ui-vendor)
+- **Lazy Images**: All images use `loading="lazy"` attribute for deferred loading
+- **Bundle Size**: Main bundle reduced from 826 KB to 439 KB through code splitting
+- **Optimized Build**: Vite 8 with Rolldown for faster builds and smaller bundles
+- **Removed Unused Dependencies**: Removed `cobe` package (was not used)
 
 *Note: The guestbook admin password is used to delete messages. If not set, it defaults to 'viraj123'. Set a secure password in production.*
 

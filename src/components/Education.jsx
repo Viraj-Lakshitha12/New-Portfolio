@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import WireframeOrb from './WireframeOrb';
+
+const WireframeOrb = lazy(() => import('./WireframeOrb'));
 
 const education = [
   {
@@ -88,7 +89,9 @@ export default function Education() {
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-56 h-56 rounded-full blur-3xl glow-pulse" style={{ background: 'var(--glow)' }} />
             </div>
-            <WireframeOrb />
+            <Suspense fallback={null}>
+              <WireframeOrb />
+            </Suspense>
           </div>
         </div>
       </div>

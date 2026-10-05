@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from '@/lib/theme-context';
-import MeshBackground from '@/components/MeshBackground';
 import Preloader from '@/components/Preloader';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -13,17 +12,20 @@ import GithubStats from '@/components/GithubStats';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import Education from '@/components/Education';
-import Guestbook from '@/components/Guestbook';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-import Terminal from '@/components/Terminal';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import ThemeCustomizer from '@/components/ThemeCustomizer';
-import Chatbot from '@/components/Chatbot';
 import CommandPalette from '@/components/CommandPalette';
 import ContextMenu from '@/components/ui/ContextMenu';
-import SpotifyWidget from '@/components/SpotifyWidget';
+
+// Lazy load heavy components
+const MeshBackground = lazy(() => import('@/components/MeshBackground'));
+const Terminal = lazy(() => import('@/components/Terminal'));
+const Guestbook = lazy(() => import('@/components/Guestbook'));
+const Chatbot = lazy(() => import('@/components/Chatbot'));
+const SpotifyWidget = lazy(() => import('@/components/SpotifyWidget'));
 
 export default function Home() {
   useEffect(() => {
@@ -79,10 +81,10 @@ export default function Home() {
       <ScrollProgress />
       <ThemeCustomizer />
       <CommandPalette />
-      <Chatbot />
-      <SpotifyWidget />
       <ContextMenu />
-      <MeshBackground />
+      <Suspense fallback={null}>
+        <MeshBackground />
+      </Suspense>
       <Navbar />
       <main className="relative">
         <Hero />
@@ -90,14 +92,24 @@ export default function Home() {
         <Services />
         <TechStack />
         <GithubStats />
-        <Terminal />
+        <Suspense fallback={null}>
+          <Terminal />
+        </Suspense>
         <Experience />
         <Projects />
         <Education />
-        <Guestbook />
+        <Suspense fallback={null}>
+          <Guestbook />
+        </Suspense>
         <Contact />
         <Footer />
       </main>
+      <Suspense fallback={null}>
+        <Chatbot />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SpotifyWidget />
+      </Suspense>
     </ThemeProvider>
   );
 }
