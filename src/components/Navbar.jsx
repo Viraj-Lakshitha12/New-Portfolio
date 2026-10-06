@@ -136,7 +136,7 @@ export default function Navbar() {
               </Magnetic>
               <Magnetic>
                 <button
-                  onClick={(e) => toggleTheme(e)}
+                  onClick={toggleTheme}
                   aria-label="Toggle theme"
                   className="glass rounded-xl w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform"
                 >

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowUpRight, Github, ExternalLink, X, Database, Shield, Zap, Layout } from 'lucide-react';
@@ -253,11 +253,19 @@ function ProjectModal({ project, onClose }) {
 function ProjectCard({ project, index, onOpen, isAnotherHovered, onHoverStart, onHoverEnd }) {
   const flip = index % 2 === 1;
 
+  const handleHoverStart = useCallback(() => {
+    onHoverStart(project.image);
+  }, [project.image, onHoverStart]);
+
+  const handleHoverEnd = useCallback(() => {
+    onHoverEnd();
+  }, [onHoverEnd]);
+
   return (
     <div 
       className={`grid md:grid-cols-2 gap-10 md:gap-14 items-center group transition-[opacity,transform] duration-500 ${isAnotherHovered ? 'opacity-25 scale-[0.98]' : 'opacity-100 scale-100'}`}
-      onMouseEnter={() => onHoverStart(project.image)}
-      onMouseLeave={onHoverEnd}
+      onMouseEnter={handleHoverStart}
+      onMouseLeave={handleHoverEnd}
     >
       <div className={flip ? 'md:order-2' : ''}>
         <div
@@ -328,7 +336,6 @@ function ProjectCard({ project, index, onOpen, isAnotherHovered, onHoverStart, o
   );
 }
 
-const ProjectCardMemo = memo(ProjectCard);
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState(null);
@@ -355,7 +362,7 @@ export default function Projects() {
         }}
       />
 
-      <FloatingElements count={4} />
+      <FloatingElements count={3} />
       
       <motion.div
         className="text-center mb-24 relative z-10"
@@ -385,7 +392,7 @@ export default function Projects() {
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5, delay: i * 0.05 }}
           >
-            <ProjectCardMemo
+            <ProjectCard
               project={p} 
               index={i} 
               onOpen={() => setActiveProject({ ...p, index: i })} 

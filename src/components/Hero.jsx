@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
@@ -33,25 +33,33 @@ export default function Hero() {
   const orbY = useTransform(springY, [-1, 1], [-15, 15]);
 
   useEffect(() => {
+    let ticking = false;
     const handleMouseMove = (e) => {
-      const { innerWidth, innerHeight } = window;
-      mouseX.set((e.clientX / innerWidth - 0.5) * 2);
-      mouseY.set((e.clientY / innerHeight - 0.5) * 2);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const { innerWidth, innerHeight } = window;
+          mouseX.set((e.clientX / innerWidth - 0.5) * 2);
+          mouseY.set((e.clientY / innerHeight - 0.5) * 2);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const handleMove = (e) => {
+  const handleMove = useCallback((e) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     mx.set((e.clientX - rect.left) / rect.width - 0.5);
     my.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handleLeave = () => {
+  }, []);
+
+  const handleLeave = useCallback(() => {
     mx.set(0);
     my.set(0);
-  };
+  }, []);
 
   return (
     <section
@@ -59,7 +67,7 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-4 md:pb-8 overflow-hidden text-center"
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-      <FloatingElements count={6} />
+      <FloatingElements count={3} />
       
       {/* Parallax background orb */}
       <motion.div

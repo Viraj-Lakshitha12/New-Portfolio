@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 /**
  * Floating Elements Component
- * Adds floating decorative elements to sections
+ * Optimized with useMemo to prevent recalculations
  */
 export default function FloatingElements({ count = 5 }) {
   const colors = ['#64d2ff', '#a855f7', '#ec4899', '#10b981', '#f59e0b'];
-  
-  const generateElements = () => {
+
+  const elements = useMemo(() => {
     return Array.from({ length: count }).map((_, index) => ({
       id: index,
       x: Math.random() * 80 + 10,
@@ -18,9 +18,7 @@ export default function FloatingElements({ count = 5 }) {
       delay: Math.random() * 2,
       duration: Math.random() * 3 + 3,
     }));
-  };
-
-  const elements = generateElements();
+  }, [count]);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -34,6 +32,7 @@ export default function FloatingElements({ count = 5 }) {
             width: `${el.size}px`,
             height: `${el.size}px`,
             background: el.color,
+            willChange: 'transform, opacity',
           }}
           animate={{
             y: [0, -20, 0],
