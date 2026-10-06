@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
@@ -18,6 +18,30 @@ export default function Hero() {
   const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 18 });
   const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 18 });
 
+  // Global mouse parallax for layered depth
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+
+  // Different speed layers
+  const headingX = useTransform(springX, [-1, 1], [-12, 12]);
+  const headingY = useTransform(springY, [-1, 1], [-8, 8]);
+  const subtitleX = useTransform(springX, [-1, 1], [8, -8]);
+  const subtitleY = useTransform(springY, [-1, 1], [5, -5]);
+  const orbX = useTransform(springX, [-1, 1], [-20, 20]);
+  const orbY = useTransform(springY, [-1, 1], [-15, 15]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      mouseX.set((e.clientX / innerWidth - 0.5) * 2);
+      mouseY.set((e.clientY / innerHeight - 0.5) * 2);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const handleMove = (e) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
@@ -36,6 +60,13 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <FloatingElements count={6} />
+      
+      {/* Parallax background orb */}
+      <motion.div
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ x: orbX, y: orbY, background: 'radial-gradient(circle, var(--glow) 0%, transparent 70%)', opacity: 0.25, willChange: 'transform' }}
+      />
+
       <motion.div
         ref={ref}
         onMouseMove={handleMove}
@@ -94,6 +125,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.5, duration: 0.7 }}
+        style={{ x: headingX, y: headingY }}
       >
         <AnimatedGradientText>Viraj Lakshitha</AnimatedGradientText>
       </motion.h1>
@@ -103,6 +135,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.7, duration: 0.6 }}
+        style={{ x: subtitleX, y: subtitleY }}
       >
         {t('hero.subtitle')}
       </motion.p>
