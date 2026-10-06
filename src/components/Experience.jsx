@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView, useScroll } from 'framer-motion';
 import { Briefcase, Calendar, ChevronRight, Code2, GitBranch, Layers, Server, Cpu } from 'lucide-react';
+import RevealText from './ui/RevealText';
 import FloatingElements from '@/components/FloatingElements';
 
 const roles = [
@@ -83,13 +84,18 @@ function RoleCard({ r, index: idx }) {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, x: -30 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative"
+      className="relative pl-10 md:pl-16 mb-10 last:mb-0"
     >
+
+      <div className="absolute left-[2px] md:left-[11px] top-[32px] md:top-[38px] z-10 hidden md:flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
+        <DotWithPulse color={r.dotColor} index={idx} inView={inView} />
+      </div>
+
       {/* Card */}
       <div
         className="relative rounded-2xl md:rounded-3xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/55 dark:bg-zinc-900/55 backdrop-blur-xl transition-all duration-500"
@@ -202,71 +208,48 @@ function RoleCard({ r, index: idx }) {
   );
 }
 
-function TimelineColumn({ roles }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 20%'] });
-
+function DotWithPulse({ color, index, inView }) {
   return (
-    <div ref={ref} className="hidden md:flex flex-col items-center flex-shrink-0 pt-2" style={{ width: 40 }}>
-      {roles.map((r, i) => {
-        const isLast = i === roles.length - 1;
-        return (
-          <React.Fragment key={i}>
-            {/* Dot */}
-            <DotWithPulse color={r.dotColor} index={i} />
-            {/* Connecting line segment */}
-            {!isLast && (
-              <motion.div
-                className="w-0.5 flex-1 min-h-[80px] origin-top"
-                initial={{ scaleY: 0, opacity: 0 }}
-                whileInView={{ scaleY: 1, opacity: 1 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, delay: 0.3, ease: 'easeInOut' }}
-                style={{ background: `linear-gradient(to bottom, ${r.dotColor}, ${roles[i + 1].dotColor})` }}
-              />
-            )}
-          </React.Fragment>
-        );
-      })}
+    <div
+      className="relative flex items-center justify-center flex-shrink-0 z-10"
+      style={{ width: 32, height: 32 }}
+    >
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 1 } : {}}
+        transition={{ type: 'spring', stiffness: 300, damping: 20, delay: index * 0.1 }}
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        {/* Glass outer ring */}
+        <div className="absolute inset-0 rounded-full border border-white/20 bg-white/10 dark:bg-zinc-900/40 backdrop-blur-md shadow-lg" />
+
+        {/* Pulse ring */}
+        <motion.div
+          className="absolute inset-0 rounded-full"
+          animate={{ scale: [1, 2.5, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: index * 0.4 }}
+          style={{ background: color }}
+        />
+
+        {/* Core glowing dot */}
+        <div
+          className="relative w-3 h-3 rounded-full border border-white/40"
+          style={{ background: color, boxShadow: `0 0 16px ${color}, 0 0 32px ${color}` }}
+        />
+      </motion.div>
     </div>
   );
 }
 
-function DotWithPulse({ color, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
-  return (
-    <motion.div
-      ref={ref}
-      className="relative flex items-center justify-center flex-shrink-0"
-      style={{ width: 24, height: 24 }}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={inView ? { scale: 1, opacity: 1 } : {}}
-      transition={{ type: 'spring', stiffness: 350, damping: 18, delay: index * 0.12 }}
-    >
-      {/* Pulse ring */}
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.4 }}
-        style={{ background: color }}
-      />
-      {/* Core */}
-      <div
-        className="relative w-3.5 h-3.5 rounded-full border-2 border-background"
-        style={{ background: color, boxShadow: `0 0 12px ${color}` }}
-      />
-    </motion.div>
-  );
-}
-
 export default function Experience() {
+  const lineRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: lineRef, offset: ['start 85%', 'end 25%'] });
   return (
     <section id="experience" className="relative py-20 md:py-32 px-6">
       {/* Subtle grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-      
-      <FloatingElements count={5} />
+
+      <FloatingElements count={3} />
 
       {/* Section header */}
       <motion.div
@@ -279,22 +262,30 @@ export default function Experience() {
         <span className="font-mono text-sm tracking-[0.2em] uppercase text-[var(--accent)] mb-3 block">
           Career
         </span>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-          Professional{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">
-            Experience
-          </span>
-        </h2>
+        <div className="mb-4">
+          <RevealText text="Professional Experience" className="text-4xl md:text-5xl font-bold tracking-tight justify-center text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50 pb-2" />
+        </div>
         <p className="text-muted-foreground text-lg">Career progression, versioned as commits.</p>
       </motion.div>
 
-      {/* Timeline layout — flex row: [dot column] + [cards column] */}
-      <div className="max-w-2xl mx-auto flex gap-4 md:gap-8">
-        {/* Left: timeline column — desktop only */}
-        <TimelineColumn roles={roles} />
+      {/* Timeline layout*/}
+      <div className="max-w-3xl mx-auto relative">
 
-        {/* Right: cards */}
-        <div className="flex-1 min-w-0 space-y-6 md:space-y-8">
+        {/* Scroll-driven Neon Timeline Line (Desktop only) */}
+        <div ref={lineRef} className="absolute left-[10px] top-[32px] bottom-[32px] w-[2px] bg-black/5 dark:bg-white/5 rounded-full overflow-hidden hidden md:block">
+          <motion.div
+            className="absolute top-0 left-0 right-0 origin-top rounded-full"
+            style={{
+              scaleY: scrollYProgress,
+              background: `linear-gradient(to bottom, ${roles.map(r => r.dotColor).join(', ')})`,
+              boxShadow: '0 0 15px var(--glow), 0 0 30px var(--glow)',
+              height: '100%',
+            }}
+          />
+        </div>
+
+        {/* Cards */}
+        <div className="relative z-10">
           {roles.map((r, i) => (
             <RoleCard key={i} r={r} index={i} />
           ))}

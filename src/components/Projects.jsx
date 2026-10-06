@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { ArrowUpRight, Github, ExternalLink, X, Database, Shield, Zap, Layout } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
-import SectionReveal from '@/components/SectionReveal';
 import FloatingElements from '@/components/FloatingElements';
 
 const PROJECT1 = 'https://media.base44.com/images/public/6aa78c30735eca22a9da0edd/36cff83c8_generated_e864fc7a.jpg';
@@ -134,7 +133,10 @@ function ProjectModal({ project, onClose }) {
         data-lenis-prevent
       >
         <motion.div
-          layoutId={`project-container-${project.index}`}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="w-full h-[85vh] md:h-[90vh] max-w-5xl bg-background rounded-3xl overflow-hidden shadow-2xl relative flex flex-col pointer-events-auto border border-white/10"
         >
           {/* Close button */}
@@ -147,11 +149,11 @@ function ProjectModal({ project, onClose }) {
 
           {/* Immersive Header (Fixed Height) */}
           <div className="relative w-full h-[40vh] md:h-[45vh] shrink-0 overflow-hidden">
-            <motion.div layoutId={`project-image-${project.index}`} className="absolute inset-0">
+            <div className="absolute inset-0">
               <Image src={project.image} alt={project.title} className="w-full h-full object-cover" />
               {/* Gradient overlay for text readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-            </motion.div>
+            </div>
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -248,57 +250,47 @@ function ProjectModal({ project, onClose }) {
   );
 }
 
-function ProjectCard({ project, index, onOpen }) {
-  const ref = useRef(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 15 });
-  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 15 });
-
-  const handleMove = (e) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleLeave = () => {
-    mx.set(0);
-    my.set(0);
-  };
-
+function ProjectCard({ project, index, onOpen, isAnotherHovered, onHoverStart, onHoverEnd }) {
   const flip = index % 2 === 1;
 
+  const handleHoverStart = useCallback(() => {
+    onHoverStart(project.image);
+  }, [project.image, onHoverStart]);
+
+  const handleHoverEnd = useCallback(() => {
+    onHoverEnd();
+  }, [onHoverEnd]);
+
   return (
-    <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-center group">
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d', perspective: 1200 }}
-        className={flip ? 'md:order-2' : ''}
-      >
-        <div className="float-anim cursor-pointer" onClick={() => { uiAudio.playClick(); onOpen(); }}>
-          <motion.div
-            layoutId={`project-container-${index}`}
-            className="glass rounded-3xl p-3 shadow-2xl transition-all duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/40 dark:bg-zinc-950/40"
+    <div 
+      className={`grid md:grid-cols-2 gap-10 md:gap-14 items-center group transition-[opacity,transform] duration-500 ${isAnotherHovered ? 'opacity-25 scale-[0.98]' : 'opacity-100 scale-100'}`}
+      onMouseEnter={handleHoverStart}
+      onMouseLeave={handleHoverEnd}
+    >
+      <div className={flip ? 'md:order-2' : ''}>
+        <div
+          className="float-anim cursor-pointer"
+          onClick={() => { uiAudio.playClick(); onOpen(); }}
+        >
+          <div
+            className="glass rounded-3xl p-3 shadow-2xl transition-shadow duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/40 dark:bg-zinc-950/40"
           >
             <div className="flex gap-1.5 mb-3 px-3 pt-1">
               <span className="w-3 h-3 rounded-full bg-red-400/80" />
               <span className="w-3 h-3 rounded-full bg-yellow-400/80" />
               <span className="w-3 h-3 rounded-full bg-green-400/80" />
             </div>
-            <motion.div layoutId={`project-image-${index}`} className="relative rounded-2xl overflow-hidden aspect-video bg-black/10">
+            <div className="relative rounded-2xl overflow-hidden aspect-video bg-black/10">
               <Image src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                <span className="px-6 py-3 rounded-full bg-black/60 text-white font-semibold backdrop-blur-md border border-white/10 flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="px-6 py-3 rounded-full bg-black/70 text-white font-semibold border border-white/10 flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-xl">
                   <ExternalLink size={16} /> Explore Case Study
                 </span>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       <div className={flip ? 'md:order-1' : ''}>
         <motion.div
@@ -344,14 +336,36 @@ function ProjectCard({ project, index, onOpen }) {
   );
 }
 
+
 export default function Projects() {
   const [activeProject, setActiveProject] = useState(null);
+  const [hoveredProjectImage, setHoveredProjectImage] = useState(null);
+
+  const handleHoverStart = useCallback((img) => setHoveredProjectImage(img), []);
+  const handleHoverEnd = useCallback(() => setHoveredProjectImage(null), []);
 
   return (
-    <section id="projects" className="relative py-20 md:py-32 px-6">
-      <FloatingElements count={6} />
+    <section id="projects" className="relative py-20 md:py-32 px-6 overflow-hidden">
+      
+      {/* Immersive Hover Background — CSS transition, GPU composited */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: hoveredProjectImage ? `url(${hoveredProjectImage})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(80px) saturate(180%)',
+          opacity: hoveredProjectImage ? 0.25 : 0,
+          transition: 'opacity 0.6s ease',
+          willChange: 'opacity',
+          transform: 'scale(1.1)',
+        }}
+      />
+
+      <FloatingElements count={3} />
+      
       <motion.div
-        className="text-center mb-24"
+        className="text-center mb-24 relative z-10"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -361,18 +375,32 @@ export default function Projects() {
           Case Studies
         </span>
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-          The Perspective <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">Gallery</span>
+          The Perspective{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-foreground/50">Gallery</span>
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
           Engineering scalable systems with depth, dimension, and performance in mind.
         </p>
       </motion.div>
 
-      <div className="max-w-5xl mx-auto space-y-32">
+      <div className="max-w-5xl mx-auto space-y-32 relative z-10">
         {projects.map((p, i) => (
-          <SectionReveal key={i} delay={i * 0.1}>
-            <ProjectCard project={p} index={i} onOpen={() => setActiveProject({ ...p, index: i })} />
-          </SectionReveal>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5, delay: i * 0.05 }}
+          >
+            <ProjectCard
+              project={p} 
+              index={i} 
+              onOpen={() => setActiveProject({ ...p, index: i })} 
+              isAnotherHovered={hoveredProjectImage !== null && hoveredProjectImage !== p.image}
+              onHoverStart={handleHoverStart}
+              onHoverEnd={handleHoverEnd}
+            />
+          </motion.div>
         ))}
       </div>
 

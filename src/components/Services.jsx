@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'framer-motion';
 import { Code2, Server, Database, Layers, Layout, Cpu, Workflow } from 'lucide-react';
 import FloatingElements from '@/components/FloatingElements';
 
-const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge }) => {
+const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, tags, delay, isLarge }) {
   const ref = useRef(null);
   
   const x = useMotionValue(0);
@@ -18,7 +18,7 @@ const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge })
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
@@ -30,14 +30,14 @@ const SpotlightCard = ({ title, description, icon: Icon, tags, delay, isLarge })
     y.set(currentY / height - 0.5);
     mouseX.set(currentX);
     mouseY.set(currentY);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     x.set(0);
     y.set(0);
     mouseX.set(-1000);
     mouseY.set(-1000);
-  };
+  }, []);
 
   return (
     <motion.div
@@ -158,7 +158,7 @@ export default function Services() {
       
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[500px] bg-[var(--accent)]/10 blur-[150px] rounded-[100%] pointer-events-none" />
       
-      <FloatingElements count={8} />
+      <FloatingElements count={4} />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-8 mb-12 md:mb-20">
