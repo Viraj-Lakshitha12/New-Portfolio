@@ -269,7 +269,7 @@ export default function Experience() {
       </motion.div>
 
       {/* Timeline layout*/}
-      <div className="max-w-3xl mx-auto relative">
+      <div className="max-w-full md:max-w-3xl mx-auto relative">
 
         {/* Scroll-driven Neon Timeline Line (Desktop only) */}
         <div ref={lineRef} className="absolute left-[10px] top-[32px] bottom-[32px] w-[2px] bg-black/5 dark:bg-white/5 rounded-full overflow-hidden hidden md:block">
