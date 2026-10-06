@@ -19,6 +19,7 @@ import ScrollProgress from '@/components/ui/ScrollProgress';
 import ThemeCustomizer from '@/components/ThemeCustomizer';
 import CommandPalette from '@/components/CommandPalette';
 import ContextMenu from '@/components/ui/ContextMenu';
+import InfiniteMarquee from '@/components/ui/InfiniteMarquee';
 
 // Lazy load heavy components
 const MeshBackground = lazy(() => import('@/components/MeshBackground'));
@@ -96,6 +97,7 @@ export default function Home() {
           <Terminal />
         </Suspense>
         <Experience />
+        <InfiniteMarquee text="AVAILABLE FOR FREELANCE • LET'S TALK" speed={1.5} />
         <Projects />
         <Education />
         <Suspense fallback={null}>
