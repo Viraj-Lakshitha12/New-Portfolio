@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowUpRight, CheckCircle2, Clock3, Mail, MapPin, Phone, Send, X } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import toast from 'react-hot-toast';
@@ -9,6 +9,25 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 3D Tilt Effect State
+  const ref = useRef(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  // Using very gentle tilt for a large card
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [3, -3]), { stiffness: 150, damping: 20 });
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-3, 3]), { stiffness: 150, damping: 20 });
+
+  const handleMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width - 0.5);
+    my.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+  const handleLeave = () => {
+    mx.set(0);
+    my.set(0);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -85,15 +104,20 @@ export default function Contact() {
         </p>
       </motion.div>
 
-      <motion.div
-        className="contact-shell max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/45 dark:bg-neutral-900/45 backdrop-blur-2xl"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-      >
-        <div className="contact-intro p-8 md:p-10 flex flex-col justify-between gap-10">
-          <div>
+      <div style={{ perspective: 1500 }}>
+        <motion.div
+          ref={ref}
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
+          style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }}
+          className="contact-shell max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/45 dark:bg-neutral-900/45 backdrop-blur-2xl shadow-2xl transition-shadow hover:shadow-[0_0_60px_var(--glow)]"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
+          <div className="contact-intro p-8 md:p-10 flex flex-col justify-between gap-10" style={{ transform: 'translateZ(20px)' }}>
+            <div>
             <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider" style={{ color: 'var(--accent)' }}>
               <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
               Available for selected projects
@@ -145,6 +169,7 @@ export default function Contact() {
           </a>
         </div>
       </motion.div>
+      </div>
 
       {showForm && (
         <div className="contact-modal-backdrop" role="presentation" onMouseDown={() => setShowForm(false)}>

@@ -89,7 +89,7 @@ function RoleCard({ r, index: idx }) {
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative pl-10 md:pl-16 mb-10 last:mb-0"
+      className="relative md:pl-16 mb-10 last:mb-0"
     >
 
       <div className="absolute left-[2px] md:left-[11px] top-[32px] md:top-[38px] z-10 hidden md:flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
