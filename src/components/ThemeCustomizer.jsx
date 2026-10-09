@@ -5,11 +5,11 @@ import { useTheme } from '@/lib/theme-context';
 // We will create useSoundContext later, for now we will just use a stub
 
 const colors = [
-  { name: 'Blue', accent: '#64D2FF', glow: 'rgba(100, 210, 255, 0.4)' },
-  { name: 'Emerald', accent: '#34d399', glow: 'rgba(52, 211, 153, 0.4)' },
-  { name: 'Violet', accent: '#a78bfa', glow: 'rgba(167, 139, 250, 0.4)' },
-  { name: 'Rose', accent: '#fb7185', glow: 'rgba(251, 113, 133, 0.4)' },
-  { name: 'Amber', accent: '#fbbf24', glow: 'rgba(251, 191, 36, 0.4)' },
+  { name: 'Blue', darkAccent: '#64D2FF', lightAccent: '#0284c7', darkGlow: 'rgba(100, 210, 255, 0.4)', lightGlow: 'rgba(2, 132, 199, 0.4)' },
+  { name: 'Emerald', darkAccent: '#34d399', lightAccent: '#059669', darkGlow: 'rgba(52, 211, 153, 0.4)', lightGlow: 'rgba(5, 150, 105, 0.4)' },
+  { name: 'Violet', darkAccent: '#a78bfa', lightAccent: '#7c3aed', darkGlow: 'rgba(167, 139, 250, 0.4)', lightGlow: 'rgba(124, 58, 237, 0.4)' },
+  { name: 'Rose', darkAccent: '#fb7185', lightAccent: '#e11d48', darkGlow: 'rgba(251, 113, 133, 0.4)', lightGlow: 'rgba(225, 29, 72, 0.4)' },
+  { name: 'Amber', darkAccent: '#fbbf24', lightAccent: '#d97706', darkGlow: 'rgba(251, 191, 36, 0.4)', lightGlow: 'rgba(217, 119, 6, 0.4)' },
 ];
 
 export default function ThemeCustomizer() {
@@ -34,6 +34,8 @@ export default function ThemeCustomizer() {
       if (colorObj) {
         applyColor(colorObj);
       }
+    } else {
+      applyColor(colors[0]);
     }
     
     if (savedSound !== null) {
@@ -43,10 +45,27 @@ export default function ThemeCustomizer() {
 
   const applyColor = (colorObj) => {
     setActiveColor(colorObj.name);
-    document.documentElement.style.setProperty('--accent', colorObj.accent);
-    document.documentElement.style.setProperty('--glow', colorObj.glow);
+    
+    // Set variables
+    document.documentElement.style.setProperty('--accent-dark', colorObj.darkAccent);
+    document.documentElement.style.setProperty('--glow-dark', colorObj.darkGlow);
+    document.documentElement.style.setProperty('--accent-light', colorObj.lightAccent);
+    document.documentElement.style.setProperty('--glow-light', colorObj.lightGlow);
+    
+    // Apply current theme color explicitly
+    const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    document.documentElement.style.setProperty('--accent', currentTheme === 'dark' ? colorObj.darkAccent : colorObj.lightAccent);
+    document.documentElement.style.setProperty('--glow', currentTheme === 'dark' ? colorObj.darkGlow : colorObj.lightGlow);
+    
     localStorage.setItem('portfolio-color', colorObj.name);
   };
+
+  // Watch for theme changes and update the accent color accordingly
+  useEffect(() => {
+    const colorObj = colors.find(c => c.name === activeColor) || colors[0];
+    document.documentElement.style.setProperty('--accent', theme === 'dark' ? colorObj.darkAccent : colorObj.lightAccent);
+    document.documentElement.style.setProperty('--glow', theme === 'dark' ? colorObj.darkGlow : colorObj.lightGlow);
+  }, [theme, activeColor]);
 
   const toggleSound = () => {
     const newState = !soundEnabled;
@@ -101,7 +120,7 @@ export default function ThemeCustomizer() {
                             ? 'scale-125 shadow-[0_0_10px_var(--glow)]' 
                             : 'hover:scale-110 opacity-70 hover:opacity-100'
                         }`}
-                        style={{ backgroundColor: c.accent }}
+                        style={{ backgroundColor: theme === 'dark' ? c.darkAccent : c.lightAccent }}
                         title={c.name}
                       >
                         {activeColor === c.name && (
