@@ -110,7 +110,7 @@ export default function Contact() {
           onMouseMove={handleMove}
           onMouseLeave={handleLeave}
           style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }}
-          className="contact-shell max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/45 dark:bg-neutral-900/45 backdrop-blur-2xl shadow-2xl transition-shadow hover:shadow-[0_0_60px_var(--glow)]"
+          className="contact-shell max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/95 dark:bg-neutral-900/45 backdrop-blur-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-2xl transition-shadow hover:shadow-[0_0_60px_var(--glow)]"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

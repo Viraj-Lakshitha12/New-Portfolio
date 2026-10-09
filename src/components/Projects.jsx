@@ -137,7 +137,7 @@ function ProjectModal({ project, onClose }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full h-[85vh] md:h-[90vh] max-w-5xl bg-background rounded-3xl overflow-hidden shadow-2xl relative flex flex-col pointer-events-auto border border-white/10"
+          className="w-full h-[85vh] md:h-[90vh] max-w-5xl bg-background rounded-3xl overflow-hidden shadow-2xl relative flex flex-col pointer-events-auto border border-black/10 dark:border-white/10"
         >
           {/* Close button */}
           <button
@@ -273,7 +273,7 @@ function ProjectCard({ project, index, onOpen, isAnotherHovered, onHoverStart, o
           onClick={() => { uiAudio.playClick(); onOpen(); }}
         >
           <div
-            className="glass rounded-3xl p-3 shadow-2xl transition-shadow duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/40 dark:bg-zinc-950/40"
+            className="glass rounded-3xl p-3 shadow-2xl transition-shadow duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/95 dark:bg-zinc-950/40"
           >
             <div className="flex gap-1.5 mb-3 px-3 pt-1">
               <span className="w-3 h-3 rounded-full bg-red-400/80" />

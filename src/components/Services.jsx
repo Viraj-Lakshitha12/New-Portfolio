@@ -49,7 +49,7 @@ const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, t
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={`group relative rounded-[2rem] p-[1px] cursor-pointer shadow-2xl shadow-black/10 dark:shadow-none ${isLarge ? 'md:col-span-2' : ''}`}
+      className={`group relative rounded-[2rem] p-[1px] cursor-pointer shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] dark:shadow-none ${isLarge ? 'md:col-span-2' : ''}`}
     >
       {/* Animated Border Gradient Spotlight */}
       <motion.div
@@ -65,10 +65,10 @@ const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, t
         }}
       />
       {/* Default Subtle Border */}
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-b from-black/10 to-black/5 dark:from-white/15 dark:to-white/5 group-hover:opacity-0 transition-opacity duration-500" />
+      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-b from-black/20 to-black/5 dark:from-white/15 dark:to-white/5 group-hover:opacity-0 transition-opacity duration-500" />
 
       {/* Card Content Container */}
-      <div className="relative h-full min-h-[280px] md:min-h-[380px] rounded-[31px] bg-white/60 dark:bg-zinc-950/60 backdrop-blur-2xl p-6 md:p-10 flex flex-col justify-between overflow-hidden">
+      <div className="relative h-full min-h-[280px] md:min-h-[380px] rounded-[31px] bg-white/95 dark:bg-zinc-950/60 backdrop-blur-2xl p-6 md:p-10 flex flex-col justify-between overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-none">
         
         {/* Inner Glow */}
         <motion.div

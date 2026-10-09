@@ -96,7 +96,7 @@ function EduCard({ item, index }) {
 
       {/* Card Body */}
       <div
-        className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/55 dark:bg-zinc-900/55 backdrop-blur-xl transition-all duration-500"
+        className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/95 dark:bg-zinc-900/55 backdrop-blur-xl transition-all duration-500 shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-none"
         style={{
           boxShadow: hovered ? `0 20px 40px ${item.glow}, 0 0 0 1px ${item.dotColor}33` : '0 4px 20px rgba(0,0,0,0.04)',
         }}
