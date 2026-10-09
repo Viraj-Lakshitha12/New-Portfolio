@@ -20,6 +20,7 @@ import ThemeCustomizer from '@/components/ThemeCustomizer';
 import CommandPalette from '@/components/CommandPalette';
 import ContextMenu from '@/components/ui/ContextMenu';
 import InfiniteMarquee from '@/components/ui/InfiniteMarquee';
+import KineticMarquee from '@/components/ui/KineticMarquee';
 
 // Lazy load heavy components
 const MeshBackground = lazy(() => import('@/components/MeshBackground'));
@@ -88,6 +89,9 @@ export default function Home() {
       </Suspense>
       <Navbar />
       <main className="relative">
+        <div className="absolute top-[20vh] w-full z-0 overflow-hidden" style={{ opacity: 0.5 }}>
+           <KineticMarquee baseVelocity={-5}>VIRAJ LAKSHITHA FULL STACK</KineticMarquee>
+        </div>
         <Hero />
         <About />
         <Services />

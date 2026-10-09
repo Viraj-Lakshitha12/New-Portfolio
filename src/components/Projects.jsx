@@ -387,10 +387,11 @@ export default function Projects() {
         {projects.map((p, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, delay: i * 0.05 }}
+            initial={{ opacity: 0, y: 100, scale: 0.85, rotateX: 20, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.9, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            style={{ perspective: 1200 }}
           >
             <ProjectCard
               project={p} 

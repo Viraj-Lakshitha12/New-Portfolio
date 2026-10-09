@@ -4,6 +4,7 @@ import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 import Magnetic from '@/components/ui/Magnetic';
 import AnimatedGradientText from '@/components/AnimatedGradientText';
+import ParticleText from '@/components/ui/ParticleText';
 import FloatingElements from '@/components/FloatingElements';
 import { TypeAnimation } from 'react-type-animation';
 import { useI18n } from '@/lib/i18n-context';
@@ -129,13 +130,23 @@ export default function Hero() {
       </motion.span>
 
       <motion.h1
-        className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] mb-4"
+        className="tracking-tight leading-[1.05] mb-4 w-full flex justify-center"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.5, duration: 0.7 }}
         style={{ x: headingX, y: headingY }}
       >
-        <AnimatedGradientText>Viraj Lakshitha</AnimatedGradientText>
+        <div className="relative group cursor-crosshair py-4">
+          {/* Particle Text Layer (Visible on hover) */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 flex items-center justify-center pointer-events-none">
+            <ParticleText text="Viraj Lakshitha" />
+          </div>
+          
+          {/* Solid Gradient Text Layer (Hidden on hover) */}
+          <AnimatedGradientText className="text-5xl md:text-7xl font-bold transition-opacity duration-300 group-hover:opacity-0 relative z-20">
+            Viraj Lakshitha
+          </AnimatedGradientText>
+        </div>
       </motion.h1>
 
       <motion.p
