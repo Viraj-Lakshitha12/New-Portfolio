@@ -804,6 +804,13 @@
     color: transparent;
     animation: gradient-shift 8s ease infinite;
   }
+  /* Disable gradient animation on mobile for better performance */
+  @media (max-width: 768px) {
+    .gradient-text-anim {
+      animation: none;
+      background-size: 100% auto;
+    }
+  }
   /* Light mode: deeper gradient colors for readability on white */
   :root:not(.dark) .gradient-text {
     background: linear-gradient(135deg, #0369a1, #7c3aed, #db2777);
@@ -859,8 +866,20 @@
   .float-anim {
     animation: float 6s ease-in-out infinite;
   }
+  /* Disable float animation on mobile for better performance */
+  @media (max-width: 768px) {
+    .float-anim {
+      animation: none;
+    }
+  }
   .glow-pulse {
     animation: glow-pulse 4s ease-in-out infinite;
+  }
+  /* Disable glow pulse on mobile for better performance */
+  @media (max-width: 768px) {
+    .glow-pulse {
+      animation: none;
+    }
   }
   .spin-bracket {
     animation: spin 6s linear infinite;

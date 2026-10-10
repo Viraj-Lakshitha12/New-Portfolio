@@ -1,180 +1,187 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { useTheme } from '@/lib/theme-context';
 
-export default function ParticleText({ text, className = "" }) {
+export default function ParticleText({ text, className = '' }) {
   const canvasRef = useRef(null);
   const { theme } = useTheme();
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
+  const stateRef = useRef({
+    particles: [],
+    mouse: { x: null, y: null, radius: 90 },
+    animationId: null,
+  });
+
+  const buildParticles = useCallback((canvas) => {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    let particlesArray = [];
-    let animationFrameId;
-    
-    // Scale for retina displays
     const dpr = window.devicePixelRatio || 1;
-    
-    // Adjust canvas size based on window width
-    const setCanvasSize = () => {
-      const container = canvas.parentElement;
-      canvas.width = container.clientWidth * dpr;
-      // Height should be enough for the text
-      canvas.height = (window.innerWidth < 768 ? 80 : 120) * dpr;
-      canvas.style.width = `${container.clientWidth}px`;
-      canvas.style.height = `${canvas.height / dpr}px`;
-      ctx.scale(dpr, dpr);
-    };
+    const W = canvas.width / dpr;
+    const H = canvas.height / dpr;
 
-    setCanvasSize();
+    const isDark = document.documentElement.classList.contains('dark');
+    const baseColor = isDark ? '255,255,255' : '15,15,15';
+    const accentColor = isDark ? '#64d2ff' : '#0369a1';
+    const accentColor2 = isDark ? '#a855f7' : '#7c3aed';
 
-    let mouse = {
-      x: null,
-      y: null,
-      radius: 80
-    };
+    const fontSize = window.innerWidth < 768 ? 36 : 66;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `900 ${fontSize}px "Inter","Segoe UI",sans-serif`;
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, W / 2, H / 2);
 
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-    };
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const handleMouseLeave = () => {
-      mouse.x = null;
-      mouse.y = null;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('resize', () => {
-      setCanvasSize();
-      init();
-    });
-
-    // Base color for particles depending on theme
-    const baseColor = theme === 'dark' ? '255, 255, 255' : '10, 10, 10';
-    // Accent color (approximate the gradient)
-    const accentColor = theme === 'dark' ? '#64d2ff' : '#0369a1';
+    const step = window.innerWidth < 768 ? 4 : 5;
+    const particles = [];
 
     class Particle {
       constructor(x, y, color) {
-        this.x = x + (Math.random() * 100 - 50); // Start scattered
-        this.y = y + (Math.random() * 100 - 50);
-        this.destX = x;
-        this.destY = y;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.color = color;
         this.baseX = x;
         this.baseY = y;
-        this.density = (Math.random() * 30) + 1;
-        this.friction = 0.85;
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 1.5 + 0.6;
+        this.color = color;
+        this.density = Math.random() * 20 + 8;
         this.vx = 0;
         this.vy = 0;
       }
 
-      draw() {
+      draw(ctx) {
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.closePath();
         ctx.fill();
       }
 
-      update() {
-        // Mouse interaction
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (mouse.x != null && distance < mouse.radius) {
-          let forceDirectionX = dx / distance;
-          let forceDirectionY = dy / distance;
-          let maxDistance = mouse.radius;
-          let force = (maxDistance - distance) / maxDistance;
-          let directionX = forceDirectionX * force * this.density;
-          let directionY = forceDirectionY * force * this.density;
-          
-          this.vx -= directionX;
-          this.vy -= directionY;
-        } else {
-          // Return to base
-          let dx = this.baseX - this.x;
-          let dy = this.baseY - this.y;
-          this.vx += dx * 0.05; // Spring strength
-          this.vy += dy * 0.05;
+      update(mouse) {
+        if (mouse.x != null) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouse.radius) {
+            const force = (mouse.radius - dist) / mouse.radius;
+            this.vx -= (dx / dist) * force * this.density * 0.7;
+            this.vy -= (dy / dist) * force * this.density * 0.7;
+          }
         }
-
-        this.vx *= this.friction;
-        this.vy *= this.friction;
-        
+        this.vx += (this.baseX - this.x) * 0.08;
+        this.vy += (this.baseY - this.y) * 0.08;
+        // Friction
+        this.vx *= 0.80;
+        this.vy *= 0.80;
         this.x += this.vx;
         this.y += this.vy;
       }
     }
 
-    function init() {
-      particlesArray = [];
-      
-      const width = canvas.width / dpr;
-      const height = canvas.height / dpr;
-      
-      ctx.clearRect(0, 0, width, height);
-      
-      // Draw text
-      const fontSize = window.innerWidth < 768 ? 40 : 70;
-      ctx.font = `900 ${fontSize}px "Inter", "Segoe UI", sans-serif`;
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, width / 2, height / 2);
-      
-      const textCoordinates = ctx.getImageData(0, 0, width * dpr, height * dpr);
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // clear the canvas after reading
-      
-      // Sampling density
-      const step = window.innerWidth < 768 ? 4 : 5;
-      
-      for (let y = 0, y2 = textCoordinates.height; y < y2; y += step) {
-        for (let x = 0, x2 = textCoordinates.width; x < x2; x += step) {
-          // If pixel is not transparent
-          if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128) {
-            let positionX = x / dpr;
-            let positionY = y / dpr;
-            
-            // Randomly assign some particles the accent color for a nice mix
-            const pColor = Math.random() > 0.85 ? accentColor : `rgba(${baseColor}, ${Math.random() * 0.5 + 0.5})`;
-            
-            particlesArray.push(new Particle(positionX, positionY, pColor));
-          }
+    for (let py = 0; py < imageData.height; py += step) {
+      for (let px = 0; px < imageData.width; px += step) {
+        if (imageData.data[(py * 4 * imageData.width) + (px * 4) + 3] > 128) {
+          const r = Math.random();
+          const color = r > 0.92
+            ? accentColor2
+            : r > 0.82
+              ? accentColor
+              : `rgba(${baseColor},${(Math.random() * 0.45 + 0.55).toFixed(2)})`;
+          particles.push(new Particle(px / dpr, py / dpr, color));
         }
       }
-      setIsLoaded(true);
     }
 
-    init();
+    stateRef.current.particles = particles;
+  }, [text]);
 
-    function animate() {
+  const startLoop = useCallback((canvas) => {
+    if (stateRef.current.animationId) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    const loop = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].draw();
-        particlesArray[i].update();
+      const { particles, mouse } = stateRef.current;
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update(mouse);
+        particles[i].draw(ctx);
       }
-      animationFrameId = requestAnimationFrame(animate);
-    }
+      stateRef.current.animationId = requestAnimationFrame(loop);
+    };
+    stateRef.current.animationId = requestAnimationFrame(loop);
+  }, []);
 
-    animate();
+  // Size canvas
+  const sizeCanvas = useCallback((canvas) => {
+    const dpr = window.devicePixelRatio || 1;
+    const container = canvas.parentElement;
+    if (!container) return;
+    canvas.width = container.clientWidth * dpr;
+    canvas.height = (window.innerWidth < 768 ? 80 : 120) * dpr;
+    canvas.style.width = `${container.clientWidth}px`;
+    canvas.style.height = `${canvas.height / dpr}px`;
+  }, []);
+
+  // Mount
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    sizeCanvas(canvas);
+    buildParticles(canvas);
+    startLoop(canvas);
+
+    // Throttled mouse move
+    let lastMove = 0;
+    const onMove = (e) => {
+      const now = Date.now();
+      if (now - lastMove < 16) return;
+      lastMove = now;
+      const rect = canvas.getBoundingClientRect();
+      stateRef.current.mouse.x = e.clientX - rect.left;
+      stateRef.current.mouse.y = e.clientY - rect.top;
+    };
+    const onLeave = () => {
+      stateRef.current.mouse.x = null;
+      stateRef.current.mouse.y = null;
+    };
+
+    window.addEventListener('mousemove', onMove);
+    canvas.addEventListener('mouseleave', onLeave);
+
+    // Debounced resize
+    let resizeTimer;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        cancelAnimationFrame(stateRef.current.animationId);
+        stateRef.current.animationId = null;
+        sizeCanvas(canvas);
+        buildParticles(canvas);
+        startLoop(canvas);
+      }, 200);
+    };
+    window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('resize', setCanvasSize);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('mousemove', onMove);
+      canvas.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('resize', onResize);
+      clearTimeout(resizeTimer);
+      cancelAnimationFrame(stateRef.current.animationId);
+      stateRef.current.animationId = null;
     };
-  }, [text, theme]);
+  }, [sizeCanvas, buildParticles, startLoop]);
+
+  // Rebuild on theme change
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || stateRef.current.particles.length === 0) return;
+    buildParticles(canvas);
+  }, [theme, buildParticles]);
 
   return (
-    <div className={`relative flex items-center justify-center w-full ${className}`} style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease' }}>
+    <div className={`relative flex items-center justify-center w-full ${className}`}>
       <canvas ref={canvasRef} className="block w-full max-w-full touch-none" />
     </div>
   );

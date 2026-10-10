@@ -262,18 +262,18 @@ function ProjectCard({ project, index, onOpen, isAnotherHovered, onHoverStart, o
   }, [onHoverEnd]);
 
   return (
-    <div 
-      className={`grid md:grid-cols-2 gap-10 md:gap-14 items-center group transition-[opacity,transform] duration-500 ${isAnotherHovered ? 'opacity-25 scale-[0.98]' : 'opacity-100 scale-100'}`}
+    <div
+      className={`grid md:grid-cols-2 gap-10 md:gap-14 items-center group transition-[opacity,transform] duration-300 ${isAnotherHovered ? 'opacity-25 scale-[0.98]' : 'opacity-100 scale-100'}`}
       onMouseEnter={handleHoverStart}
       onMouseLeave={handleHoverEnd}
     >
       <div className={flip ? 'md:order-2' : ''}>
         <div
-          className="float-anim cursor-pointer"
+          className="cursor-pointer"
           onClick={() => { uiAudio.playClick(); onOpen(); }}
         >
           <div
-            className="glass rounded-3xl p-3 shadow-2xl transition-shadow duration-500 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/95 dark:bg-zinc-950/40"
+            className="glass rounded-3xl p-3 shadow-2xl transition-shadow duration-300 group-hover:shadow-[0_0_40px_var(--glow)] group-hover:border-[var(--accent)]/30 bg-white/95 dark:bg-zinc-950/40"
           >
             <div className="flex gap-1.5 mb-3 px-3 pt-1">
               <span className="w-3 h-3 rounded-full bg-red-400/80" />
@@ -281,7 +281,7 @@ function ProjectCard({ project, index, onOpen, isAnotherHovered, onHoverStart, o
               <span className="w-3 h-3 rounded-full bg-green-400/80" />
             </div>
             <div className="relative rounded-2xl overflow-hidden aspect-video bg-black/10">
-              <Image src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span className="px-6 py-3 rounded-full bg-black/70 text-white font-semibold border border-white/10 flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-xl">
                   <ExternalLink size={16} /> Explore Case Study
@@ -341,7 +341,11 @@ export default function Projects() {
   const [activeProject, setActiveProject] = useState(null);
   const [hoveredProjectImage, setHoveredProjectImage] = useState(null);
 
-  const handleHoverStart = useCallback((img) => setHoveredProjectImage(img), []);
+  const handleHoverStart = useCallback((img) => {
+    // Disable hover background on mobile for better performance
+    if (window.innerWidth < 768) return;
+    setHoveredProjectImage(img);
+  }, []);
   const handleHoverEnd = useCallback(() => setHoveredProjectImage(null), []);
 
   return (
@@ -354,11 +358,11 @@ export default function Projects() {
           backgroundImage: hoveredProjectImage ? `url(${hoveredProjectImage})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          filter: 'blur(80px) saturate(180%)',
-          opacity: hoveredProjectImage ? 0.25 : 0,
-          transition: 'opacity 0.6s ease',
+          filter: 'blur(60px) saturate(150%)', // Reduced blur for better performance
+          opacity: hoveredProjectImage ? 0.2 : 0,
+          transition: 'opacity 0.4s ease', // Faster transition
           willChange: 'opacity',
-          transform: 'scale(1.1)',
+          transform: 'scale(1.05)', // Reduced scale
         }}
       />
 

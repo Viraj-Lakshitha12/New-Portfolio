@@ -75,17 +75,22 @@ export default function WireframeOrb() {
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     let frameId;
+    let paused = false;
     const animate = () => {
+      if (!paused) {
+        orb1.rotation.x += 0.003;
+        orb1.rotation.y += 0.005;
+        orb2.rotation.x -= 0.004;
+        orb2.rotation.y -= 0.003;
+        orb3.rotation.x += 0.006;
+        orb3.rotation.y -= 0.007;
+        renderer.render(scene, camera);
+      }
       frameId = requestAnimationFrame(animate);
-      orb1.rotation.x += 0.003;
-      orb1.rotation.y += 0.005;
-      orb2.rotation.x -= 0.004;
-      orb2.rotation.y -= 0.003;
-      orb3.rotation.x += 0.006;
-      orb3.rotation.y -= 0.007;
-      renderer.render(scene, camera);
     };
     animate();
+    const handleVisibility = () => { paused = document.hidden; };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     const handleResize = () => {
       width = mount.clientWidth || 300;
@@ -99,6 +104,7 @@ export default function WireframeOrb() {
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibility);
       themeObserver.disconnect();
       if (renderer.domElement.parentNode === mount) {
         mount.removeChild(renderer.domElement);

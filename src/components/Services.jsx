@@ -9,16 +9,19 @@ const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, t
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 50 });
-  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 50 });
+  // Reduced stiffness for better performance
+  const mouseXSpring = useSpring(x, { stiffness: 200, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 200, damping: 30 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
 
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
 
   const handleMouseMove = useCallback((e) => {
+    // Disable 3D effects on mobile for better performance
+    if (window.innerWidth < 768) return;
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;

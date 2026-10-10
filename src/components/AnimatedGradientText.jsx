@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
 
 /**
@@ -17,22 +16,15 @@ export default function AnimatedGradientText({
   const activeColors = theme === 'dark' ? colors : lightColors;
 
   return (
-    <motion.span
-      className={`text-transparent bg-clip-text ${className}`}
-      animate={{
-        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-      }}
-      transition={{
-        duration: speed,
-        repeat: Infinity,
-        ease: 'linear',
-      }}
+    <span
+      className={`gradient-text-anim ${className}`}
       style={{
         backgroundImage: `linear-gradient(90deg, ${activeColors.join(', ')})`,
         backgroundSize: '200% auto',
+        animationDuration: `${speed}s`,
       }}
     >
       {children}
-    </motion.span>
+    </span>
   );
 }
