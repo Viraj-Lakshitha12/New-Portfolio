@@ -16,14 +16,14 @@ export default function Hero() {
   const ref = useRef(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 18 });
-  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 18 });
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 100, damping: 25 });
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 100, damping: 25 });
 
-  // Global mouse parallax for layered depth
+  // Global mouse parallax for layered depth - reduced stiffness for better performance
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+  const springX = useSpring(mouseX, { stiffness: 40, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 40, damping: 30 });
 
   // Different speed layers
   const headingX = useTransform(springX, [-1, 1], [-12, 12]);
@@ -34,6 +34,9 @@ export default function Hero() {
   const orbY = useTransform(springY, [-1, 1], [-15, 15]);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
     let ticking = false;
     const handleMouseMove = (e) => {
       if (!ticking) {
@@ -51,6 +54,7 @@ export default function Hero() {
   }, []);
 
   const handleMove = useCallback((e) => {
+    if (window.innerWidth < 768) return;
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     mx.set((e.clientX - rect.left) / rect.width - 0.5);
@@ -69,7 +73,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <FloatingElements count={3} />
-      
+
       {/* Parallax background orb */}
       <motion.div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
@@ -130,23 +134,13 @@ export default function Hero() {
       </motion.span>
 
       <motion.h1
-        className="tracking-tight leading-[1.05] mb-4 w-full flex justify-center"
+        className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] mb-4"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.5, duration: 0.7 }}
         style={{ x: headingX, y: headingY }}
       >
-        <div className="relative group cursor-crosshair py-4">
-          {/* Particle Text Layer (Visible on hover) */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 flex items-center justify-center pointer-events-none">
-            <ParticleText text="Viraj Lakshitha" />
-          </div>
-          
-          {/* Solid Gradient Text Layer (Hidden on hover) */}
-          <AnimatedGradientText className="text-5xl md:text-7xl font-bold transition-opacity duration-300 group-hover:opacity-0 relative z-20">
-            Viraj Lakshitha
-          </AnimatedGradientText>
-        </div>
+        <AnimatedGradientText>Viraj Lakshitha</AnimatedGradientText>
       </motion.h1>
 
       <motion.p

@@ -29,6 +29,21 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Handle initial scroll based on URL hash
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      // Wait for sections to be rendered
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          setActiveSection(hash);
+        }
+      }, 100);
+    }
+  }, []);
+
   useEffect(() => {
     const closeOnEscape = (event) => {
       if (event.key === 'Escape') setMobileOpen(false);
@@ -51,7 +66,9 @@ export default function Navbar() {
       .filter(Boolean);
 
     const updateActiveSection = () => {
+      // Don't update active section during click scrolling
       if (isClickScrolling.current) return;
+      
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
         const lastSection = sections[sections.length - 1];
         if (lastSection) {
@@ -102,11 +119,12 @@ export default function Navbar() {
                   href={l.href}
                   onClick={(e) => {
                     e.preventDefault();
-                    setActiveSection(l.href.slice(1));
+                    const sectionId = l.href.slice(1);
+                    setActiveSection(sectionId);
                     isClickScrolling.current = true;
-                    document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+                    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
                     window.history.pushState(null, '', l.href);
-                    setTimeout(() => { isClickScrolling.current = false; }, 1200);
+                    setTimeout(() => { isClickScrolling.current = false; }, 2000);
                   }}
                   className={`nav-link px-3 py-2 rounded-xl text-sm ${activeSection === l.href.slice(1) ? 'nav-link-active' : 'text-muted-foreground'}`}
                 >
@@ -192,12 +210,13 @@ export default function Navbar() {
                       href={link.href}
                       onClick={(e) => {
                         e.preventDefault();
-                        setActiveSection(link.href.slice(1));
+                        const sectionId = link.href.slice(1);
+                        setActiveSection(sectionId);
                         isClickScrolling.current = true;
-                        document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+                        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
                         window.history.pushState(null, '', link.href);
                         setMobileOpen(false);
-                        setTimeout(() => { isClickScrolling.current = false; }, 1200);
+                        setTimeout(() => { isClickScrolling.current = false; }, 2000);
                       }}
                       className={`mobile-nav-link ${activeSection === link.href.slice(1) ? 'mobile-nav-link-active' : ''}`}
                     >
