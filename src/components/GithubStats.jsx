@@ -82,7 +82,7 @@ export default function GithubStats() {
   };
 
   return (
-    <section ref={statsRef} className="relative py-20 md:py-32 px-6">
+    <section ref={statsRef} className="relative py-16 md:py-24 px-6">
       <style>{`
         .iso-bar {
           transform-style: preserve-3d;

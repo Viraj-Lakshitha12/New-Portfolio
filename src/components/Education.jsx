@@ -161,7 +161,7 @@ export default function Education() {
   const { scrollYProgress } = useScroll({ target: lineRef, offset: ['start 85%', 'end 25%'] });
 
   return (
-    <section id="education" className="relative py-20 md:py-32 px-6 overflow-hidden">
+    <section id="education" className="relative py-16 md:py-24 px-6 overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
       <motion.div

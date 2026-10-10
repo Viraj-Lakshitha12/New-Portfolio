@@ -349,7 +349,7 @@ export default function Projects() {
   const handleHoverEnd = useCallback(() => setHoveredProjectImage(null), []);
 
   return (
-    <section id="projects" className="relative py-20 md:py-32 px-6 overflow-hidden">
+    <section id="projects" className="relative py-16 md:py-24 px-6 overflow-hidden">
       
       {/* Immersive Hover Background — CSS transition, GPU composited */}
       <div

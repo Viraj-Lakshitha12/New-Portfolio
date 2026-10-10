@@ -152,7 +152,7 @@ export default function Guestbook() {
   };
 
   return (
-    <section id="guestbook" className="relative py-24 px-6 border-t border-black/5 dark:border-white/5">
+    <section id="guestbook" className="relative py-16 md:py-24 px-6 border-t border-black/5 dark:border-white/5">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
