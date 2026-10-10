@@ -1,36 +1,30 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { useTheme } from '@/lib/theme-context';
 
 /**
  * Animated Gradient Text Component
  * Creates a smooth animated gradient text effect
  */
-export default function AnimatedGradientText({ 
-  children, 
-  className = '', 
+export default function AnimatedGradientText({
+  children,
+  className = '',
   colors = ['#64d2ff', '#a855f7', '#ec4899'],
-  speed = 3 
+  lightColors = ['#0369a1', '#7c3aed', '#db2777'],
+  speed = 3
 }) {
+  const { theme } = useTheme();
+  const activeColors = theme === 'dark' ? colors : lightColors;
+
   return (
-    <motion.span
-      className={className}
-      animate={{
-        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-      }}
-      transition={{
-        duration: speed,
-        repeat: Infinity,
-        ease: 'linear',
-      }}
+    <span
+      className={`gradient-text-anim ${className}`}
       style={{
-        background: `linear-gradient(90deg, ${colors.join(', ')})`,
+        backgroundImage: `linear-gradient(90deg, ${activeColors.join(', ')})`,
         backgroundSize: '200% auto',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
+        animationDuration: `${speed}s`,
       }}
     >
       {children}
-    </motion.span>
+    </span>
   );
 }

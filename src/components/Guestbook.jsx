@@ -152,7 +152,7 @@ export default function Guestbook() {
   };
 
   return (
-    <section id="guestbook" className="relative py-24 px-6 border-t border-black/5 dark:border-white/5">
+    <section id="guestbook" className="relative py-16 md:py-24 px-6 border-t border-black/5 dark:border-white/5">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
@@ -181,7 +181,7 @@ export default function Guestbook() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div ref={formCardRef} className="relative rounded-3xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl shadow-xl shadow-black/5 dark:shadow-black/30">
+            <div ref={formCardRef} className="relative rounded-3xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/95 dark:bg-zinc-900/60 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-xl dark:shadow-black/30">
               {/* Top accent stripe */}
               <div className="h-1 bg-gradient-to-r from-[var(--accent)] via-emerald-400 to-[var(--accent)]" />
 
@@ -288,7 +288,7 @@ export default function Guestbook() {
                     exit={{ opacity: 0, scale: 0.95, height: 0 }}
                     transition={{ duration: 0.3, delay: i < 5 ? i * 0.05 : 0 }}
                     layout
-                    className="group relative rounded-2xl border border-black/5 dark:border-white/5 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm p-4 hover:border-[var(--accent)]/30 hover:bg-white/80 dark:hover:bg-zinc-900/80 transition-all duration-200"
+                    className="group relative rounded-2xl border border-black/5 dark:border-white/5 bg-white/95 dark:bg-zinc-900/50 backdrop-blur-sm p-4 hover:border-[var(--accent)]/30 hover:bg-white dark:hover:bg-zinc-900/80 transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-none"
                   >
                     <div className="flex items-start gap-3">
                       {/* Avatar */}

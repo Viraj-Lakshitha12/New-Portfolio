@@ -1,53 +1,49 @@
 import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
 
 /**
- * Floating Elements Component
- * Optimized with useMemo to prevent recalculations
+ * FloatingElements — Pure CSS animations, zero JS overhead.
  */
-export default function FloatingElements({ count = 5 }) {
+export default function FloatingElements({ count = 3 }) {
   const colors = ['#64d2ff', '#a855f7', '#ec4899', '#10b981', '#f59e0b'];
 
-  const elements = useMemo(() => {
-    return Array.from({ length: count }).map((_, index) => ({
-      id: index,
-      x: Math.random() * 80 + 10,
-      y: Math.random() * 80 + 10,
-      size: Math.random() * 20 + 10,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      delay: Math.random() * 2,
-      duration: Math.random() * 3 + 3,
-    }));
-  }, [count]);
+  const elements = useMemo(() =>
+    Array.from({ length: Math.min(count, 3) }).map((_, i) => ({
+      id: i,
+      x: 15 + i * 30 + Math.random() * 15,
+      y: 10 + i * 20 + Math.random() * 20,
+      size: 16 + Math.random() * 18,
+      color: colors[i % colors.length],
+      delay: i * 1.1,
+      duration: 5 + i * 1.5,
+    })),
+    [count]);
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
       {elements.map((el) => (
-        <motion.div
+        <div
           key={el.id}
-          className="absolute rounded-full blur-xl"
+          className="absolute rounded-full blur-2xl"
           style={{
             left: `${el.x}%`,
             top: `${el.y}%`,
-            width: `${el.size}px`,
-            height: `${el.size}px`,
+            width: el.size,
+            height: el.size,
             background: el.color,
-            willChange: 'transform, opacity',
-          }}
-          animate={{
-            y: [0, -20, 0],
-            x: [0, 10, 0],
-            scale: [1, 1.2, 1],
-            opacity: [0.15, 0.3, 0.15],
-          }}
-          transition={{
-            duration: el.duration,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: el.delay,
+            opacity: 0.18,
+            animation: `floatOrb ${el.duration}s ease-in-out ${el.delay}s infinite`,
+            willChange: 'transform',
           }}
         />
       ))}
+
+      <style>{`
+        @keyframes floatOrb {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33%       { transform: translate(8px, -14px) scale(1.15); }
+          66%       { transform: translate(-6px, 8px) scale(0.92); }
+        }
+      `}</style>
     </div>
   );
 }

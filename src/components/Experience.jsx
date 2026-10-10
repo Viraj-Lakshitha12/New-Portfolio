@@ -98,7 +98,7 @@ function RoleCard({ r, index: idx }) {
 
       {/* Card */}
       <div
-        className="relative rounded-2xl md:rounded-3xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/55 dark:bg-zinc-900/55 backdrop-blur-xl transition-all duration-500"
+        className="relative rounded-2xl md:rounded-3xl overflow-hidden border border-black/8 dark:border-white/8 bg-white/95 dark:bg-zinc-900/55 backdrop-blur-xl transition-all duration-500 shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-none"
         style={{
           boxShadow: hovered ? `0 24px 64px ${r.glowColor}, 0 0 0 1px ${r.dotColor}33` : '0 4px 24px rgba(0,0,0,0.06)',
         }}
@@ -245,7 +245,7 @@ export default function Experience() {
   const lineRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: lineRef, offset: ['start 85%', 'end 25%'] });
   return (
-    <section id="experience" className="relative py-20 md:py-32 px-6">
+    <section id="experience" className="relative py-16 md:py-24 px-6">
       {/* Subtle grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 

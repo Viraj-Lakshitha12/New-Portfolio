@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -77,6 +77,16 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  /* Theme Customizer Variable Mapping */
+  :root {
+    --accent: var(--accent-light, #0284c7) !important;
+    --glow: var(--glow-light, rgba(2, 132, 199, 0.4)) !important;
+  }
+  .dark {
+    --accent: var(--accent-dark, #64D2FF) !important;
+    --glow: var(--glow-dark, rgba(100, 210, 255, 0.4)) !important;
+  }
 }
 
 
@@ -98,9 +108,9 @@
     --mesh-2: #8EC5FC;
     --mesh-3: #FBC2EB;
     --mesh-4: #A6C1EE;
-    --glass-bg: rgba(255, 255, 255, 0.45);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
     --accent: #0071E3;
     --glow: rgba(0, 113, 227, 0.35);
     --font-heading: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
@@ -336,6 +346,23 @@
   }
   .tech-bento-card:hover::before {
     opacity: 1;
+  }
+  
+  /* Light mode overrides for Tech Bento Cards */
+  :root:not(.dark) .tech-bento-card {
+    background: var(--glass-bg);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+  :root:not(.dark) .tech-bento-card::before {
+    background: linear-gradient(120deg, transparent 15%, var(--accent), #818cf8, transparent 85%);
+  }
+  :root:not(.dark) .tech-bento-card::after {
+    opacity: 0.1;
+    background: radial-gradient(circle at 90% 0%, var(--accent), transparent 36%);
+  }
+  :root:not(.dark) .tech-bento-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 0 20px var(--glow);
   }
   .tech-brand-icon {
     flex: 0 0 auto;
@@ -707,11 +734,17 @@
     transform: translateX(130%);
   }
   .hero-cta-primary {
-    color: #04111a;
+    color: #ffffff;
     background: var(--accent);
     box-shadow: 0 8px 24px var(--glow);
   }
+  .dark .hero-cta-primary {
+    color: #04111a;
+  }
   .hero-cta-primary:hover {
+    color: #ffffff;
+  }
+  .dark .hero-cta-primary:hover {
     color: #04111a;
   }
   .hero-cta-secondary {
@@ -771,6 +804,30 @@
     color: transparent;
     animation: gradient-shift 8s ease infinite;
   }
+  /* Disable gradient animation on mobile for better performance */
+  @media (max-width: 768px) {
+    .gradient-text-anim {
+      animation: none;
+      background-size: 100% auto;
+    }
+  }
+  /* Light mode: deeper gradient colors for readability on white */
+  :root:not(.dark) .gradient-text {
+    background: linear-gradient(135deg, #0369a1, #7c3aed, #db2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  :root:not(.dark) .gradient-text-anim {
+    background: linear-gradient(120deg, #0369a1, #7c3aed, #db2777, #0369a1);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: gradient-shift 8s ease infinite;
+  }
 }
 
 @layer utilities {
@@ -780,7 +837,7 @@
     height: 45vw;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.55;
+    opacity: 0.03;
     will-change: transform;
   }
   .dark .mesh-blob {
@@ -809,8 +866,20 @@
   .float-anim {
     animation: float 6s ease-in-out infinite;
   }
+  /* Disable float animation on mobile for better performance */
+  @media (max-width: 768px) {
+    .float-anim {
+      animation: none;
+    }
+  }
   .glow-pulse {
     animation: glow-pulse 4s ease-in-out infinite;
+  }
+  /* Disable glow pulse on mobile for better performance */
+  @media (max-width: 768px) {
+    .glow-pulse {
+      animation: none;
+    }
   }
   .spin-bracket {
     animation: spin 6s linear infinite;

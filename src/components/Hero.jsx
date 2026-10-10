@@ -4,6 +4,7 @@ import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 import Magnetic from '@/components/ui/Magnetic';
 import AnimatedGradientText from '@/components/AnimatedGradientText';
+import ParticleText from '@/components/ui/ParticleText';
 import FloatingElements from '@/components/FloatingElements';
 import { TypeAnimation } from 'react-type-animation';
 import { useI18n } from '@/lib/i18n-context';
@@ -15,14 +16,14 @@ export default function Hero() {
   const ref = useRef(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 18 });
-  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 18 });
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 100, damping: 25 });
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 100, damping: 25 });
 
-  // Global mouse parallax for layered depth
+  // Global mouse parallax for layered depth - reduced stiffness for better performance
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+  const springX = useSpring(mouseX, { stiffness: 40, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 40, damping: 30 });
 
   // Different speed layers
   const headingX = useTransform(springX, [-1, 1], [-12, 12]);
@@ -33,6 +34,9 @@ export default function Hero() {
   const orbY = useTransform(springY, [-1, 1], [-15, 15]);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
     let ticking = false;
     const handleMouseMove = (e) => {
       if (!ticking) {
@@ -50,6 +54,7 @@ export default function Hero() {
   }, []);
 
   const handleMove = useCallback((e) => {
+    if (window.innerWidth < 768) return;
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     mx.set((e.clientX - rect.left) / rect.width - 0.5);
@@ -68,7 +73,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <FloatingElements count={3} />
-      
+
       {/* Parallax background orb */}
       <motion.div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"

@@ -15,6 +15,18 @@ const links = [
   { label: 'Contact', href: '#contact', icon: Mail },
 ];
 
+const ALL_SECTION_IDS = [
+  'home', 'about', 'services', 'stack', 'githubstats',
+  'terminal', 'experience', 'projects', 'education', 'guestbook', 'contact',
+];
+
+const HIGHLIGHT_MAP = {
+  services: 'about',
+  githubstats: 'stack',
+  terminal: 'stack',
+  guestbook: 'contact',
+};
+
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { lang, toggleLang, t } = useI18n();
@@ -22,63 +34,107 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileOpen, setMobileOpen] = useState(false);
   const isClickScrolling = useRef(false);
+  const clickTarget = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
+  // Handle initial scroll based on URL hash
   useEffect(() => {
-    const closeOnEscape = (event) => {
-      if (event.key === 'Escape') setMobileOpen(false);
+    const handlePreloaderFinished = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+            setActiveSection(HIGHLIGHT_MAP[hash] || hash);
+          }
+        }, 100);
+      }
     };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
+
+    window.addEventListener('preloader-finished', handlePreloaderFinished);
+    if (!document.querySelector('[class*="fixed inset-0 z-[9999]"]')) {
+      handlePreloaderFinished();
+    }
+    return () => window.removeEventListener('preloader-finished', handlePreloaderFinished);
+  }, []);
+
+  // ── Escape key closes mobile menu ────────────────────────────────────────────
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setMobileOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   useEffect(() => {
-    const allSectionIds = ['home', 'about', 'services', 'stack', 'githubstats', 'terminal', 'experience', 'projects', 'education', 'guestbook', 'contact'];
-    const highlightMap = {
-      'services': 'about',
-      'githubstats': 'stack',
-      'terminal': 'stack',
-      'guestbook': 'contact'
-    };
+    const ratioMap = {};
 
-    const sections = allSectionIds
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          ratioMap[entry.target.id] = entry.intersectionRatio;
+        });
 
-    const updateActiveSection = () => {
-      if (isClickScrolling.current) return;
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
-        const lastSection = sections[sections.length - 1];
-        if (lastSection) {
-          setActiveSection(highlightMap[lastSection.id] || lastSection.id);
-          return;
+        if (isClickScrolling.current && clickTarget.current) {
+          if ((ratioMap[clickTarget.current] ?? 0) > 0) {
+            isClickScrolling.current = false;
+            clickTarget.current = null;
+          } else {
+            return;
+          }
         }
-      }
+        let maxRatio = -1;
+        let mostVisible = null;
 
-      const marker = window.scrollY + 160;
-      const currentSection = sections.reduce((active, section) => {
-        return section.offsetTop <= marker ? section : active;
-      }, sections[0]);
+        for (const [id, ratio] of Object.entries(ratioMap)) {
+          if (ratio > maxRatio) {
+            maxRatio = ratio;
+            mostVisible = id;
+          }
+        }
 
-      if (currentSection) {
-        const activeId = currentSection.id;
-        setActiveSection(highlightMap[activeId] || activeId);
+        if (mostVisible) {
+          setActiveSection(HIGHLIGHT_MAP[mostVisible] || mostVisible);
+        }
+      },
+      {
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
+        rootMargin: '-10% 0px -10% 0px',
       }
+    );
+
+    const attachObservers = () => {
+      ALL_SECTION_IDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
     };
 
-    updateActiveSection();
-    window.addEventListener('scroll', updateActiveSection, { passive: true });
-    window.addEventListener('resize', updateActiveSection);
+    attachObservers();
+
+    window.addEventListener('preloader-finished', attachObservers);
+
     return () => {
-      window.removeEventListener('scroll', updateActiveSection);
-      window.removeEventListener('resize', updateActiveSection);
+      observer.disconnect();
+      window.removeEventListener('preloader-finished', attachObservers);
     };
   }, []);
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    const sectionId = href.slice(1);
+    const mappedId = HIGHLIGHT_MAP[sectionId] || sectionId;
+    setActiveSection(mappedId);
+    isClickScrolling.current = true;
+    clickTarget.current = sectionId;
+
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    window.history.pushState(null, '', href);
+  };
 
   return (
     <>
@@ -95,25 +151,26 @@ export default function Navbar() {
                 VL.dev
               </a>
             </Magnetic>
+
+            {/* Desktop nav links */}
             <div className="hidden md:flex items-center gap-1">
-              {links.map((l) => (
-                <a
-                  key={l.href + l.label}
-                  href={l.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveSection(l.href.slice(1));
-                    isClickScrolling.current = true;
-                    document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: "smooth" });
-                    window.history.pushState(null, '', l.href);
-                    setTimeout(() => { isClickScrolling.current = false; }, 1200);
-                  }}
-                  className={`nav-link px-3 py-2 rounded-xl text-sm ${activeSection === l.href.slice(1) ? 'nav-link-active' : 'text-muted-foreground'}`}
-                >
-                  {l.label}
-                </a>
-              ))}
+              {links.map((l) => {
+                const isActive = activeSection === l.href.slice(1);
+                return (
+                  <a
+                    key={l.href + l.label}
+                    href={l.href}
+                    onClick={(e) => handleNavClick(e, l.href)}
+                    className={`nav-link px-3 py-2 rounded-xl text-sm transition-colors duration-200 ${isActive ? 'nav-link-active' : 'text-muted-foreground'}`}
+                    style={isActive ? { color: 'var(--accent)', background: 'var(--glass-bg)' } : {}}
+                  >
+                    {l.label}
+                  </a>
+                );
+              })}
             </div>
+
+            {/* Action buttons */}
             <div className="navbar-actions flex items-center gap-2">
               <button
                 type="button"
@@ -160,6 +217,8 @@ export default function Navbar() {
           </div>
         </motion.nav>
       </div>
+
+      {/* Mobile slide-in panel */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -180,29 +239,39 @@ export default function Navbar() {
               transition={{ type: 'spring', stiffness: 320, damping: 30 }}
             >
               <div className="mobile-nav-panel-head">
-                <span className="font-mono text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--accent)' }}>Navigation</span>
-                <button type="button" onClick={() => setMobileOpen(false)} aria-label="Close navigation menu" className="mobile-nav-close"><X size={18} /></button>
+                <span className="font-mono text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--accent)' }}>
+                  Navigation
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close navigation menu"
+                  className="mobile-nav-close"
+                >
+                  <X size={18} />
+                </button>
               </div>
               <div className="mobile-nav-links">
                 {links.map((link) => {
                   const LinkIcon = link.icon;
+                  const isActive = activeSection === link.href.slice(1);
                   return (
                     <a
                       key={link.href + link.label}
                       href={link.href}
                       onClick={(e) => {
-                        e.preventDefault();
-                        setActiveSection(link.href.slice(1));
-                        isClickScrolling.current = true;
-                        document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: "smooth" });
-                        window.history.pushState(null, '', link.href);
+                        handleNavClick(e, link.href);
                         setMobileOpen(false);
-                        setTimeout(() => { isClickScrolling.current = false; }, 1200);
                       }}
-                      className={`mobile-nav-link ${activeSection === link.href.slice(1) ? 'mobile-nav-link-active' : ''}`}
+                      className={`mobile-nav-link transition-colors duration-200 ${isActive ? 'mobile-nav-link-active' : ''}`}
+                      style={isActive ? { color: 'var(--accent)', background: 'var(--glass-bg)' } : {}}
                     >
-                      <span className="flex items-center gap-3"><LinkIcon size={17} /> {link.label}</span>
-                      <span className="font-mono text-[10px] opacity-50">{link.href.slice(1).toUpperCase()}</span>
+                      <span className="flex items-center gap-3">
+                        <LinkIcon size={17} /> {link.label}
+                      </span>
+                      <span className="font-mono text-[10px] opacity-50">
+                        {link.href.slice(1).toUpperCase()}
+                      </span>
                     </a>
                   );
                 })}

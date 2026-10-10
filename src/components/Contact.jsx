@@ -84,7 +84,7 @@ export default function Contact() {
     'w-full rounded-xl px-4 py-3 outline-none glass-input bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground placeholder:text-muted-foreground transition-colors duration-300';
 
   return (
-    <section id="contact" className="relative py-20 md:py-32 px-6">
+    <section id="contact" className="relative py-16 md:py-24 px-6">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <motion.div
         className="text-center mb-16"
@@ -110,7 +110,7 @@ export default function Contact() {
           onMouseMove={handleMove}
           onMouseLeave={handleLeave}
           style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }}
-          className="contact-shell max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/45 dark:bg-neutral-900/45 backdrop-blur-2xl shadow-2xl transition-shadow hover:shadow-[0_0_60px_var(--glow)]"
+          className="contact-shell max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/95 dark:bg-neutral-900/45 backdrop-blur-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-2xl transition-shadow hover:shadow-[0_0_60px_var(--glow)]"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

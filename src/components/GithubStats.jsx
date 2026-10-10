@@ -82,7 +82,7 @@ export default function GithubStats() {
   };
 
   return (
-    <section ref={statsRef} className="relative py-20 md:py-32 px-6">
+    <section ref={statsRef} className="relative py-16 md:py-24 px-6">
       <style>{`
         .iso-bar {
           transform-style: preserve-3d;
@@ -132,8 +132,8 @@ export default function GithubStats() {
           transition={{ duration: 0.7 }}
         >
           {/* Decorative Background Glows */}
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-green-500/0 dark:bg-green-500/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-500/0 dark:bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start justify-between mb-12">
             <div>

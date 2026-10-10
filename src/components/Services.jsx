@@ -9,16 +9,19 @@ const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, t
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 50 });
-  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 50 });
+  // Reduced stiffness for better performance
+  const mouseXSpring = useSpring(x, { stiffness: 200, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 200, damping: 30 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
 
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
 
   const handleMouseMove = useCallback((e) => {
+    // Disable 3D effects on mobile for better performance
+    if (window.innerWidth < 768) return;
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
@@ -49,7 +52,7 @@ const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, t
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={`group relative rounded-[2rem] p-[1px] cursor-pointer shadow-2xl shadow-black/10 dark:shadow-none ${isLarge ? 'md:col-span-2' : ''}`}
+      className={`group relative rounded-[2rem] p-[1px] cursor-pointer shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] dark:shadow-none ${isLarge ? 'md:col-span-2' : ''}`}
     >
       {/* Animated Border Gradient Spotlight */}
       <motion.div
@@ -65,10 +68,10 @@ const SpotlightCard = function SpotlightCard({ title, description, icon: Icon, t
         }}
       />
       {/* Default Subtle Border */}
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-b from-black/10 to-black/5 dark:from-white/15 dark:to-white/5 group-hover:opacity-0 transition-opacity duration-500" />
+      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-b from-black/20 to-black/5 dark:from-white/15 dark:to-white/5 group-hover:opacity-0 transition-opacity duration-500" />
 
       {/* Card Content Container */}
-      <div className="relative h-full min-h-[280px] md:min-h-[380px] rounded-[31px] bg-white/60 dark:bg-zinc-950/60 backdrop-blur-2xl p-6 md:p-10 flex flex-col justify-between overflow-hidden">
+      <div className="relative h-full min-h-[280px] md:min-h-[380px] rounded-[31px] bg-white/95 dark:bg-zinc-950/60 backdrop-blur-2xl p-6 md:p-10 flex flex-col justify-between overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-none">
         
         {/* Inner Glow */}
         <motion.div
@@ -152,7 +155,7 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="relative py-20 md:py-32 px-6 overflow-hidden">
+    <section id="services" className="relative py-16 md:py-24 px-6 overflow-hidden">
       {/* Background Decor - Modern Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       
