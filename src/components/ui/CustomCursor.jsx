@@ -1,12 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 export default function CustomCursor() {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
     const isMobile = window.innerWidth < 768;
-    if (isTouch || isMobile) return;
+    if (!isTouch && !isMobile) {
+      setEnabled(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;
@@ -74,7 +82,8 @@ export default function CustomCursor() {
       cancelAnimationFrame(rafId);
       document.body.style.cursor = 'auto';
     };
-  }, []);
+  }, [enabled]);
+  if (!enabled) return null;
 
   return (
     <>
@@ -103,6 +112,7 @@ export default function CustomCursor() {
         }}
       />
       {/* Ring — lerps smoothly behind cursor */}
+
       <div
         ref={ringRef}
         style={{
@@ -121,13 +131,12 @@ export default function CustomCursor() {
         }}
       />
 
-      {/* CSS for cursor states — avoids inline style recalculation */}
       <style>{`
-        .cursor-dot.cursor-hover { width: 18px !important; height: 18px !important; }
+        .cursor-dot.cursor-hover    { width: 18px !important; height: 18px !important; }
         .cursor-dot.cursor-expanded { width: 64px !important; height: 64px !important; }
         .cursor-dot.cursor-expanded::after { content: attr(data-text); font-size: 10px; }
-        .cursor-ring.cursor-hover { opacity: 0.9 !important; transform-origin: center; }
-        .cursor-ring.cursor-hidden { opacity: 0 !important; }
+        .cursor-ring.cursor-hover   { opacity: 0.9 !important; transform-origin: center; }
+        .cursor-ring.cursor-hidden  { opacity: 0 !important; }
         * { cursor: none !important; }
       `}</style>
     </>
