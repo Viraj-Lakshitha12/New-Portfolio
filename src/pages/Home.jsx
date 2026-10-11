@@ -116,7 +116,7 @@ export default function Home() {
       <Navbar />
 
       <main className="relative">
-        =        <Hero />
+        <Hero />
         {/* Everything below is lazy + wrapped in Suspense */}
         <Suspense fallback={<SectionFallback />}><About /></Suspense>
         <Suspense fallback={<SectionFallback />}><Services /></Suspense>
