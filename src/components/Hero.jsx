@@ -4,7 +4,6 @@ import { Image } from '@/components/ui/image';
 import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 import Magnetic from '@/components/ui/Magnetic';
 import AnimatedGradientText from '@/components/AnimatedGradientText';
-import ParticleText from '@/components/ui/ParticleText';
 import FloatingElements from '@/components/FloatingElements';
 import { TypeAnimation } from 'react-type-animation';
 import { useI18n } from '@/lib/i18n-context';
