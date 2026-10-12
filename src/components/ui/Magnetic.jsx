@@ -1,21 +1,23 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { uiAudio } from '@/lib/audio';
 
 export default function Magnetic({ children }) {
   const ref = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const x = useSpring(rawX, { stiffness: 150, damping: 15, mass: 0.1 });
+  const y = useSpring(rawY, { stiffness: 150, damping: 15, mass: 0.1 });
 
   const handleMouse = (e) => {
-    const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
-    const middleX = clientX - (left + width / 2);
-    const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
+    rawX.set((e.clientX - (left + width / 2)) * 0.2);
+    rawY.set((e.clientY - (top + height / 2)) * 0.2);
   };
 
   const reset = () => {
-    setPosition({ x: 0, y: 0 });
+    rawX.set(0);
+    rawY.set(0);
   };
 
   return (
@@ -25,8 +27,7 @@ export default function Magnetic({ children }) {
       onMouseLeave={reset}
       onMouseEnter={() => uiAudio.playHover()}
       onMouseDown={() => uiAudio.playClick()}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
+      style={{ x, y }}
       className="inline-block"
     >
       {children}

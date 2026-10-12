@@ -99,7 +99,7 @@ export default function CustomCursor() {
           borderRadius: '50%',
           backgroundColor: 'var(--accent)',
           pointerEvents: 'none',
-          zIndex: 999999,
+          zIndex: 2147483647,
           willChange: 'transform',
           transition: 'width 0.2s, height 0.2s, background-color 0.2s',
           display: 'flex',
@@ -124,7 +124,7 @@ export default function CustomCursor() {
           borderRadius: '50%',
           border: '1px solid var(--accent)',
           pointerEvents: 'none',
-          zIndex: 999998,
+          zIndex: 2147483646,
           willChange: 'transform',
           opacity: 0.5,
           transition: 'opacity 0.2s, transform 0.05s linear, width 0.2s, height 0.2s',
@@ -132,6 +132,8 @@ export default function CustomCursor() {
       />
 
       <style>{`
+        .cursor-dot { z-index: 2147483647 !important; pointer-events: none !important; }
+        .cursor-ring { z-index: 2147483646 !important; pointer-events: none !important; }
         .cursor-dot.cursor-hover    { width: 18px !important; height: 18px !important; }
         .cursor-dot.cursor-expanded { width: 64px !important; height: 64px !important; }
         .cursor-dot.cursor-expanded::after { content: attr(data-text); font-size: 10px; }

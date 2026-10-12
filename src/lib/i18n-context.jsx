@@ -49,12 +49,19 @@ export function I18nProvider({ children }) {
     localStorage.setItem('vldev_lang', newLang);
   };
 
+  const setLanguage = (newLang) => {
+    if (newLang === 'en' || newLang === 'si') {
+      setLang(newLang);
+      localStorage.setItem('vldev_lang', newLang);
+    }
+  };
+
   const t = (key) => {
     return translations[lang][key] || key;
   };
 
   return (
-    <I18nContext.Provider value={{ lang, toggleLang, t }}>
+    <I18nContext.Provider value={{ lang, toggleLang, setLanguage, t }}>
       {children}
     </I18nContext.Provider>
   );

@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
+import { EscapeRoomProvider } from '@/lib/escape-room-context';
 
 const MeshBackground = lazy(() => import('@/components/MeshBackground'));
 const About = lazy(() => import('@/components/About'));
@@ -16,6 +17,8 @@ const Services = lazy(() => import('@/components/Services'));
 const TechStack = lazy(() => import('@/components/TechStack'));
 const GithubStats = lazy(() => import('@/components/GithubStats'));
 const Terminal = lazy(() => import('@/components/Terminal'));
+const TerminalMode = lazy(() => import('@/components/ui/TerminalMode'));
+const GitHubCity = lazy(() => import('@/components/GitHubCity'));
 const Experience = lazy(() => import('@/components/Experience'));
 const InfiniteMarquee = lazy(() => import('@/components/ui/InfiniteMarquee'));
 const Projects = lazy(() => import('@/components/Projects'));
@@ -95,48 +98,52 @@ export default function Home() {
 
   return (
     <ThemeProvider>
-      <Toaster
-        position="bottom-right"
-        toastOptions={{ style: { background: '#333', color: '#fff', borderRadius: '10px' } }}
-      />
+      <EscapeRoomProvider>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{ style: { background: '#333', color: '#fff', borderRadius: '10px' } }}
+        />
 
-      {/* Above-the-fold — eager */}
-      <Preloader />
-      <CustomCursor />
-      <ScrollProgress />
+        {/* Above-the-fold — eager */}
+        <Preloader />
+        <CustomCursor />
+        <ScrollProgress />
 
-      {/* Lazy UI chrome */}
-      <Suspense fallback={null}><ThemeCustomizer /></Suspense>
-      <Suspense fallback={null}><CommandPalette /></Suspense>
-      <Suspense fallback={null}><ContextMenu /></Suspense>
+        {/* Lazy UI chrome */}
+        <Suspense fallback={null}><ThemeCustomizer /></Suspense>
+        <Suspense fallback={null}><CommandPalette /></Suspense>
+        <Suspense fallback={null}><ContextMenu /></Suspense>
 
-      {/* WebGL background — lazy, no visible fallback */}
-      <Suspense fallback={null}><MeshBackground /></Suspense>
+        {/* WebGL background — lazy, no visible fallback */}
+        <Suspense fallback={null}><MeshBackground /></Suspense>
+        <Suspense fallback={null}><TerminalMode /></Suspense>
 
-      <Navbar />
+        <Navbar />
 
-      <main className="relative">
-        <Hero />
-        {/* Everything below is lazy + wrapped in Suspense */}
-        <Suspense fallback={<SectionFallback />}><About /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Services /></Suspense>
-        <Suspense fallback={<SectionFallback />}><TechStack /></Suspense>
-        <Suspense fallback={<SectionFallback />}><GithubStats /></Suspense>
-        <Suspense fallback={null}><Terminal /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Experience /></Suspense>
-        <Suspense fallback={null}>
-          <InfiniteMarquee text="AVAILABLE FOR FREELANCE • LET'S TALK" speed={1.5} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}><Projects /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Education /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Guestbook /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Contact /></Suspense>
-        <Suspense fallback={null}><Footer /></Suspense>
-      </main>
+        <main className="relative">
+          <Hero />
+          {/* Everything below is lazy + wrapped in Suspense */}
+          <Suspense fallback={<SectionFallback />}><About /></Suspense>
+          <Suspense fallback={<SectionFallback />}><Services /></Suspense>
+          <Suspense fallback={<SectionFallback />}><TechStack /></Suspense>
+          <Suspense fallback={<SectionFallback />}><GithubStats /></Suspense>
+          <Suspense fallback={<SectionFallback />}><GitHubCity /></Suspense>
+          <Suspense fallback={null}><Terminal /></Suspense>
+          <Suspense fallback={<SectionFallback />}><Experience /></Suspense>
+          <Suspense fallback={null}>
+            <InfiniteMarquee text="AVAILABLE FOR FREELANCE • LET'S TALK" speed={1.5} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}><Projects /></Suspense>
+          <Suspense fallback={<SectionFallback />}><Education /></Suspense>
+          <Suspense fallback={<SectionFallback />}><Guestbook /></Suspense>
+          <Suspense fallback={<SectionFallback />}><Contact /></Suspense>
+          <Suspense fallback={null}><Footer /></Suspense>
+        </main>
 
-      {/* Floating widgets*/}
-      <Suspense fallback={null}><Chatbot /></Suspense>
-      <Suspense fallback={null}><SpotifyWidget /></Suspense>
+        {/* Floating widgets*/}
+        <Suspense fallback={null}><Chatbot /></Suspense>
+        <Suspense fallback={null}><SpotifyWidget /></Suspense>
+      </EscapeRoomProvider>
     </ThemeProvider>
   );
 }

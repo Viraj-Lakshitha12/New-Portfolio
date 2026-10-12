@@ -1003,12 +1003,53 @@
   0%, 100% { opacity: 0.55; transform: scale(0.85); }
   50% { opacity: 1; transform: scale(1.2); }
 }
-.custom-scrollbar::-webkit-scrollbar { height: 6px; }
+/* Global scrollbar refinement — eliminates thick native OS scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.2) transparent;
+}
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+.dark *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Complete No Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-[data-theme='light'] .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
-[data-theme='light'] .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+[data-theme='light'] .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); }
+[data-theme='light'] .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* View Transition — Clip-path theme ripple */
 ::view-transition-old(root),
