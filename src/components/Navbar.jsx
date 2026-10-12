@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Moon, Sun, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail, Settings, Globe } from 'lucide-react';
+import { Moon, Sun, Code2, Menu, X, Home, User, Layers3, BriefcaseBusiness, FolderKanban, GraduationCap, Mail, Settings, Globe, TerminalSquare } from 'lucide-react';
 import { useTheme } from '@/lib/theme-context';
 import { useI18n } from '@/lib/i18n-context';
 import Magnetic from '@/components/ui/Magnetic';
+import { useEscapeRoom } from '@/lib/escape-room-context';
 
 const links = [
   { label: 'Home', href: '#home', icon: Home },
@@ -16,13 +17,14 @@ const links = [
 ];
 
 const ALL_SECTION_IDS = [
-  'home', 'about', 'services', 'stack', 'githubstats',
+  'home', 'about', 'services', 'stack', 'githubstats', 'githubcity',
   'terminal', 'experience', 'projects', 'education', 'guestbook', 'contact',
 ];
 
 const HIGHLIGHT_MAP = {
   services: 'about',
   githubstats: 'stack',
+  githubcity: 'stack',
   terminal: 'stack',
   guestbook: 'contact',
 };
@@ -30,11 +32,28 @@ const HIGHLIGHT_MAP = {
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { lang, toggleLang, t } = useI18n();
+  const escapeRoom = useEscapeRoom();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [mobileOpen, setMobileOpen] = useState(false);
   const isClickScrolling = useRef(false);
   const clickTarget = useRef(null);
+  const logoClicks = useRef(0);
+  const logoTimer = useRef(null);
+
+  const handleLogoClick = (e) => {
+    logoClicks.current += 1;
+    if (logoTimer.current) clearTimeout(logoTimer.current);
+    logoTimer.current = setTimeout(() => {
+      logoClicks.current = 0;
+    }, 3500);
+
+    if (logoClicks.current >= 7) {
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
+      escapeRoom?.unlock('clue_2');
+      logoClicks.current = 0;
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -146,7 +165,12 @@ export default function Navbar() {
         >
           <div className={`site-navbar glass rounded-2xl px-4 py-3 flex items-center justify-between ${scrolled ? 'site-navbar-scrolled' : ''}`}>
             <Magnetic>
-              <a href="#home" className="flex items-center gap-2 font-mono font-bold text-sm tracking-tight">
+              <a
+                href="#home"
+                onClick={handleLogoClick}
+                className="flex items-center gap-2 font-mono font-bold text-sm tracking-tight cursor-pointer select-none"
+                title="VL.dev — click repeatedly to find a secret..."
+              >
                 <Code2 className="w-5 h-5" style={{ color: 'var(--accent)' }} />
                 VL.dev
               </a>
@@ -181,20 +205,14 @@ export default function Navbar() {
               >
                 {mobileOpen ? <X size={19} /> : <Menu size={19} />}
               </button>
+
+              {/* Theme Mode Toggle (Light/Dark) */}
               <Magnetic>
                 <button
-                  onClick={toggleLang}
-                  aria-label="Toggle language"
-                  className="glass rounded-xl px-2 h-10 flex items-center justify-center hover:scale-105 transition-transform font-mono text-xs font-bold gap-1"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  <Globe size={14} /> {lang.toUpperCase()}
-                </button>
-              </Magnetic>
-              <Magnetic>
-                <button
+                  type="button"
                   onClick={toggleTheme}
                   aria-label="Toggle theme"
+                  title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                   className="glass rounded-xl w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform"
                 >
                   {theme === 'dark' ? (
@@ -204,10 +222,37 @@ export default function Navbar() {
                   )}
                 </button>
               </Magnetic>
+
+              {/* Escape Room / Secrets & Clues Button */}
               <Magnetic>
                 <button
+                  type="button"
+                  onClick={() => escapeRoom?.setSecretsModalOpen(true)}
+                  aria-label="Portfolio Secrets and Escape Room Clues"
+                  title={`Portfolio Secrets: ${escapeRoom?.foundCount || 0}/5 clues deciphered. Click to view hints.`}
+                  className="glass rounded-xl px-2.5 h-10 flex items-center justify-center gap-1.5 hover:scale-105 transition-transform relative group cursor-pointer"
+                  style={escapeRoom?.foundCount > 0 ? { borderColor: 'var(--accent)' } : {}}
+                >
+                  <span className="text-sm group-hover:rotate-12 transition-transform">🗝️</span>
+                  <span className="text-[11px] font-mono font-bold" style={{ color: 'var(--accent)' }}>
+                    {escapeRoom?.foundCount || 0}/5
+                  </span>
+                  {escapeRoom?.foundCount > 0 && !escapeRoom?.allFound && (
+                    <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
+                  )}
+                  {escapeRoom?.allFound && (
+                    <span className="absolute -top-1 -right-1 text-[9px]">⭐</span>
+                  )}
+                </button>
+              </Magnetic>
+
+              {/* Settings & Preferences Button — Placed at the very end */}
+              <Magnetic>
+                <button
+                  type="button"
                   onClick={() => window.dispatchEvent(new Event('open-theme-customizer'))}
-                  aria-label="Open Theme Customizer"
+                  aria-label="Open Preferences & Tools"
+                  title="Preferences & Tools (Color, Language, Sound, Terminal)"
                   className="glass rounded-xl w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform"
                 >
                   <Settings className="w-5 h-5" style={{ color: 'var(--accent)' }} />
@@ -275,6 +320,30 @@ export default function Navbar() {
                     </a>
                   );
                 })}
+              </div>
+
+              {/* Mobile Quick Extras */}
+              <div className="p-4 border-t border-border/20 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    escapeRoom?.setSecretsModalOpen(true);
+                  }}
+                  className="flex-1 py-2.5 px-3 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-xs font-mono font-bold text-[var(--accent)] flex items-center justify-center gap-2"
+                >
+                  <span>🗝️</span> Secrets ({escapeRoom?.foundCount || 0}/5)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    window.dispatchEvent(new CustomEvent('toggle-terminal-mode'));
+                  }}
+                  className="py-2.5 px-3 rounded-xl border border-border/40 glass text-xs font-mono text-foreground flex items-center justify-center gap-1.5"
+                >
+                  <TerminalSquare size={14} style={{ color: 'var(--accent)' }} /> Terminal
+                </button>
               </div>
             </motion.aside>
           </>
