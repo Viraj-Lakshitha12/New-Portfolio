@@ -3,6 +3,34 @@ import { motion, useMotionValue, useSpring, useInView } from 'framer-motion';
 import { Github, Linkedin, Mail, FileText, Trophy } from 'lucide-react';
 import { unlockAchievement } from '@/lib/achievements';
 import AchievementsModal from '@/components/AchievementsModal';
+import { useEscapeRoom } from '@/lib/escape-room-context';
+
+function FooterCopyright() {
+  const { unlock } = useEscapeRoom() || {};
+  const timerRef = useRef(null);
+  const [glowing, setGlowing] = useState(false);
+
+  const onEnter = () => {
+    timerRef.current = setTimeout(() => {
+      unlock?.('clue_4');
+      setGlowing(true);
+      setTimeout(() => setGlowing(false), 2000);
+    }, 3000);
+  };
+  const onLeave = () => clearTimeout(timerRef.current);
+
+  return (
+    <p
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="text-center font-mono text-xs text-muted-foreground tracking-wide transition-colors duration-300 select-none"
+      style={{ color: glowing ? 'var(--accent)' : undefined }}
+      title="..."
+    >
+      © 2026 Viraj Lakshitha Adhikari. All rights reserved.
+    </p>
+  );
+}
 
 function DockIcon({ href = null, onClick = null, label, children }) {
   const ref = useRef(null);
@@ -118,9 +146,7 @@ export default function Footer() {
 
       {/* Subtle bottom border line + copyright */}
       <div className="relative z-10 max-w-5xl mx-auto mt-16 pt-6 border-t border-border/30">
-        <p className="text-center font-mono text-xs text-muted-foreground tracking-wide">
-          © 2026 Viraj Lakshitha Adhikari. All rights reserved.
-        </p>
+        <FooterCopyright />
       </div>
       <AchievementsModal isOpen={achievementsOpen} onClose={() => setAchievementsOpen(false)} />
     </footer>
