@@ -32,6 +32,13 @@ const ACHIEVEMENTS_DATA = [
     hint: "💡 Leave a message in the Guestbook section",
     icon: "🦋",
   },
+  {
+    id: "escape_master",
+    title: "Escape Room Master",
+    description: "Decoded all 5 Portfolio Secrets",
+    hint: "💡 Discover all 5 hidden clues in the Secrets map (🗝️)",
+    icon: "🗝️",
+  },
 ];
 
 export default function AchievementsModal({ isOpen, onClose }) {
@@ -40,27 +47,59 @@ export default function AchievementsModal({ isOpen, onClose }) {
   useEffect(() => {
     if (isOpen) {
       const key = "vldev_achievements";
-      setUnlocked(JSON.parse(localStorage.getItem(key) || "[]"));
+      const saved = JSON.parse(localStorage.getItem(key) || "[]");
+
+      try {
+        const erSaved = JSON.parse(localStorage.getItem("vl_escape_room") || "{}");
+        if (Object.keys(erSaved).length >= 5 && !saved.includes("escape_master")) {
+          saved.push("escape_master");
+          localStorage.setItem(key, JSON.stringify(saved));
+        }
+      } catch {
+        // ignore
+      }
+
+      setUnlocked(saved);
     }
   }, [isOpen]);
 
-  // Prevent body scroll when modal open
+  // Prevent body scroll and pause Lenis when modal open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      if (typeof window !== "undefined" && window['__lenis']) {
+        window['__lenis'].stop();
+      }
     } else {
       document.body.style.overflow = "";
+      if (typeof window !== "undefined" && window['__lenis']) {
+        window['__lenis'].start();
+      }
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+      if (typeof window !== "undefined" && window['__lenis']) {
+        window['__lenis'].start();
+      }
+    };
   }, [isOpen]);
 
-  const unlockedCount = unlocked.filter(id => ACHIEVEMENTS_DATA.find(a => a.id === id)).length;
+  const unlockedCount = unlocked.filter((id) => ACHIEVEMENTS_DATA.find((a) => a.id === id)).length;
 
   const modal = (
     <AnimatePresence>
       {isOpen && (
         <div
-          style={{ position: "fixed", inset: 0, zIndex: 99998, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}
+          data-lenis-prevent="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99998,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+          }}
         >
           {/* Backdrop */}
           <motion.div
@@ -68,7 +107,13 @@ export default function AchievementsModal({ isOpen, onClose }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", zIndex: 0 }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.65)",
+              backdropFilter: "blur(6px)",
+              zIndex: 0,
+            }}
           />
 
           <motion.div
@@ -76,6 +121,8 @@ export default function AchievementsModal({ isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.92 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
             style={{
               position: "relative",
               zIndex: 1,
@@ -84,7 +131,7 @@ export default function AchievementsModal({ isOpen, onClose }) {
               maxHeight: "85dvh",
               overflowY: "auto",
             }}
-            className="bg-white dark:bg-zinc-950 border border-black/10 dark:border-white/10 rounded-3xl shadow-2xl custom-scrollbar"
+            className="bg-white dark:bg-zinc-950 border border-black/10 dark:border-white/10 rounded-3xl shadow-2xl custom-scrollbar overscroll-contain"
           >
             <div className="p-5 md:p-6">
               {/* Close button */}
@@ -133,14 +180,20 @@ export default function AchievementsModal({ isOpen, onClose }) {
                         }`}
                     >
                       {/* Icon */}
-                      <div className={`text-2xl flex-shrink-0 mt-0.5 ${!isUnlocked ? "grayscale opacity-40" : ""}`}>
+                      <div
+                        className={`text-2xl flex-shrink-0 mt-0.5 ${!isUnlocked ? "grayscale opacity-40" : ""
+                          }`}
+                      >
                         {isUnlocked ? ach.icon : "🔒"}
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3 className={`font-bold text-sm ${isUnlocked ? "text-foreground" : "text-muted-foreground"}`}>
+                          <h3
+                            className={`font-bold text-sm ${isUnlocked ? "text-foreground" : "text-muted-foreground"
+                              }`}
+                          >
                             {ach.title}
                           </h3>
                           {isUnlocked && (
@@ -150,7 +203,9 @@ export default function AchievementsModal({ isOpen, onClose }) {
                           )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          {isUnlocked ? ach.description : (
+                          {isUnlocked ? (
+                            ach.description
+                          ) : (
                             <span className="flex items-start gap-1.5">
                               <Lock size={10} className="flex-shrink-0 mt-0.5" />
                               {ach.hint}
@@ -163,11 +218,29 @@ export default function AchievementsModal({ isOpen, onClose }) {
                 })}
               </div>
 
+              {/* Link to Escape Room / Secrets Map */}
+              <div className="mt-5 pt-4 border-t border-black/5 dark:border-white/10">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    window.dispatchEvent(new CustomEvent("open-secrets-modal"));
+                  }}
+                  className="w-full py-2.5 px-3 rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-xs font-mono text-[var(--accent)] hover:bg-[var(--accent)]/20 transition-all font-semibold flex items-center justify-center gap-2"
+                >
+                  <span>🗝️</span> View Portfolio Secrets & Clues Map
+                </button>
+              </div>
+
               {/* All unlocked celebration */}
               {unlockedCount === ACHIEVEMENTS_DATA.length && (
                 <div className="mt-4 p-4 rounded-2xl bg-gradient-to-r from-[var(--accent)]/10 to-emerald-500/10 border border-[var(--accent)]/30 text-center">
-                  <p className="text-sm font-bold text-[var(--accent)]">🎉 All achievements unlocked!</p>
-                  <p className="text-xs text-muted-foreground mt-1">You found all the secrets. Impressive!</p>
+                  <p className="text-sm font-bold text-[var(--accent)]">
+                    🎉 All achievements unlocked!
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    You found all the secrets. Impressive!
+                  </p>
                 </div>
               )}
             </div>
@@ -177,7 +250,5 @@ export default function AchievementsModal({ isOpen, onClose }) {
     </AnimatePresence>
   );
 
-  return typeof document !== "undefined"
-    ? createPortal(modal, document.body)
-    : null;
+  return typeof document !== "undefined" ? createPortal(modal, document.body) : null;
 }
