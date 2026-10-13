@@ -6,6 +6,7 @@ const ACHIEVEMENTS = {
   gamer: { id: "gamer", title: "Retro Gamer", description: "Found the Konami Code", icon: "🎮" },
   explorer: { id: "explorer", title: "Deep Explorer", description: "Reached the bottom of the page", icon: "🗺️" },
   socialite: { id: "socialite", title: "Social Butterfly", description: "Signed the guestbook", icon: "🦋" },
+  escape_master: { id: "escape_master", title: "Escape Room Master", description: "Decoded all 5 Portfolio Secrets", icon: "🗝️" },
 };
 
 export const unlockAchievement = (id) => {

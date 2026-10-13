@@ -105,7 +105,9 @@ export default function ThemeCustomizer() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: -20 }}
             transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-            className="fixed top-20 right-4 md:right-8 z-[102] w-80 max-w-[94vw] p-5 md:p-6 glass rounded-3xl shadow-2xl border border-[var(--accent)]/30 bg-white/90 dark:bg-zinc-950/95 backdrop-blur-2xl max-h-[85vh] overflow-y-auto custom-scrollbar"
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
+            className="fixed top-20 right-4 md:right-8 z-[102] w-80 max-w-[94vw] p-5 md:p-6 glass rounded-3xl shadow-2xl border border-[var(--accent)]/30 bg-white/90 dark:bg-zinc-950/95 backdrop-blur-2xl max-h-[85vh] overflow-y-auto custom-scrollbar overscroll-contain"
           >
             <div className="flex items-center justify-between mb-5 pb-3 border-b border-border/20">
               <h3 className="font-bold text-base flex items-center gap-2">

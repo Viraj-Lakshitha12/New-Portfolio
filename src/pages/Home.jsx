@@ -49,6 +49,7 @@ export default function Home() {
       smoothWheel: true,
       lerp: 0.1,
     });
+    window['__lenis'] = lenis;
 
     let rafId;
     let lastTime = 0;
@@ -68,6 +69,7 @@ export default function Home() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      window['__lenis'] = null;
     };
   }, []);
   // Dynamic Title 
