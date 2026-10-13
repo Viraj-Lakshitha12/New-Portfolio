@@ -89,6 +89,12 @@ export default function Footer() {
     }
   }, [isInView]);
 
+  useEffect(() => {
+    const handleOpenAchievements = () => setAchievementsOpen(true);
+    window.addEventListener('open-achievements-modal', handleOpenAchievements);
+    return () => window.removeEventListener('open-achievements-modal', handleOpenAchievements);
+  }, []);
+
   return (
     <footer ref={footerRef} className="relative pt-24 pb-10 px-6 overflow-hidden">
       {/* Aurora ambient glow at bottom edge */}

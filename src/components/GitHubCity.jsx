@@ -7,8 +7,8 @@ import { useCountUp } from '@/lib/useCountUp';
 const GITHUB_USERNAME = 'Viraj-Lakshitha12';
 
 const VIEW_ANGLES = [
-  { id: 'iso', label: '3D Isometric', rotateX: 20, rotateZ: 0 },
   { id: '2d', label: '2D Skyline', rotateX: 0, rotateZ: 0 },
+  { id: 'iso', label: '3D Isometric', rotateX: 20, rotateZ: 0 },
   { id: 'drone', label: '3D Orbit', rotateX: 36, rotateZ: 0 },
 ];
 
@@ -17,7 +17,7 @@ export default function GitHubCity() {
   const [hovered, setHovered] = useState(null);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState('iso');
+  const [viewMode, setViewMode] = useState('2d');
   const [isLive, setIsLive] = useState(false);
 
   const sectionRef = useRef(null);
