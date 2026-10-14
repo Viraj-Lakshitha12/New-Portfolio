@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Terminal as TerminalIcon, ChevronRight } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Terminal as TerminalIcon, ChevronRight, Maximize2, Minimize2, Power } from 'lucide-react';
 import { uiAudio } from '@/lib/audio';
 import { unlockAchievement } from '@/lib/achievements';
 
@@ -9,10 +9,12 @@ export default function Terminal() {
   const [history, setHistory] = useState([
     { type: 'system', content: 'Welcome to VL.dev terminal. Type "help" to see available commands.' }
   ]);
+  const [isMaximized, setIsMaximized] = useState(false);
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
 
-  const commands = {
+  // Memoize commands to prevent recreation
+  const commands = useMemo(() => ({
     help: '📋 Available commands:\n   whoami     → About Viraj\n   skills     → Tech stack\n   experience → Work history\n   education  → Academic background\n   projects   → Featured projects\n   github     → GitHub statistics\n   guestbook  → Community messages\n   contact    → Contact details\n   ls         → List sections\n   open       → open [linkedin|github|cv]\n   hire       → Let\'s work together!\n   date       → Current date & time\n   echo [txt] → Repeat your text\n   clear      → Clear terminal\n   neofetch   → System info\n   sudo       → 😏 Try it...',
     whoami: '👋 Viraj Lakshitha Adhikari\n   Role   : Full Stack Software Engineer\n   Company: INTELLEON (2024 - Present)\n   Country: Sri Lanka 🇱🇰\n   Focus  : Scalable web systems, clean code, great UX\n   Fun    : Building things that make people say "wow"',
     skills: '⚡ Core Tech Stack:\n   ┌─ Frontend  : React, TypeScript, Next.js, Tailwind CSS\n   ├─ Backend   : Java Spring Boot, Node.js, Express\n   ├─ Databases : PostgreSQL, MySQL, MongoDB, Redis\n   ├─ DevOps    : Docker, AWS, CI/CD\n   └─ Tools     : Git, Figma, Postman, IntelliJ',
@@ -33,10 +35,10 @@ export default function Terminal() {
     matrix: 'Wake up, Neo...\n   The Matrix has you...\n   Follow the white rabbit.\n   Knock, knock, Neo.',
     'rm -rf /': '😱 WARNING: SYSTEM COMPROMISED.\n   Just kidding! You don\'t have root privileges here.\n   Nice try though! 😉',
     hack: 'Initiating hack sequence...\n   Bypassing mainframe... [OK]\n   Cracking encryption... [OK]\n   Accessing secret files... [FAILED]\n   \n   Ah ah ah! You didn\'t say the magic word! 🦖',
-  };
+  }), []);
 
-
-  const handleCommand = (e) => {
+  // Optimized command handler with useCallback
+  const handleCommand = useCallback((e) => {
     if (e.key === 'Enter') {
       const raw = input.trim();
       const cmd = raw.toLowerCase();
@@ -87,24 +89,26 @@ export default function Terminal() {
 
       setInput('');
     }
-  };
+  }, [input, history, commands]);
 
-
-  const containerRef = useRef(null);
+  // Optimized scroll with useCallback
+  const scrollToBottom = useCallback(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, []);
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [history]);
+    scrollToBottom();
+  }, [history, scrollToBottom]);
 
   return (
     <section id="terminal" className="relative py-16 md:py-24 px-6">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_2px,transparent_2px),linear-gradient(to_bottom,#80808012_2px,transparent_2px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-10"
+          className="text-center mb-8"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -121,53 +125,67 @@ export default function Terminal() {
 
         {/* Terminal Window */}
         <motion.div
-          className="glass rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/30"
+          className={`glass rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/30 transition-all duration-300 ${
+            isMaximized ? 'fixed inset-4 z-50' : 'max-w-3xl mx-auto'
+          }`}
           initial={{ opacity: 0, y: 20, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           {/* Title Bar */}
-          <div className="bg-zinc-200/80 dark:bg-zinc-800/80 px-4 py-2.5 flex items-center border-b border-black/5 dark:border-white/5">
+          <div className="bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-800 dark:to-zinc-900 px-4 py-2.5 flex items-center border-b border-black/5 dark:border-white/5">
             <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f57] hover:brightness-110 transition-all"></div>
-              <div className="w-3 h-3 rounded-full bg-[#febc2e] hover:brightness-110 transition-all"></div>
-              <div className="w-3 h-3 rounded-full bg-[#28c840] hover:brightness-110 transition-all"></div>
+              <div className="w-3 h-3 rounded-full bg-[#ff5f57] hover:brightness-110 transition-all cursor-pointer" />
+              <div className="w-3 h-3 rounded-full bg-[#febc2e] hover:brightness-110 transition-all cursor-pointer" />
+              <div className="w-3 h-3 rounded-full bg-[#28c840] hover:brightness-110 transition-all cursor-pointer" />
             </div>
             <div className="flex-1 text-center font-mono text-xs text-muted-foreground flex items-center justify-center gap-1.5">
-              <TerminalIcon size={12} /> vl.dev — bash
+              <TerminalIcon size={12} className="text-[var(--accent)]" /> vl.dev — bash
             </div>
-            <div className="w-[52px]"></div>
+            <button
+              onClick={() => setIsMaximized(!isMaximized)}
+              className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            >
+              {isMaximized ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            </button>
           </div>
           
           {/* Terminal Body */}
           <div 
-            ref={containerRef}
-            className="p-4 md:p-6 h-[300px] md:h-[360px] overflow-y-auto font-mono text-xs md:text-sm bg-zinc-50/50 dark:bg-zinc-950/60 cursor-text custom-scrollbar"
+            className={`p-3 md:p-6 overflow-y-auto font-mono text-[11px] md:text-sm bg-zinc-50/50 dark:bg-zinc-950/60 cursor-text custom-scrollbar ${
+              isMaximized ? 'h-[calc(100vh-60px)]' : 'h-[240px] md:h-[320px]'
+            }`}
             onClick={() => inputRef.current?.focus()}
           >
-            {history.map((line, i) => (
-              <div 
-                key={i} 
-                className={`mb-1.5 whitespace-pre-wrap break-words leading-relaxed ${
-                  line.type === 'error' 
-                    ? 'text-red-500' 
-                    : line.type === 'user' 
-                      ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
-                      : line.type === 'success'
-                        ? 'text-sky-500 dark:text-sky-400'
-                        : 'text-zinc-600 dark:text-zinc-300'
-                }`}
-              >
-                {line.type === 'user' && (
-                  <ChevronRight size={14} className="inline-block mr-1 -mt-0.5 text-emerald-500" />
-                )}
-                {line.content}
-              </div>
-            ))}
-            <div className="flex items-center gap-2 mt-3 text-[16px] md:text-sm">
+            <AnimatePresence mode="popLayout">
+              {history.map((line, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.15 }}
+                  className={`mb-1 whitespace-pre-wrap break-words leading-tight ${
+                    line.type === 'error' 
+                      ? 'text-red-500' 
+                      : line.type === 'user' 
+                        ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+                        : line.type === 'success'
+                          ? 'text-sky-500 dark:text-sky-400'
+                          : 'text-zinc-600 dark:text-zinc-300'
+                  }`}
+                >
+                  {line.type === 'user' && (
+                    <ChevronRight size={12} className="inline-block mr-1 -mt-0.5 text-emerald-500" />
+                  )}
+                  {line.content}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            <div className="flex items-center gap-2 mt-2 text-[11px] md:text-sm">
               <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                <ChevronRight size={14} />
+                <ChevronRight size={12} />
                 <span className="hidden sm:inline">vl@guest</span><span className="sm:hidden">$</span><span className="hidden sm:inline">:~$</span>
               </span>
               <input
@@ -182,7 +200,7 @@ export default function Terminal() {
                   if (e.key === 'Enter') uiAudio.playClick();
                   handleCommand(e);
                 }}
-                className="flex-1 bg-transparent outline-none border-none text-zinc-800 dark:text-zinc-100 caret-emerald-500 text-[16px] md:text-sm"
+                className="flex-1 bg-transparent outline-none border-none text-zinc-800 dark:text-zinc-100 caret-emerald-500 text-[11px] md:text-sm"
                 spellCheck="false"
                 autoComplete="off"
                 placeholder="type a command..."
