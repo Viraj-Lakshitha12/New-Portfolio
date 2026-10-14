@@ -16,13 +16,13 @@ export default function SkillsRadar() {
   const isDark = theme === 'dark';
 
   return (
-    <div className="w-full h-full min-h-[300px] flex items-center justify-center p-4">
+    <div className="w-full h-full min-h-[250px] md:min-h-[300px] flex items-center justify-center p-4">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
           <PolarGrid stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"} />
           <PolarAngleAxis 
             dataKey="subject" 
-            tick={{ fill: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)', fontSize: 12, fontWeight: 600, fontFamily: 'var(--font-mono)' }} 
+            tick={{ fill: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)', fontSize: 10, fontWeight: 600, fontFamily: 'var(--font-mono)' }} 
           />
           <Radar
             name="Skill Level"
@@ -38,7 +38,8 @@ export default function SkillsRadar() {
               borderRadius: '12px',
               borderWidth: '1px',
               color: isDark ? '#fff' : '#000',
-              fontFamily: 'var(--font-mono)'
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12
             }}
             itemStyle={{ color: 'var(--accent)', fontWeight: 'bold' }}
           />
